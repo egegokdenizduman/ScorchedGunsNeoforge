@@ -26,15 +26,12 @@
     "M": {
       "item": "scguns:diamond_steel_ingot"
     },
-    "X": {
-      "item": "scguns:diamond_steel_blueprint"
-    },
     "T": {
       "item": "scguns:advanced_silencer"
     }
   },
   "pattern": [
-    "MMX ",
+    "MM  ",
     "LRTS",
     "Q C "
   ],

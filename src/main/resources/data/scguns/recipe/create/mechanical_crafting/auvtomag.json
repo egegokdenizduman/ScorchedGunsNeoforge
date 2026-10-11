@@ -26,17 +26,14 @@
     "M": {
       "item": "minecraft:iron_ingot"
     },
-    "X": {
-      "item": "scguns:iron_blueprint"
-    },
     "A": {
       "item": "scguns:treated_iron_ingot"
     }
   },
   "pattern": [
-    "XAM  ",
-    "LRS  ",
-    "Q C  "
+    " AM",
+    "LRS",
+    "Q C"
   ],
   "result": {
     "id": "scguns:auvtomag"

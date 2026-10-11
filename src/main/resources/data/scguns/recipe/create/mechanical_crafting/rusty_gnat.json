@@ -29,17 +29,14 @@
     "V": {
       "item": "scguns:copper_gun_frame"
     },
-    "P": {
-      "item": "scguns:copper_blueprint"
-    },
     "K": {
       "tag": "minecraft:planks"
     }
   },
   "pattern": [
-    "CVP  ",
-    "LRKS ",
-    "Q X  "
+    "CV  ",
+    "LRKS",
+    "Q X "
   ],
   "result": {
     "id": "scguns:rusty_gnat"

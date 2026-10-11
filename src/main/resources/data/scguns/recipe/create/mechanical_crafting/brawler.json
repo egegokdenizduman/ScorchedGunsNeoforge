@@ -20,9 +20,6 @@
     "S": {
       "item": "scguns:heavy_gun_barrel"
     },
-    "X": {
-      "item": "scguns:iron_blueprint"
-    },
     "A": {
       "item": "scguns:treated_iron_ingot"
     }
@@ -30,7 +27,7 @@
   "pattern": [
     " A  ",
     "LRSS",
-    "Q  X"
+    "Q   "
   ],
   "result": {
     "id": "scguns:brawler"

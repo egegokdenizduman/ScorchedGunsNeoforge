@@ -29,15 +29,12 @@
     "X": {
       "item": "minecraft:shulker_shell"
     },
-    "O": {
-      "item": "scguns:end_blueprint"
-    },
     "P": {
       "item": "minecraft:shulker_shell"
     }
   },
   "pattern": [
-    "XICO",
+    "XIC ",
     "LRSS",
     "Q P "
   ],

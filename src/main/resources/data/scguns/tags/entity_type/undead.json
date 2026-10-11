@@ -13,8 +13,6 @@
     "minecraft:zombie",
     "minecraft:zombie_horse",
     "minecraft:zombified_piglin",
-    "minecraft:zombie_villager",
-    "scguns:redcoat",
-    "scguns:zombified_hornlin"
+    "minecraft:zombie_villager"
   ]
 }

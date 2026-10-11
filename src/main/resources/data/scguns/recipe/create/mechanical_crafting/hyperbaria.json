@@ -28,13 +28,10 @@
     },
     "P": {
       "tag": "minecraft:planks"
-    },
-    "X": {
-      "item": "scguns:ocean_blueprint"
     }
   },
   "pattern": [
-    "XMC",
+    " MC",
     "LRS",
     "Q P"
   ],

@@ -10,7 +10,6 @@
     "minecraft:copper_ore",
     "minecraft:deepslate_copper_ore",
     "scguns:anthralite_ore",
-    "scguns:deepslate_anthralite_ore",
-    "scguns:mine_unit"
+    "scguns:deepslate_anthralite_ore"
   ]
 }

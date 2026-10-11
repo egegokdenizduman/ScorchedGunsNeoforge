@@ -56,7 +56,7 @@
   "reloads": {
     "emptyMagTimer": 30,
     "maxAmmo": 8,
-    "reloadItem": "scguns:advanced_bullet",
+    "reloadItem": "scguns:hardened_bullet",
     "reloadTimer": 30,
     "reloadType": "scguns:mag_fed"
   },

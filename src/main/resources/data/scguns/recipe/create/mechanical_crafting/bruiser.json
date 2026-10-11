@@ -25,15 +25,12 @@
     },
     "X": {
       "tag": "minecraft:planks"
-    },
-    "P": {
-      "item": "scguns:copper_blueprint"
     }
   },
   "pattern": [
-    "CCP  ",
-    "LRS  ",
-    "Q X  "
+    "CC ",
+    "LRS",
+    "Q X"
   ],
   "result": {
     "id": "scguns:bruiser"

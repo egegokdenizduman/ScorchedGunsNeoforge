@@ -1,0 +1,22 @@
+{
+  "type": "create:deploying",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "scguns:depleted_energy_core"
+    },
+    {
+      "item": "scguns:plasma"
+    }
+  ],
+  "results": [
+    {
+      "id": "scguns:energy_core"
+    }
+  ]
+}

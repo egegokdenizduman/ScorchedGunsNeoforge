@@ -25,15 +25,12 @@
     },
     "X": {
       "tag": "minecraft:planks"
-    },
-    "P": {
-      "item": "scguns:copper_blueprint"
     }
   },
   "pattern": [
-    "CCSP ",
-    "LRS  ",
-    "Q X  "
+    "CCS",
+    "LRS",
+    "Q X"
   ],
   "result": {
     "id": "scguns:boomstick"

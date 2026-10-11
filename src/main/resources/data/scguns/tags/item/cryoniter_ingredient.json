@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "minecraft:packed_ice",
-    "minecraft:blue_ice",
-    "scguns:niter_dust"
+    "minecraft:blue_ice"
   ]
 }

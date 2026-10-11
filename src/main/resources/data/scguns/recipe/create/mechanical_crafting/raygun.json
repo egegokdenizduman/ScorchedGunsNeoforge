@@ -22,13 +22,10 @@
     },
     "M": {
       "item": "scguns:anthralite_ingot"
-    },
-    "X": {
-      "item": "scguns:end_blueprint"
     }
   },
   "pattern": [
-    "XM ",
+    " M ",
     "LRS",
     "Q  "
   ],

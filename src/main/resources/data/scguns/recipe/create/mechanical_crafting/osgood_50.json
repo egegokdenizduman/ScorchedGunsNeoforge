@@ -25,13 +25,10 @@
     },
     "M": {
       "item": "scguns:treated_brass_ingot"
-    },
-    "X": {
-      "item": "scguns:treated_brass_blueprint"
     }
   },
   "pattern": [
-    "MMX",
+    "MM ",
     "LCS",
     "Q R"
   ],

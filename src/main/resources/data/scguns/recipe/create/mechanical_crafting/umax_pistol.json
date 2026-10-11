@@ -25,15 +25,12 @@
     },
     "X": {
       "item": "scguns:empty_tank"
-    },
-    "P": {
-      "item": "scguns:copper_blueprint"
     }
   },
   "pattern": [
-    "CCP  ",
-    "LRS  ",
-    "Q X  "
+    "CC ",
+    "LRS",
+    "Q X"
   ],
   "result": {
     "id": "scguns:umax_pistol"

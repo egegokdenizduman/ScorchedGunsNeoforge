@@ -25,15 +25,12 @@
     },
     "M": {
       "item": "scguns:scorched_ingot"
-    },
-    "X": {
-      "item": "scguns:scorched_blueprint"
     }
   },
   "pattern": [
-    "XMM  ",
-    "LRS  ",
-    "Q C  "
+    " MM",
+    "LRS",
+    "Q C"
   ],
   "result": {
     "id": "scguns:prima_materia"

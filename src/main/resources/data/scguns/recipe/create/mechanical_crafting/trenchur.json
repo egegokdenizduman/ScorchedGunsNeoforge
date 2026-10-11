@@ -28,13 +28,10 @@
     },
     "X": {
       "item": "scguns:treated_iron_ingot"
-    },
-    "M": {
-      "item": "scguns:iron_blueprint"
     }
   },
   "pattern": [
-    "XIM",
+    "XI ",
     "LRS",
     "Q C"
   ],

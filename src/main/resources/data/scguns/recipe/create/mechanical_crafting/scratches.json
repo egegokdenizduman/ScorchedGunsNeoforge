@@ -20,9 +20,6 @@
     "S": {
       "item": "scguns:gun_barrel"
     },
-    "X": {
-      "item": "scguns:treated_brass_blueprint"
-    },
     "K": {
       "item": "scguns:treated_brass_gun_frame"
     },
@@ -33,7 +30,7 @@
   "pattern": [
     "KKSS",
     "LRSS",
-    "Q MX"
+    "Q M "
   ],
   "result": {
     "id": "scguns:scratches"

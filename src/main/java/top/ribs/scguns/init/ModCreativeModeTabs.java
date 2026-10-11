@@ -39,7 +39,6 @@ public class ModCreativeModeTabs {
             ModEnchantments.ELEMENTAL_POP,
             ModEnchantments.WATER_PROOF,
             ModEnchantments.HOT_BARREL,
-            ModEnchantments.CORRODED,
             ModEnchantments.GUN_RUST
     );
 

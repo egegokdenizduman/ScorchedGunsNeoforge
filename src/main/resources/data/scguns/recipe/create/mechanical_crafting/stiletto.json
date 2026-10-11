@@ -22,14 +22,11 @@
     },
     "S": {
       "item": "scguns:heavy_gun_barrel"
-    },
-    "P": {
-      "item": "scguns:wrecker_blueprint"
     }
   },
   "pattern": [
     "CRKS",
-    "  QP"
+    "  Q "
   ],
   "result": {
     "id": "scguns:stiletto"

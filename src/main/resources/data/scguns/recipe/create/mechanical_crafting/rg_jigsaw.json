@@ -29,15 +29,12 @@
     "V": {
       "item": "scguns:diamond_steel_gun_frame"
     },
-    "P": {
-      "item": "scguns:diamond_steel_blueprint"
-    },
     "K": {
       "tag": "minecraft:planks"
     }
   },
   "pattern": [
-    "CVP ",
+    "CV  ",
     "LRKS",
     "X Q "
   ],

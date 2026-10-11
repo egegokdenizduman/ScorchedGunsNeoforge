@@ -26,9 +26,6 @@
     "X": {
       "tag": "minecraft:planks"
     },
-    "P": {
-      "item": "scguns:end_blueprint"
-    },
     "I": {
       "item": "minecraft:redstone"
     },
@@ -37,9 +34,9 @@
     }
   },
   "pattern": [
-    "CCIP ",
-    "LRSB ",
-    "Q X  "
+    "CCI ",
+    "LRSB",
+    "Q X "
   ],
   "result": {
     "id": "scguns:lone_wonder"

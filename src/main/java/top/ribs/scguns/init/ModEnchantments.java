@@ -32,13 +32,12 @@ public class ModEnchantments
     public static final DeferredHolder<Enchantment, Enchantment> RECLAIMED = register("reclaimed", EnchantmentTypes.GUN, Rarity.RARE, 2, 15, 10, 25, 10, Type.AMMO, ModEnchantments::ammoExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> ACCELERATOR = register("accelerator", EnchantmentTypes.GUN, Rarity.UNCOMMON, 3, 10, 10, 30, 10, Type.PROJECTILE, ModEnchantments::projectileExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> PUNCTURING = register("puncturing", EnchantmentTypes.GUN, Rarity.UNCOMMON, 3, 1, 10, 11, 10, Type.PROJECTILE, ModEnchantments::projectileExclusive);
-    public static final DeferredHolder<Enchantment, Enchantment> SHELL_CATCHER = register("shell_catcher", EnchantmentTypes.SHELL_CATCHER_COMPATIBLE, Rarity.UNCOMMON, 3, 15, 0, 35, 0, Type.WEAPON, ModEnchantments::weaponExclusive);
+    public static final DeferredHolder<Enchantment, Enchantment> SHELL_CATCHER = register("shell_catcher", EnchantmentTypes.SHELL_CATCHER_COMPATIBLE, Rarity.UNCOMMON, 1, 15, 0, 35, 0, Type.WEAPON, ModEnchantments::weaponExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> HEAVY_SHOT = register("heavy_shot", EnchantmentTypes.GUN, Rarity.RARE, 3, 10, 10, 30, 10, Type.PROJECTILE, ModEnchantments::projectileExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> ELEMENTAL_POP = register("elemental_pop", EnchantmentTypes.GUN, Rarity.VERY_RARE, 2, 15, 10, 55, 10, Type.WEAPON, ModEnchantments::weaponExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> WATER_PROOF = register("waterproof", EnchantmentTypes.WATER_PROOF_COMPATIBLE, Rarity.UNCOMMON, 1, 10, 10, 30, 10, Type.PROJECTILE, ModEnchantments::projectileExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> HOT_BARREL = register("hot_barrel", EnchantmentTypes.GUN, Rarity.VERY_RARE, 2, 10, 10, 30, 10, Type.PROJECTILE, ModEnchantments::projectileExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> GUN_RUST = register("gun_rust", EnchantmentTypes.GUN, Rarity.VERY_RARE, 1, 25, 0, 75, 0, Type.WEAPON, ModEnchantments::weaponExclusive);
-    public static final DeferredHolder<Enchantment, Enchantment> CORRODED = register("corroded", EnchantmentTypes.WEAPON, Rarity.UNCOMMON, 4, 5, 8, 25, 8, Type.WEAPON, HolderSet::empty);
 
     private static DeferredHolder<Enchantment, Enchantment> register(String name, Predicate<Item> supportedItems, Rarity rarity,
                                                                      int maxLevel, int minCostBase, int minCostPerLevel,

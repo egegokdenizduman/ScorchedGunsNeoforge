@@ -23,9 +23,6 @@
     "M": {
       "item": "scguns:treated_brass_ingot"
     },
-    "X": {
-      "item": "scguns:treated_brass_blueprint"
-    },
     "J": {
       "tag": "minecraft:planks"
     },
@@ -34,7 +31,7 @@
     }
   },
   "pattern": [
-    "MKX ",
+    "MK  ",
     "LRSS",
     "Q J "
   ],

@@ -17,9 +17,6 @@
     "A": {
       "item": "minecraft:gold_ingot"
     },
-    "P": {
-      "item": "scguns:piglin_blueprint"
-    },
     "L": {
       "item": "scguns:vehement_coal"
     },
@@ -40,7 +37,7 @@
     }
   },
   "pattern": [
-    "XBAP",
+    "XBA ",
     "LQRC",
     "K S "
   ],

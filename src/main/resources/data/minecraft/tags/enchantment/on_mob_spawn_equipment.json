@@ -1,19 +1,53 @@
 {
   "replace": false,
   "values": [
-    { "id": "scguns:quick_hands", "required": false },
-    { "id": "scguns:trigger_finger", "required": false },
-    { "id": "scguns:lightweight", "required": false },
-    { "id": "scguns:collateral", "required": false },
-    { "id": "scguns:reclaimed", "required": false },
-    { "id": "scguns:accelerator", "required": false },
-    { "id": "scguns:puncturing", "required": false },
-    { "id": "scguns:shell_catcher", "required": false },
-    { "id": "scguns:banzai", "required": false },
-    { "id": "scguns:heavy_shot", "required": false },
-    { "id": "scguns:elemental_pop", "required": false },
-    { "id": "scguns:waterproof", "required": false },
-    { "id": "scguns:hot_barrel", "required": false },
-    { "id": "scguns:corroded", "required": false }
+    {
+      "id": "scguns:quick_hands",
+      "required": false
+    },
+    {
+      "id": "scguns:trigger_finger",
+      "required": false
+    },
+    {
+      "id": "scguns:lightweight",
+      "required": false
+    },
+    {
+      "id": "scguns:collateral",
+      "required": false
+    },
+    {
+      "id": "scguns:reclaimed",
+      "required": false
+    },
+    {
+      "id": "scguns:accelerator",
+      "required": false
+    },
+    {
+      "id": "scguns:puncturing",
+      "required": false
+    },
+    {
+      "id": "scguns:shell_catcher",
+      "required": false
+    },
+    {
+      "id": "scguns:heavy_shot",
+      "required": false
+    },
+    {
+      "id": "scguns:elemental_pop",
+      "required": false
+    },
+    {
+      "id": "scguns:waterproof",
+      "required": false
+    },
+    {
+      "id": "scguns:hot_barrel",
+      "required": false
+    }
   ]
 }

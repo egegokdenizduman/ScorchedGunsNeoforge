@@ -8,9 +8,6 @@
   ],
   "accept_mirrored": true,
   "key": {
-    "Q": {
-      "item": "scguns:piglin_blueprint"
-    },
     "L": {
       "tag": "minecraft:wool"
     },
@@ -28,7 +25,7 @@
     }
   },
   "pattern": [
-    " XPQ",
+    " XP ",
     "LRXS"
   ],
   "result": {

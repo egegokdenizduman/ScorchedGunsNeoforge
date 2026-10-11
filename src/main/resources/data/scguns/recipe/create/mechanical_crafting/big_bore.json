@@ -22,15 +22,12 @@
     },
     "S": {
       "item": "scguns:heavy_gun_barrel"
-    },
-    "X": {
-      "item": "scguns:frontier_blueprint"
     }
   },
   "pattern": [
     "LSSS",
     "RSSS",
-    "Q CX"
+    "Q C "
   ],
   "result": {
     "id": "scguns:big_bore"

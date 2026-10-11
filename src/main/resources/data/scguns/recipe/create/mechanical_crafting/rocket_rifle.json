@@ -26,17 +26,14 @@
     "V": {
       "item": "scguns:iron_gun_frame"
     },
-    "P": {
-      "item": "scguns:iron_blueprint"
-    },
     "K": {
       "tag": "minecraft:planks"
     }
   },
   "pattern": [
-    "CVP  ",
-    "LRSS ",
-    "Q K  "
+    "CV  ",
+    "LRSS",
+    "Q K "
   ],
   "result": {
     "id": "scguns:rocket_rifle"

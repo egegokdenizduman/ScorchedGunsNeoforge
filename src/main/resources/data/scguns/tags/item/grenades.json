@@ -3,12 +3,6 @@
   "values": [
     "scguns:grenade",
     "scguns:stun_grenade",
-    "scguns:molotov_cocktail",
-    "scguns:choke_bomb",
-    "scguns:swarm_bomb",
-    "scguns:nail_bomb",
-    "scguns:hellfire_bomb",
-    "scguns:gas_grenade",
-    "scguns:beacon_grenade"
+    "scguns:molotov_cocktail"
   ]
 }

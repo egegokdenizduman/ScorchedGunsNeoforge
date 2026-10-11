@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/inner_stairs",
-  "textures": {
-    "bottom": "scguns:block/phosphorite_bricks",
-    "side": "scguns:block/phosphorite_bricks",
-    "top": "scguns:block/phosphorite_bricks"
-  }
-}

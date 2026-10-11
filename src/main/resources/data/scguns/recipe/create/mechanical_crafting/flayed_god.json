@@ -23,9 +23,6 @@
     "B": {
       "item": "scguns:gun_barrel"
     },
-    "X": {
-      "item": "scguns:scorched_blueprint"
-    },
     "K": {
       "item": "scguns:scorched_ingot"
     },
@@ -37,7 +34,7 @@
     }
   },
   "pattern": [
-    "QPJX",
+    "QPJ ",
     "LRSB",
     "K K "
   ],

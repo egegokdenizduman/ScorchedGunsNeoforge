@@ -17,9 +17,6 @@
     "R": {
       "item": "scguns:iron_bayonet"
     },
-    "P": {
-      "item": "scguns:ocean_blueprint"
-    },
     "K": {
       "item": "scguns:gun_barrel"
     },
@@ -28,7 +25,7 @@
     }
   },
   "pattern": [
-    "PXRR",
+    " XRR",
     "XQOK",
     "Q R "
   ],

@@ -498,6 +498,13 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
             case "vertical_grip":
                 bone.setHidden(attachmentItem != ModItems.VERTICAL_GRIP.get());
                 break;
+            case "iron_bayonet":
+            case "anthralite_bayonet":
+            case "diamond_bayonet":
+            case "netherite_bayonet":
+                // Bayonet attachments were removed; keep their model bones hidden.
+                bone.setHidden(true);
+                break;
         }
     }
     private void handleMagazineVisibility(GeoBone bone) {

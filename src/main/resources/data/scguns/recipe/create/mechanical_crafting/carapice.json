@@ -25,15 +25,12 @@
     },
     "X": {
       "item": "minecraft:shulker_shell"
-    },
-    "P": {
-      "item": "scguns:end_blueprint"
     }
   },
   "pattern": [
-    "CCX ",
-    "LRS ",
-    "Q XP"
+    "CCX",
+    "LRS",
+    "Q X"
   ],
   "result": {
     "id": "scguns:carapice"

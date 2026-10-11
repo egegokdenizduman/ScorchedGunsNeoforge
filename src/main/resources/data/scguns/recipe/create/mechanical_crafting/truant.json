@@ -26,17 +26,14 @@
     "X": {
       "item": "scguns:diamond_steel_ingot"
     },
-    "M": {
-      "item": "scguns:diamond_steel_blueprint"
-    },
     "O": {
       "item": "scguns:diamond_steel_gun_frame"
     }
   },
   "pattern": [
-    "XIOM",
-    "LRS ",
-    "Q X "
+    "XIO",
+    "LRS",
+    "Q X"
   ],
   "result": {
     "id": "scguns:truant"

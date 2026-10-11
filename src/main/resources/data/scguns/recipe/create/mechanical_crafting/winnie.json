@@ -28,9 +28,9 @@
     }
   },
   "pattern": [
-    "C    ",
-    "LRMS ",
-    "Q C  "
+    "C   ",
+    "LRMS",
+    "Q C "
   ],
   "result": {
     "id": "scguns:winnie"

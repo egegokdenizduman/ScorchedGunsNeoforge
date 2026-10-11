@@ -26,17 +26,14 @@
     "M": {
       "item": "scguns:treated_iron_ingot"
     },
-    "X": {
-      "item": "scguns:wrecker_blueprint"
-    },
     "K": {
       "item": "scguns:firing_unit"
     }
   },
   "pattern": [
-    "MMCX",
-    "KRS ",
-    "Q L "
+    "MMC",
+    "KRS",
+    "Q L"
   ],
   "result": {
     "id": "scguns:railworker"

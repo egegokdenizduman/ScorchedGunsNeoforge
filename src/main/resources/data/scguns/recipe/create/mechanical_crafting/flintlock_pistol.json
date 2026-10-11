@@ -22,8 +22,8 @@
     }
   },
   "pattern": [
-    "LRS  ",
-    "C C  "
+    "LRS",
+    "C C"
   ],
   "result": {
     "id": "scguns:flintlock_pistol"

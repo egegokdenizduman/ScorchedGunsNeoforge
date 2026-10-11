@@ -26,17 +26,14 @@
     "I": {
       "item": "minecraft:copper_ingot"
     },
-    "X": {
-      "item": "scguns:copper_blueprint"
-    },
     "E": {
       "item": "scguns:gun_magazine"
     }
   },
   "pattern": [
-    "XIE  ",
-    "LRS  ",
-    "Q C  "
+    " IE",
+    "LRS",
+    "Q C"
   ],
   "result": {
     "id": "scguns:scrapper"

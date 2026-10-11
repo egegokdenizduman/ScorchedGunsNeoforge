@@ -7,16 +7,47 @@
     }
   ],
   "ingredient": {
-    "item": "scguns:anthralite_block"
+    "item": "scguns:anthralite_ingot"
   },
   "loops": 1,
   "results": [
     {
-      "id": "scguns:heavy_gun_parts",
-      "count": 2
+      "id": "scguns:heavy_gun_parts"
     }
   ],
   "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "scguns:unfinished_heavy_gun_parts"
+        },
+        {
+          "item": "scguns:anthralite_ingot"
+        }
+      ],
+      "results": [
+        {
+          "id": "scguns:unfinished_heavy_gun_parts"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "scguns:unfinished_heavy_gun_parts"
+        },
+        {
+          "item": "scguns:anthralite_ingot"
+        }
+      ],
+      "results": [
+        {
+          "id": "scguns:unfinished_heavy_gun_parts"
+        }
+      ]
+    },
     {
       "type": "create:cutting",
       "ingredients": [

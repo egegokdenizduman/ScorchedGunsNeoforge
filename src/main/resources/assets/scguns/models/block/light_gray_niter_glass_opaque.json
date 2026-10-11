@@ -1,6 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "scguns:block/light_gray_niter_glass_opaque"
-  }
-}

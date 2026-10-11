@@ -20,15 +20,12 @@
     "S": {
       "item": "scguns:heavy_gun_barrel"
     },
-    "X": {
-      "item": "scguns:diamond_steel_blueprint"
-    },
     "K": {
       "item": "scguns:diamond_steel_gun_frame"
     }
   },
   "pattern": [
-    "QKX ",
+    "QK  ",
     "LRSS",
     "K K "
   ],

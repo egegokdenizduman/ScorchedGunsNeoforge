@@ -18,10 +18,7 @@
       "item": "scguns:heavy_gun_parts"
     },
     "S": {
-      "item": "scguns:treated_iron_block"
-    },
-    "X": {
-      "item": "scguns:ocean_blueprint"
+      "item": "create:industrial_iron_block"
     },
     "K": {
       "item": "scguns:treated_iron_gun_frame"
@@ -33,7 +30,7 @@
   "pattern": [
     "QK  ",
     "LRSS",
-    "K MX"
+    "K M "
   ],
   "result": {
     "id": "scguns:hullbreaker"

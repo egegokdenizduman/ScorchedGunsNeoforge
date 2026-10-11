@@ -26,15 +26,12 @@
     "X": {
       "tag": "minecraft:planks"
     },
-    "P": {
-      "item": "scguns:copper_blueprint"
-    },
     "I": {
       "item": "scguns:copper_gun_frame"
     }
   },
   "pattern": [
-    "CIP",
+    "CI ",
     "LRS",
     "Q X"
   ],

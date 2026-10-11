@@ -20,15 +20,12 @@
     "V": {
       "item": "scguns:iron_gun_frame"
     },
-    "P": {
-      "item": "scguns:iron_blueprint"
-    },
     "K": {
       "tag": "minecraft:planks"
     }
   },
   "pattern": [
-    " VP",
+    " V ",
     "LRK",
     "Q  "
   ],

@@ -3,7 +3,6 @@
     "minecraft:elder_guardian",
     "minecraft:ender_dragon",
     "minecraft:warden",
-    "minecraft:wither",
-    "scguns:mother_ghast"
+    "minecraft:wither"
   ]
 }

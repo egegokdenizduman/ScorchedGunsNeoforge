@@ -29,15 +29,12 @@
     "V": {
       "item": "scguns:scorched_gun_frame"
     },
-    "P": {
-      "item": "scguns:scorched_blueprint"
-    },
     "K": {
       "tag": "minecraft:planks"
     }
   },
   "pattern": [
-    "CVP ",
+    "CV  ",
     "LRKS",
     "X Q "
   ],

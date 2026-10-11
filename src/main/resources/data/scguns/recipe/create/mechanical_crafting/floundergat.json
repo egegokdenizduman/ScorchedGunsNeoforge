@@ -23,17 +23,14 @@
     "S": {
       "item": "scguns:heavy_gun_barrel"
     },
-    "X": {
-      "item": "scguns:ocean_blueprint"
-    },
     "E": {
       "item": "scguns:anthralite_ingot"
     }
   },
   "pattern": [
-    "XESS ",
-    "LRSS ",
-    "Q C  "
+    " ESS",
+    "LRSS",
+    "Q C "
   ],
   "result": {
     "id": "scguns:floundergat"

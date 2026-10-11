@@ -25,13 +25,10 @@
     },
     "X": {
       "item": "scguns:diamond_steel_ingot"
-    },
-    "M": {
-      "item": "scguns:diamond_steel_blueprint"
     }
   },
   "pattern": [
-    "XIM",
+    "XI ",
     "LRS",
     "Q X"
   ],

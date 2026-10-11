@@ -28,15 +28,12 @@
     },
     "P": {
       "tag": "minecraft:planks"
-    },
-    "X": {
-      "item": "scguns:iron_blueprint"
     }
   },
   "pattern": [
-    "XMP  ",
-    "LRS  ",
-    "Q C  "
+    " MP",
+    "LRS",
+    "Q C"
   ],
   "result": {
     "id": "scguns:gyrojet_pistol"

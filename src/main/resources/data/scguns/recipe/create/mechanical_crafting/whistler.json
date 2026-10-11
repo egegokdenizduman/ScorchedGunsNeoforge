@@ -29,15 +29,12 @@
     "I": {
       "item": "scguns:gun_barrel"
     },
-    "P": {
-      "item": "scguns:copper_blueprint"
-    },
     "K": {
       "tag": "minecraft:planks"
     }
   },
   "pattern": [
-    "CVKP",
+    "CVK ",
     "LRSI",
     "Q K "
   ],

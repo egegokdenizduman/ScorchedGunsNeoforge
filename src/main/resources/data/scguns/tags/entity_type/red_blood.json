@@ -9,10 +9,6 @@
     "minecraft:vindicator",
     "minecraft:witch",
     "minecraft:zombie_villager",
-    "scguns:hornlin",
-    "scguns:redcoat",
-    "scguns:dissident",
-    "scguns:blunderer",
     "minecraft:drowned",
     "minecraft:ghast",
     "minecraft:guardian",
@@ -40,10 +36,6 @@
     "minecraft:zoglin",
     "minecraft:bee",
     "minecraft:ghast",
-    "minecraft:ravager",
-    "scguns:adjudicator",
-    "scguns:subjugator",
-    "scguns:finforcer",
-    "scguns:praetor"
+    "minecraft:ravager"
   ]
 }

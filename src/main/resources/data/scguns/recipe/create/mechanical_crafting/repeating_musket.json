@@ -28,9 +28,9 @@
     }
   },
   "pattern": [
-    "XI   ",
-    "LRSS ",
-    "C C  "
+    "XI  ",
+    "LRSS",
+    "C C "
   ],
   "result": {
     "id": "scguns:repeating_musket"

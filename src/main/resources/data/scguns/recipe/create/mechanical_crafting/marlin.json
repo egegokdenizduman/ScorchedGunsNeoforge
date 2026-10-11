@@ -29,15 +29,12 @@
     "X": {
       "item": "scguns:treated_brass_ingot"
     },
-    "O": {
-      "item": "scguns:ocean_blueprint"
-    },
     "P": {
       "item": "minecraft:prismarine_shard"
     }
   },
   "pattern": [
-    "XICO",
+    "XIC ",
     "LRSS",
     "Q P "
   ],

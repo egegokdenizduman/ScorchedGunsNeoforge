@@ -26,9 +26,6 @@
     "X": {
       "item": "minecraft:shulker_shell"
     },
-    "P": {
-      "item": "scguns:end_blueprint"
-    },
     "B": {
       "item": "scguns:gun_barrel"
     }
@@ -36,7 +33,7 @@
   "pattern": [
     "CCXX",
     "LRSB",
-    "Q XP"
+    "Q X "
   ],
   "result": {
     "id": "scguns:shellurker"

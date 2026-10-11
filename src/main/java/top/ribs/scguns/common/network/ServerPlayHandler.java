@@ -139,16 +139,7 @@ public class ServerPlayHandler {
         if (Config.COMMON.gameplay.spawnCasings.get()) {
             if (activeProjectile.casingType != null && !player.getAbilities().instabuild && !activeProjectile.ejectDuringReload()) {
                 ItemStack casingStack = new ItemStack(Objects.requireNonNull(BuiltInRegistries.ITEM.getOptional(activeProjectile.casingType).orElse(null)));
-
-                double baseChance = 0.4;
-                int enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SHELL_CATCHER, heldItem);
-                double finalChance = baseChance + (enchantmentLevel * 0.15);
-
-                if (Math.random() < finalChance) {
-                    if (!GunEventBus.addCasingToPouch(player, casingStack)) {
-                        GunEventBus.spawnCasingInWorld(world, player, casingStack);
-                    }
-                }
+                GunEventBus.dropCasing(player, heldItem, casingStack);
             }
         }
         if (!player.isCreative()) {

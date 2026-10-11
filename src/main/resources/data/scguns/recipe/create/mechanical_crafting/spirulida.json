@@ -23,9 +23,6 @@
     "S": {
       "item": "scguns:gun_barrel"
     },
-    "X": {
-      "item": "scguns:ocean_blueprint"
-    },
     "E": {
       "item": "scguns:treated_brass_ingot"
     }
@@ -33,7 +30,7 @@
   "pattern": [
     " ESS",
     "LRSS",
-    "Q CX"
+    "Q C "
   ],
   "result": {
     "id": "scguns:spirulida"

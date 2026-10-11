@@ -23,15 +23,12 @@
     "P": {
       "tag": "minecraft:planks"
     },
-    "X": {
-      "item": "scguns:iron_blueprint"
-    },
     "I": {
       "item": "minecraft:redstone"
     }
   },
   "pattern": [
-    "XIP",
+    " IP",
     "LRS",
     "Q  "
   ],

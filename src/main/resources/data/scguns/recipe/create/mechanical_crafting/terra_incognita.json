@@ -23,9 +23,6 @@
     "M": {
       "item": "scguns:scorched_ingot"
     },
-    "X": {
-      "item": "scguns:scorched_blueprint"
-    },
     "K": {
       "item": "scguns:scorched_gun_frame"
     }
@@ -33,7 +30,7 @@
   "pattern": [
     "MKJJ",
     "LRJJ",
-    "Q MX"
+    "Q M "
   ],
   "result": {
     "id": "scguns:terra_incognita"

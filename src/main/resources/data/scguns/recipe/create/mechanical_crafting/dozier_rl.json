@@ -26,17 +26,14 @@
     "M": {
       "item": "scguns:treated_brass_ingot"
     },
-    "X": {
-      "item": "scguns:treated_brass_blueprint"
-    },
     "O": {
       "item": "scguns:treated_brass_gun_frame"
     }
   },
   "pattern": [
-    "OOMX",
-    "LCS ",
-    "Q R "
+    "OOM",
+    "LCS",
+    "Q R"
   ],
   "result": {
     "id": "scguns:dozier_rl"

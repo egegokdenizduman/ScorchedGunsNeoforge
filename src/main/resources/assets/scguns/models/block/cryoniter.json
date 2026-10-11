@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/cube_bottom_top",
-  "textures": {
-    "bottom": "scguns:block/cryoniter_top",
-    "side": "scguns:block/cryoniter_side",
-    "top": "scguns:block/cryoniter_top"
-  }
-}

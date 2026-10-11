@@ -26,9 +26,6 @@
     "M": {
       "item": "minecraft:echo_shard"
     },
-    "X": {
-      "item": "scguns:deep_dark_blueprint"
-    },
     "K": {
       "item": "scguns:diamond_steel_gun_frame"
     },
@@ -39,7 +36,7 @@
   "pattern": [
     "MKJN",
     "LRJN",
-    "Q AX"
+    "Q A "
   ],
   "result": {
     "id": "scguns:echoes_2"

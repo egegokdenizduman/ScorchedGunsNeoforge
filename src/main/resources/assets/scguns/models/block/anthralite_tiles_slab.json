@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "scguns:block/anthralite_tiles",
-    "side": "scguns:block/anthralite_tiles",
-    "top": "scguns:block/anthralite_tiles"
-  }
-}

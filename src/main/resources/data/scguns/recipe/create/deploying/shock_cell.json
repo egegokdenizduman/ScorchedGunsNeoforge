@@ -1,0 +1,22 @@
+{
+  "type": "create:deploying",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "scguns:empty_cell"
+    },
+    {
+      "item": "scguns:plasma"
+    }
+  ],
+  "results": [
+    {
+      "id": "scguns:shock_cell"
+    }
+  ]
+}

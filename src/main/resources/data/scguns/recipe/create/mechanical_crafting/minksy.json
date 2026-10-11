@@ -23,9 +23,6 @@
     "M": {
       "item": "scguns:diamond_steel_ingot"
     },
-    "X": {
-      "item": "scguns:diamond_steel_blueprint"
-    },
     "J": {
       "tag": "minecraft:planks"
     },
@@ -34,7 +31,7 @@
     }
   },
   "pattern": [
-    "MKMX",
+    "MKM ",
     "LRSS",
     "Q J "
   ],

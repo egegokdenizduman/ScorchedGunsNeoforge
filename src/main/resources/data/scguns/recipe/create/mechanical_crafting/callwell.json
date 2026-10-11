@@ -28,9 +28,9 @@
     }
   },
   "pattern": [
-    "CXSS ",
-    "LRSS ",
-    "Q C  "
+    "CXSS",
+    "LRSS",
+    "Q C "
   ],
   "result": {
     "id": "scguns:callwell"

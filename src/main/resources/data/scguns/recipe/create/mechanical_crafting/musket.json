@@ -22,8 +22,8 @@
     }
   },
   "pattern": [
-    "LRSS ",
-    "C C  "
+    "LRSS",
+    "C C "
   ],
   "result": {
     "id": "scguns:musket"

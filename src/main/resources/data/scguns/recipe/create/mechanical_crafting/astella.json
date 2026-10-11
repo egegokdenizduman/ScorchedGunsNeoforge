@@ -26,9 +26,6 @@
     "M": {
       "item": "scguns:scorched_ingot"
     },
-    "X": {
-      "item": "scguns:scorched_blueprint"
-    },
     "K": {
       "item": "scguns:scorched_gun_frame"
     },
@@ -37,7 +34,7 @@
     }
   },
   "pattern": [
-    "MKJX",
+    "MKJ ",
     "LRSS",
     "Q A "
   ],

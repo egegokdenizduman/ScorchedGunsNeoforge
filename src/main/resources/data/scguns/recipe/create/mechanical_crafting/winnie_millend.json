@@ -28,9 +28,9 @@
     }
   },
   "pattern": [
-    "CM   ",
-    "LRSS ",
-    "Q C  "
+    "CM  ",
+    "LRSS",
+    "Q C "
   ],
   "result": {
     "id": "scguns:winnie_millend"

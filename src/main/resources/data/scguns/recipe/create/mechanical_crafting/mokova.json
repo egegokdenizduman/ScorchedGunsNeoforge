@@ -29,17 +29,14 @@
     "P": {
       "tag": "minecraft:planks"
     },
-    "X": {
-      "item": "scguns:wrecker_blueprint"
-    },
     "O": {
       "tag": "minecraft:wool"
     }
   },
   "pattern": [
-    "XMP  ",
-    "LRSO ",
-    "Q C  "
+    " MP ",
+    "LRSO",
+    "Q C "
   ],
   "result": {
     "id": "scguns:mokova"

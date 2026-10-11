@@ -45,20 +45,7 @@ public class C2SMessageEjectCasing
                     Gun gun = ((GunItem)heldItem.getItem()).getModifiedGun(heldItem);
                     if (gun.getProjectile().casingType != null && !player.getAbilities().instabuild) {
                         ItemStack casingStack = new ItemStack(Objects.requireNonNull(BuiltInRegistries.ITEM.get(gun.getProjectile().casingType)));
-
-                        double baseChance = 0.4;
-                        int enchantmentLevel = EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SHELL_CATCHER, heldItem);
-                        double finalChance = baseChance + (enchantmentLevel * 0.15);
-
-                        double roll = Math.random();
-
-                        if (roll < finalChance) {
-                            boolean addedToPouch = GunEventBus.addCasingToPouch(player, casingStack);
-
-                            if (!addedToPouch) {
-                                GunEventBus.spawnCasingInWorld(player.level(), player, casingStack);
-                            }
-                        }
+                        GunEventBus.dropCasing(player, heldItem, casingStack);
                     }
                 }
             }

@@ -25,9 +25,9 @@
     }
   },
   "pattern": [
-    "  O  ",
-    "LRS  ",
-    "C C  "
+    "  O",
+    "LRS",
+    "C C"
   ],
   "result": {
     "id": "scguns:handcannon"

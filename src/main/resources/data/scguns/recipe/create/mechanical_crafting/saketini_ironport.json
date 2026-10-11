@@ -31,9 +31,9 @@
     }
   },
   "pattern": [
-    "CXM  ",
-    "LRSS ",
-    "Q C  "
+    "CXM ",
+    "LRSS",
+    "Q C "
   ],
   "result": {
     "id": "scguns:saketini_ironport"

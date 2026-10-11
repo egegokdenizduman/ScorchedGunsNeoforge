@@ -29,9 +29,6 @@
     "V": {
       "item": "scguns:copper_gun_frame"
     },
-    "P": {
-      "item": "scguns:copper_blueprint"
-    },
     "I": {
       "item": "minecraft:redstone"
     },
@@ -40,9 +37,9 @@
     }
   },
   "pattern": [
-    "CVIP ",
-    "LRSB ",
-    "Q X  "
+    "CVI ",
+    "LRSB",
+    "Q X "
   ],
   "result": {
     "id": "scguns:arc_worker"

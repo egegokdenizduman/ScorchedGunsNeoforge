@@ -1,14 +1,5 @@
 {
   "values": [
-    "minecraft:iron_golem",
-    "scguns:cog_minion",
-    "scguns:supply_scamp",
-    "scguns:sky_carrier",
-    "scguns:cog_knight",
-    "scguns:trauma_unit",
-    "scguns:viventrum",
-    "scguns:scamp_tank",
-    "scguns:scampler",
-    "scguns:signal_beacon"
+    "minecraft:iron_golem"
   ]
 }

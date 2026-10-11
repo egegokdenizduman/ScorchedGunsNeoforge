@@ -26,15 +26,12 @@
     "M": {
       "item": "scguns:diamond_steel_ingot"
     },
-    "X": {
-      "item": "scguns:diamond_steel_blueprint"
-    },
     "K": {
       "item": "scguns:diamond_steel_gun_frame"
     }
   },
   "pattern": [
-    "MKX ",
+    "MK  ",
     "LRSS",
     "Q C "
   ],

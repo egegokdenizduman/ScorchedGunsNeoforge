@@ -25,15 +25,12 @@
     },
     "P": {
       "tag": "minecraft:planks"
-    },
-    "X": {
-      "item": "scguns:wrecker_blueprint"
     }
   },
   "pattern": [
-    "XM  ",
-    "LRS ",
-    "Q P "
+    " M ",
+    "LRS",
+    "Q P"
   ],
   "result": {
     "id": "scguns:tl_runner"

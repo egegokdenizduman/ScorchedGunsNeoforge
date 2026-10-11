@@ -26,17 +26,14 @@
     "M": {
       "item": "scguns:anthralite_ingot"
     },
-    "X": {
-      "item": "scguns:scorched_blueprint"
-    },
     "H": {
       "item": "scguns:scorched_gun_frame"
     }
   },
   "pattern": [
-    "XHM  ",
-    "LRS  ",
-    "Q C  "
+    " HM",
+    "LRS",
+    "Q C"
   ],
   "result": {
     "id": "scguns:rat_king_and_queen"

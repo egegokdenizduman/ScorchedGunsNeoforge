@@ -1,6 +1,0 @@
-{"type":"mekanism:combining",  "neoforge:conditions": [
-  {
-    "type": "neoforge:mod_loaded",
-    "modid": "mekanism"
-  }
-],"extraInput":{"ingredient":{"tag":"c:cobblestone/normal"}},"mainInput":{"amount":8,"ingredient":{"item":"scguns:raw_anthralite"}},"output":{"item":"scguns:anthralite_ore"}}

@@ -20,9 +20,6 @@
     "Q": {
       "item": "scguns:gun_grip"
     },
-    "A": {
-      "item": "scguns:piglin_blueprint"
-    },
     "P": {
       "item": "scguns:vehement_coal"
     },
@@ -37,7 +34,7 @@
     }
   },
   "pattern": [
-    "JIBA",
+    "JIB ",
     "PGSS",
     "Q C "
   ],

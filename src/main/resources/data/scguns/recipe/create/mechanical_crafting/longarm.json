@@ -25,9 +25,9 @@
     }
   },
   "pattern": [
-    " I   ",
-    "LRS  ",
-    "Q    "
+    " I ",
+    "LRS",
+    "Q  "
   ],
   "result": {
     "id": "scguns:longarm"

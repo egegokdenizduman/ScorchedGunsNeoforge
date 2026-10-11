@@ -23,9 +23,6 @@
     "M": {
       "item": "scguns:treated_brass_ingot"
     },
-    "X": {
-      "item": "scguns:treated_brass_blueprint"
-    },
     "K": {
       "item": "scguns:treated_brass_gun_frame"
     },
@@ -34,9 +31,9 @@
     }
   },
   "pattern": [
-    "MKMX",
-    "LRS ",
-    "Q A "
+    "MKM",
+    "LRS",
+    "Q A"
   ],
   "result": {
     "id": "scguns:niami"

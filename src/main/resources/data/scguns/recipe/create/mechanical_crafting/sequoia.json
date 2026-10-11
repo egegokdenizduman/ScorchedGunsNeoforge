@@ -28,15 +28,12 @@
     },
     "X": {
       "item": "scguns:treated_brass_ingot"
-    },
-    "O": {
-      "item": "scguns:ocean_blueprint"
     }
   },
   "pattern": [
-    "XIO  ",
-    "LRSS ",
-    "Q C  "
+    "XI  ",
+    "LRSS",
+    "Q C "
   ],
   "result": {
     "id": "scguns:sequoia"

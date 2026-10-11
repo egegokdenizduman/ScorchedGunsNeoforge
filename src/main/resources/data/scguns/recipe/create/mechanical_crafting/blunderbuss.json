@@ -25,9 +25,9 @@
     }
   },
   "pattern": [
-    "  O  ",
-    "LRSS ",
-    "C C  "
+    "  O ",
+    "LRSS",
+    "C C "
   ],
   "result": {
     "id": "scguns:blunderbuss"

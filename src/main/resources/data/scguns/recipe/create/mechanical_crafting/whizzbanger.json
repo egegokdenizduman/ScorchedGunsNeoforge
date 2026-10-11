@@ -22,13 +22,10 @@
     },
     "M": {
       "item": "scguns:treated_iron_ingot"
-    },
-    "X": {
-      "item": "scguns:wrecker_blueprint"
     }
   },
   "pattern": [
-    "M X",
+    "M  ",
     "LRS",
     "  C"
   ],

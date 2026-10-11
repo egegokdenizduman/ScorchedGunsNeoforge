@@ -31,9 +31,9 @@
     }
   },
   "pattern": [
-    "XI   ",
-    "LRS  ",
-    "Q C  "
+    "XI ",
+    "LRS",
+    "Q C"
   ],
   "result": {
     "id": "scguns:pax"

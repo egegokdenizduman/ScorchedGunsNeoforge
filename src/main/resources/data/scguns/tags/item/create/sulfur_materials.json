@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "scguns:sulfur_chunk",
     "#c:dusts/sulfur",
     "#c:raw_materials/sulfur"
   ]

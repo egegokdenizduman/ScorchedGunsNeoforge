@@ -26,9 +26,6 @@
     "M": {
       "item": "scguns:diamond_steel_ingot"
     },
-    "X": {
-      "item": "scguns:diamond_steel_blueprint"
-    },
     "J": {
       "item": "scguns:treated_iron_ingot"
     },
@@ -37,7 +34,7 @@
     }
   },
   "pattern": [
-    "MKMX",
+    "MKM ",
     "LRJS",
     "Q C "
   ],

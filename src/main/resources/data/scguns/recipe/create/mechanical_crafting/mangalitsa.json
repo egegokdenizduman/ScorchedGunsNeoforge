@@ -29,15 +29,12 @@
     "B": {
       "item": "minecraft:crimson_planks"
     },
-    "A": {
-      "item": "scguns:piglin_blueprint"
-    },
     "J": {
       "item": "scguns:firing_unit"
     }
   },
   "pattern": [
-    "JICA",
+    "JIC ",
     "PGBS",
     "Q B "
   ],

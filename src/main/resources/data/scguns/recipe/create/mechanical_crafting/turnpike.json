@@ -29,15 +29,12 @@
     "V": {
       "item": "scguns:treated_iron_gun_frame"
     },
-    "P": {
-      "item": "scguns:wrecker_blueprint"
-    },
     "K": {
       "item": "scguns:heavy_gun_barrel"
     }
   },
   "pattern": [
-    "CVP ",
+    "CV  ",
     "LRKS",
     "Q X "
   ],

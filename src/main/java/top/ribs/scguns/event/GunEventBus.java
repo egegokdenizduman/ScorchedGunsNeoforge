@@ -536,6 +536,28 @@ public class GunEventBus {
     }
 
 
+    /**
+     * Every fired round leaves its casing behind. With Shell Catcher the casing goes into a casing pouch,
+     * then the player's inventory, and only falls to the ground when neither has room.
+     */
+    public static void dropCasing(Player player, ItemStack gunStack, ItemStack casingStack) {
+        if (casingStack.isEmpty()) {
+            return;
+        }
+        if (EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.SHELL_CATCHER, gunStack) > 0) {
+            if (addCasingToPouch(player, casingStack)) {
+                return;
+            }
+            ItemStack remainder = casingStack.copy();
+            player.getInventory().add(remainder);
+            if (remainder.isEmpty()) {
+                return;
+            }
+            casingStack = remainder;
+        }
+        spawnCasingInWorld(player.level(), player, casingStack);
+    }
+
     public static void spawnCasingInWorld(Level level, Player player, ItemStack casingStack) {
         ItemEntity casingEntity = new ItemEntity(level, player.getX(), player.getY() + 1.5, player.getZ(), casingStack);
         casingEntity.setPickUpDelay(40);

@@ -29,17 +29,14 @@
     "V": {
       "item": "scguns:iron_gun_frame"
     },
-    "P": {
-      "item": "scguns:iron_blueprint"
-    },
     "K": {
       "tag": "minecraft:planks"
     }
   },
   "pattern": [
-    "CVP  ",
-    "LRKS ",
-    "Q X  "
+    "CV  ",
+    "LRKS",
+    "Q X "
   ],
   "result": {
     "id": "scguns:greaser_smg"

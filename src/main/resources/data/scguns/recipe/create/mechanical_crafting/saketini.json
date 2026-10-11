@@ -25,9 +25,9 @@
     }
   },
   "pattern": [
-    "C    ",
-    "LRSS ",
-    "Q C  "
+    "C   ",
+    "LRSS",
+    "Q C "
   ],
   "result": {
     "id": "scguns:saketini"

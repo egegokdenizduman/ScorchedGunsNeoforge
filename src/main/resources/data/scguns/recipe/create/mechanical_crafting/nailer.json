@@ -26,17 +26,14 @@
     "M": {
       "item": "scguns:diamond_steel_ingot"
     },
-    "X": {
-      "item": "scguns:diamond_steel_blueprint"
-    },
     "K": {
       "item": "scguns:rapid_firing_unit"
     }
   },
   "pattern": [
-    "MLMX",
-    "KRS ",
-    "Q C "
+    "MLM",
+    "KRS",
+    "Q C"
   ],
   "result": {
     "id": "scguns:nailer"

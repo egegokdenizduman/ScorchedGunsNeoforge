@@ -1,11 +1,10 @@
-﻿{
-    "replace":  false,
-    "values":  [
-                   "scguns:trigger_finger",
-                   "scguns:lightweight",
-                   "scguns:shell_catcher",
-                   "scguns:banzai",
-                   "scguns:elemental_pop",
-                   "scguns:gun_rust"
-               ]
+{
+  "replace": false,
+  "values": [
+    "scguns:trigger_finger",
+    "scguns:lightweight",
+    "scguns:shell_catcher",
+    "scguns:elemental_pop",
+    "scguns:gun_rust"
+  ]
 }

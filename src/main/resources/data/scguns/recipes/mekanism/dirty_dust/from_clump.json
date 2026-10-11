@@ -1,7 +1,0 @@
-{"type":"mekanism:crushing",
-  "conditions": [
-    {
-      "type": "forge:mod_loaded",
-      "modid": "mekanism"
-    }
-  ],"input":{"ingredient":{"item":"scguns:clump_anthralite"}},"output":{"item":"scguns:dirty_dust_anthralite"}}

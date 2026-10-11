@@ -25,15 +25,12 @@
     },
     "X": {
       "item": "minecraft:shulker_shell"
-    },
-    "P": {
-      "item": "scguns:end_blueprint"
     }
   },
   "pattern": [
     "QCXX",
     "LRSS",
-    "C XP"
+    "C X "
   ],
   "result": {
     "id": "scguns:weevil"

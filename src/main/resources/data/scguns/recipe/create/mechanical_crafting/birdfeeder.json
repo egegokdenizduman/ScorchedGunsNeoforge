@@ -29,15 +29,12 @@
     "V": {
       "item": "scguns:copper_gun_frame"
     },
-    "P": {
-      "item": "scguns:copper_blueprint"
-    },
     "K": {
       "tag": "minecraft:planks"
     }
   },
   "pattern": [
-    "CVKP",
+    "CVK ",
     "LRXS",
     "Q K "
   ],

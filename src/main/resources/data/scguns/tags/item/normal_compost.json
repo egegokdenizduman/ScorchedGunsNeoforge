@@ -65,7 +65,6 @@
     {
       "id": "farmersdelight:rotten_tomato",
       "required": false
-    },
-    "scguns:weird_flesh"
+    }
   ]
 }
