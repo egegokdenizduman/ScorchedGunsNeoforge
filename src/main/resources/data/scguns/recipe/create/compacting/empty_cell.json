@@ -1,5 +1,5 @@
 {
-  "type": "create:deploying",
+  "type": "create:compacting",
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
@@ -8,7 +8,7 @@
   ],
   "ingredients": [
     {
-      "item": "scguns:depleted_diamond_steel_ingot"
+      "tag": "c:ingots/iron"
     },
     {
       "item": "scguns:medium_casing_mold"
@@ -16,8 +16,8 @@
   ],
   "results": [
     {
-      "id": "scguns:medium_diamond_steel_casing",
-      "count": 10
+      "id": "scguns:empty_cell",
+      "count": 8
     }
   ]
 }

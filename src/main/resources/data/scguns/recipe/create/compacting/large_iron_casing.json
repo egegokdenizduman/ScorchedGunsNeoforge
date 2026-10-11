@@ -1,5 +1,5 @@
 {
-  "type": "create:deploying",
+  "type": "create:compacting",
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
@@ -8,16 +8,16 @@
   ],
   "ingredients": [
     {
-      "tag": "c:ingots/copper"
+      "tag": "c:ingots/iron"
     },
     {
-      "item": "scguns:medium_casing_mold"
+      "item": "scguns:large_casing_mold"
     }
   ],
   "results": [
     {
-      "id": "scguns:medium_copper_casing",
-      "count": 10
+      "id": "scguns:large_iron_casing",
+      "count": 6
     }
   ]
 }

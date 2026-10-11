@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "#scguns:enchantable/gun",
-    "#scguns:enchantable/attachment"
+    "#scguns:enchantable/attachment",
+    "#scguns:molds"
   ]
 }

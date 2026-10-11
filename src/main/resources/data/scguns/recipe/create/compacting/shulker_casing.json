@@ -1,5 +1,5 @@
 {
-  "type": "create:deploying",
+  "type": "create:compacting",
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",

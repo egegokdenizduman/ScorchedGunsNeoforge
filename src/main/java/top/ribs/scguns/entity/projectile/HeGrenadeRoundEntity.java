@@ -48,7 +48,7 @@ public class HeGrenadeRoundEntity extends ProjectileEntity {
 
     protected void explode() {
         if (!this.level().isClientSide) {
-            createRocketExplosion(this, EXPLOSION_RADIUS, this.getDamage(), false);
+            createRocketExplosion(this, EXPLOSION_RADIUS, this.getDamage(), true);
         }
         this.discard();
     }

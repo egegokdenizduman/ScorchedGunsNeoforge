@@ -99,7 +99,7 @@ public class BouncyGrenadeRoundEntity extends ProjectileEntity {
 
     private void explode() {
         if (!this.level().isClientSide) {
-            createRocketExplosion(this, EXPLOSION_RADIUS, this.getDamage(), false);
+            createRocketExplosion(this, EXPLOSION_RADIUS, this.getDamage(), true);
         }
         this.discard();
     }

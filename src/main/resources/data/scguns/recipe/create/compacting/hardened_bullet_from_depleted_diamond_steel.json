@@ -1,5 +1,5 @@
 {
-  "type": "create:deploying",
+  "type": "create:compacting",
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
@@ -8,16 +8,16 @@
   ],
   "ingredients": [
     {
-      "tag": "c:ingots/brass"
+      "item": "scguns:depleted_diamond_steel_ingot"
     },
     {
-      "item": "scguns:medium_casing_mold"
+      "item": "scguns:bullet_mold"
     }
   ],
   "results": [
     {
-      "id": "scguns:medium_brass_casing",
-      "count": 10
+      "id": "scguns:hardened_bullet",
+      "count": 18
     }
   ]
 }

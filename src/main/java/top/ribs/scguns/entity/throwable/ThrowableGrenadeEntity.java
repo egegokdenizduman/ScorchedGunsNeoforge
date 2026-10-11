@@ -72,7 +72,7 @@ public class ThrowableGrenadeEntity extends ThrowableItemEntity
     @Override
     public void onDeath()
     {
-        ProjectileEntity.createRocketExplosion(this, this.explosionRadius, this.explosionDamage, false);
+        ProjectileEntity.createRocketExplosion(this, this.explosionRadius, this.explosionDamage, true);
     }
 
     public void setExplosionRadius(float explosionRadius) {

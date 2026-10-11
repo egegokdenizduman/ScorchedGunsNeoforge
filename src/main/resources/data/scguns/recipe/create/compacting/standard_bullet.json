@@ -1,5 +1,5 @@
 {
-  "type": "create:deploying",
+  "type": "create:compacting",
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
@@ -8,16 +8,16 @@
   ],
   "ingredients": [
     {
-      "tag": "c:ingots/iron"
+      "tag": "scguns:standard_bullet_material"
     },
     {
-      "item": "scguns:large_casing_mold"
+      "item": "scguns:bullet_mold"
     }
   ],
   "results": [
     {
-      "id": "scguns:large_iron_casing",
-      "count": 6
+      "id": "scguns:standard_bullet",
+      "count": 12
     }
   ]
 }

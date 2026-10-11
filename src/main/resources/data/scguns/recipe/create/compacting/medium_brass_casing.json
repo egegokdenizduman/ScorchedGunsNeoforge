@@ -1,5 +1,5 @@
 {
-  "type": "create:deploying",
+  "type": "create:compacting",
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
@@ -11,13 +11,13 @@
       "tag": "c:ingots/brass"
     },
     {
-      "item": "scguns:small_casing_mold"
+      "item": "scguns:medium_casing_mold"
     }
   ],
   "results": [
     {
-      "id": "scguns:small_brass_casing",
-      "count": 14
+      "id": "scguns:medium_brass_casing",
+      "count": 10
     }
   ]
 }

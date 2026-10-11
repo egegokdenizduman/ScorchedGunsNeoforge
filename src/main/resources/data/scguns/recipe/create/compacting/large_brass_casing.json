@@ -1,5 +1,5 @@
 {
-  "type": "create:deploying",
+  "type": "create:compacting",
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
@@ -8,16 +8,16 @@
   ],
   "ingredients": [
     {
-      "tag": "scguns:standard_bullet_material"
+      "tag": "c:ingots/brass"
     },
     {
-      "item": "scguns:bullet_mold"
+      "item": "scguns:large_casing_mold"
     }
   ],
   "results": [
     {
-      "id": "scguns:standard_bullet",
-      "count": 12
+      "id": "scguns:large_brass_casing",
+      "count": 6
     }
   ]
 }

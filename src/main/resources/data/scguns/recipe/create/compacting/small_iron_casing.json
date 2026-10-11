@@ -1,5 +1,5 @@
 {
-  "type": "create:deploying",
+  "type": "create:compacting",
   "neoforge:conditions": [
     {
       "type": "neoforge:mod_loaded",
@@ -11,13 +11,13 @@
       "tag": "c:ingots/iron"
     },
     {
-      "item": "scguns:medium_casing_mold"
+      "item": "scguns:small_casing_mold"
     }
   ],
   "results": [
     {
-      "id": "scguns:empty_cell",
-      "count": 8
+      "id": "scguns:small_iron_casing",
+      "count": 14
     }
   ]
 }

@@ -4,22 +4,22 @@
     {
       "type": "neoforge:mod_loaded",
       "modid": "create"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vanillabackport"
     }
   ],
   "ingredients": [
     {
-      "item": "minecraft:basalt"
+      "item": "minecraft:potent_sulfur"
     }
   ],
-  "processing_time": 250,
+  "processing_time": 150,
   "results": [
     {
-      "chance": 0.5,
-      "id": "scguns:sulfur_dust"
-    },
-    {
-      "chance": 0.3,
-      "id": "minecraft:quartz"
+      "id": "scguns:sulfur_dust",
+      "count": 30
     }
   ]
 }
