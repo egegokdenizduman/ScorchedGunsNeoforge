@@ -14,17 +14,10 @@ public class PacketHandler
     {
         playChannel = FrameworkAPI.createNetworkBuilder(Reference.id("play"), 1)
                 .registerPlayMessage("c2s_offhand_melee", C2SMessageOffhandMelee.class, C2SMessageOffhandMelee.STREAM_CODEC, C2SMessageOffhandMelee::handle, PacketFlow.SERVERBOUND)
-                .registerPlayMessage("c2s_set_blueprint_recipe", C2SMessageSetBlueprintRecipe.class, C2SMessageSetBlueprintRecipe.STREAM_CODEC, C2SMessageSetBlueprintRecipe::handle, PacketFlow.SERVERBOUND)
-                .registerPlayMessage("c2s_toggle_exo_suit_power", C2SMessageToggleExoSuitPower.class, C2SMessageToggleExoSuitPower.STREAM_CODEC, C2SMessageToggleExoSuitPower::handle, PacketFlow.SERVERBOUND)
-                .registerPlayMessage("c2s_clear_blueprint_recipe", C2SMessageClearBlueprintRecipe.class, C2SMessageClearBlueprintRecipe.STREAM_CODEC, C2SMessageClearBlueprintRecipe::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("c2s_aim", C2SMessageAim.class, C2SMessageAim.STREAM_CODEC, C2SMessageAim::handle, PacketFlow.SERVERBOUND)
-                .registerPlayMessage("c2s_utility_action", C2SMessageUtilityAction.class, C2SMessageUtilityAction.STREAM_CODEC, C2SMessageUtilityAction::handle, PacketFlow.SERVERBOUND)
-                .registerPlayMessage("c2s_jetpack_flight_state", C2SMessageJetpackFlightState.class, C2SMessageJetpackFlightState.STREAM_CODEC, C2SMessageJetpackFlightState::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("c2s_melee_attack", C2SMessageMeleeAttack.class, C2SMessageMeleeAttack.STREAM_CODEC, C2SMessageMeleeAttack::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("s2c_muzzle_flash", S2CMessageMuzzleFlash.class, S2CMessageMuzzleFlash.STREAM_CODEC, S2CMessageMuzzleFlash::handle, PacketFlow.CLIENTBOUND)
-                .registerPlayMessage("s2c_turret_visual_sync", S2CMessageTurretVisualSync.class, S2CMessageTurretVisualSync.STREAM_CODEC, S2CMessageTurretVisualSync::handle, PacketFlow.CLIENTBOUND)
                 .registerPlayMessage("c2s_reload", C2SMessageReload.class, C2SMessageReload.STREAM_CODEC, C2SMessageReload::handle, PacketFlow.SERVERBOUND)
-                .registerPlayMessage("c2s_save_exo_suit_upgrades", C2SMessageSaveExoSuitUpgrades.class, C2SMessageSaveExoSuitUpgrades.STREAM_CODEC, C2SMessageSaveExoSuitUpgrades::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("c2s_gun_loaded", C2SMessageGunLoaded.class, C2SMessageGunLoaded.STREAM_CODEC, C2SMessageGunLoaded::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("c2s_eject_casing", C2SMessageEjectCasing.class, C2SMessageEjectCasing.STREAM_CODEC, C2SMessageEjectCasing::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("s2c_update_ammo", S2CMessageUpdateAmmo.class, S2CMessageUpdateAmmo.STREAM_CODEC, S2CMessageUpdateAmmo::handle, PacketFlow.CLIENTBOUND)
@@ -56,7 +49,6 @@ public class PacketHandler
                 .registerPlayMessage("c2s_left_over_ammo", C2SMessageLeftOverAmmo.class, C2SMessageLeftOverAmmo.STREAM_CODEC, C2SMessageLeftOverAmmo::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("s2c_remove_projectile", S2CMessageRemoveProjectile.class, S2CMessageRemoveProjectile.STREAM_CODEC, S2CMessageRemoveProjectile::handle, PacketFlow.CLIENTBOUND)
                 .registerPlayMessage("s2c_show_totem_animation", S2CShowTotemAnimationMessage.class, S2CShowTotemAnimationMessage.STREAM_CODEC, S2CShowTotemAnimationMessage::handle, PacketFlow.CLIENTBOUND)
-                .registerPlayMessage("s2c_sync_exo_suit_upgrades", S2CMessageSyncExoSuitUpgrades.class, S2CMessageSyncExoSuitUpgrades.STREAM_CODEC, S2CMessageSyncExoSuitUpgrades::handle, PacketFlow.CLIENTBOUND)
                 .build();
 
     }

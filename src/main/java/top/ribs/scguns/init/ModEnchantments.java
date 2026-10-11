@@ -33,7 +33,6 @@ public class ModEnchantments
     public static final DeferredHolder<Enchantment, Enchantment> ACCELERATOR = register("accelerator", EnchantmentTypes.GUN, Rarity.UNCOMMON, 3, 10, 10, 30, 10, Type.PROJECTILE, ModEnchantments::projectileExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> PUNCTURING = register("puncturing", EnchantmentTypes.GUN, Rarity.UNCOMMON, 3, 1, 10, 11, 10, Type.PROJECTILE, ModEnchantments::projectileExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> SHELL_CATCHER = register("shell_catcher", EnchantmentTypes.SHELL_CATCHER_COMPATIBLE, Rarity.UNCOMMON, 3, 15, 0, 35, 0, Type.WEAPON, ModEnchantments::weaponExclusive);
-    public static final DeferredHolder<Enchantment, Enchantment> BANZAI = register("banzai", EnchantmentTypes.BAYONET, Rarity.COMMON, 3, 15, 0, 35, 0, Type.WEAPON, ModEnchantments::weaponExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> HEAVY_SHOT = register("heavy_shot", EnchantmentTypes.GUN, Rarity.RARE, 3, 10, 10, 30, 10, Type.PROJECTILE, ModEnchantments::projectileExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> ELEMENTAL_POP = register("elemental_pop", EnchantmentTypes.GUN, Rarity.VERY_RARE, 2, 15, 10, 55, 10, Type.WEAPON, ModEnchantments::weaponExclusive);
     public static final DeferredHolder<Enchantment, Enchantment> WATER_PROOF = register("waterproof", EnchantmentTypes.WATER_PROOF_COMPATIBLE, Rarity.UNCOMMON, 1, 10, 10, 30, 10, Type.PROJECTILE, ModEnchantments::projectileExclusive);
@@ -54,7 +53,7 @@ public class ModEnchantments
     }
 
     private static HolderSet<Enchantment> weaponExclusive() {
-        return exclusive(TRIGGER_FINGER, LIGHTWEIGHT, SHELL_CATCHER, BANZAI, ELEMENTAL_POP, GUN_RUST);
+        return exclusive(TRIGGER_FINGER, LIGHTWEIGHT, SHELL_CATCHER, ELEMENTAL_POP, GUN_RUST);
     }
 
     private static HolderSet<Enchantment> ammoExclusive() {

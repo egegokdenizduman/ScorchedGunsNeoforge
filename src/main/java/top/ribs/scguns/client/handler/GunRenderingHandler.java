@@ -875,10 +875,6 @@ public class GunRenderingHandler {
                     ModItems.MUZZLE_BRAKE.get(),
                     ModItems.VERTICAL_GRIP.get(),
                     ModItems.LIGHT_GRIP.get(),
-                    ModItems.IRON_BAYONET.get(),
-                    ModItems.ANTHRALITE_BAYONET.get(),
-                    ModItems.DIAMOND_BAYONET.get(),
-                    ModItems.NETHERITE_BAYONET.get(),
                     ModItems.EXTENDED_BARREL.get()
             );
 

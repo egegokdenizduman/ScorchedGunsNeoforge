@@ -30,7 +30,6 @@ import top.ribs.scguns.compat.PlayerReviveHelper;
 import top.ribs.scguns.event.GunEventBus;
 import top.ribs.scguns.event.GunFireEvent;
 import top.ribs.scguns.init.ModSyncedDataKeys;
-import top.ribs.scguns.item.BayonetItem;
 import top.ribs.scguns.item.GunItem;
 import top.ribs.scguns.item.animated.AnimatedDualWieldGunItem;
 import top.ribs.scguns.item.animated.AnimatedGunItem;
@@ -135,7 +134,7 @@ public class ShootingHandler
 
                     if(gripType == GripType.ONE_HANDED && !player.getOffhandItem().isEmpty()) {
                         ItemStack offhandItem = player.getOffhandItem();
-                        if(offhandItem.getItem() instanceof SwordItem || offhandItem.getItem() instanceof BayonetItem) {
+                        if(offhandItem.getItem() instanceof SwordItem) {
                             boolean currentRightClick = mc.options.keyUse.isDown();
 
                             if(currentRightClick && !wasRightClickPressed) {

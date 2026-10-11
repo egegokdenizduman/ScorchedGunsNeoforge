@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import top.ribs.scguns.common.GripType;
 import top.ribs.scguns.common.Gun;
-import top.ribs.scguns.item.BayonetItem;
 import top.ribs.scguns.item.GunItem;
 
 public class C2SMessageOffhandMelee
@@ -68,7 +67,7 @@ public class C2SMessageOffhandMelee
 
             if (gripType != GripType.ONE_HANDED) return;
 
-            if (!(offHand.getItem() instanceof SwordItem) && !(offHand.getItem() instanceof BayonetItem)) {
+            if (!(offHand.getItem() instanceof SwordItem)) {
                 return;
             }
 

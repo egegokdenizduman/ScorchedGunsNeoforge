@@ -23,7 +23,6 @@ import top.ribs.scguns.Config;
 import top.ribs.scguns.Reference;
 import top.ribs.scguns.attributes.SCAttributes;
 import top.ribs.scguns.client.handler.ReloadHandler;
-import top.ribs.scguns.common.exosuit.ExoSuitAmmoHelper;
 import top.ribs.scguns.init.ModSyncedDataKeys;
 import top.ribs.scguns.item.AmmoBoxItem;
 import top.ribs.scguns.item.GunItem;
@@ -181,11 +180,6 @@ public class ReloadTracker {
 
     private int consumeStoredAmmo(Player player, Item ammoItem, int amount) {
         int remaining = amount;
-
-        remaining -= ExoSuitAmmoHelper.shrinkAmmoInExoSuit(player, ammoItem, remaining);
-        if (remaining == 0) {
-            return 0;
-        }
 
         remaining -= shrinkAmmoBoxesInCurios(player, ammoItem, remaining);
         if (remaining == 0) {

@@ -48,13 +48,9 @@ import software.bernie.geckolib.animation.AnimationController;
 import top.ribs.scguns.Config;
 import top.ribs.scguns.Reference;
 import top.ribs.scguns.ScorchedGuns;
-import top.ribs.scguns.block.SulfurVentBlock;
 import top.ribs.scguns.cache.HotBarrelCache;
 import top.ribs.scguns.client.handler.MeleeAttackHandler;
 import top.ribs.scguns.common.*;
-import top.ribs.scguns.common.exosuit.ExoSuitData;
-import top.ribs.scguns.common.exosuit.ExoSuitUpgrade;
-import top.ribs.scguns.common.exosuit.ExoSuitUpgradeManager;
 import top.ribs.scguns.common.network.ServerPlayHandler;
 import top.ribs.scguns.init.*;
 import top.ribs.scguns.interfaces.IAirGun;
@@ -420,17 +416,6 @@ public class GunEventBus {
 
 
 
-    private static void triggerExplosion(Level level, BlockPos pos) {
-        RandomSource random = level.random;
-        for (int i = 0; i < 7; i++) {
-            double xOffset = (random.nextDouble() - 0.5) * 2.0 * SulfurVentBlock.EFFECT_RADIUS;
-            double yOffset = (random.nextDouble() - 0.5) * 2.0 * SulfurVentBlock.EFFECT_RADIUS;
-            double zOffset = (random.nextDouble() - 0.5) * 2.0 * SulfurVentBlock.EFFECT_RADIUS;
-            BlockPos explosionPos = pos.offset((int) xOffset, (int) yOffset, (int) zOffset);
-
-            level.explode(null, explosionPos.getX(), explosionPos.getY(), explosionPos.getZ(), 4.0F, Level.ExplosionInteraction.NONE);
-        }
-    }
     private static float calculateAirCostPerShot(Gun gun) {
         return gun.getGeneral().getEnergyUse();
     }
@@ -571,10 +556,6 @@ public class GunEventBus {
             }
         }
 
-        // Check exo suit pouches for Empty Casing Pouches
-        if (addCasingToExoSuitPouches(player, casingCopy)) {
-            return true;
-        }
 
         // Check Curios slots for Empty Casing Pouches
         final boolean[] result = {false};
@@ -595,88 +576,11 @@ public class GunEventBus {
         return result[0];
     }
 
-    // Add this helper method to check exo suit pouches for Empty Casing Pouches
-    private static boolean addCasingToExoSuitPouches(Player player, ItemStack casingStack) {
-        ItemStack chestplate = getEquippedChestplate(player);
-        if (chestplate.isEmpty()) {
-            return false;
-        }
 
-        ItemStack pouchUpgrade = findPouchUpgrade(chestplate);
-        if (pouchUpgrade.isEmpty()) {
-            return false;
-        }
 
-        ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(pouchUpgrade);
-        if (upgrade == null) {
-            return false;
-        }
 
-        String pouchId = getPouchId(pouchUpgrade);
-        ItemStackHandler pouchInventory = getPouchInventory(chestplate, pouchId, upgrade.getDisplay().getStorageSize());
 
-        // Check through pouch inventory for Empty Casing Pouches
-        for (int i = 0; i < pouchInventory.getSlots(); i++) {
-            ItemStack stack = pouchInventory.getStackInSlot(i);
-            if (!stack.isEmpty() && stack.getItem() instanceof EmptyCasingPouchItem) {
-                int insertedItems = EmptyCasingPouchItem.add(stack, casingStack);
-                if (insertedItems > 0) {
-                    // Save the updated pouch inventory
-                    savePouchInventory(chestplate, pouchId, pouchInventory);
-                    return true;
-                }
-            }
-        }
 
-        return false;
-    }
-
-    // Add these helper methods to GunEventBus.java (similar to what we have in ExoSuitAmmoHelper)
-    private static ItemStack getEquippedChestplate(Player player) {
-        for (ItemStack armorStack : player.getArmorSlots()) {
-            if (armorStack.getItem() instanceof ExoSuitItem exosuit &&
-                    exosuit.getType() == net.minecraft.world.item.ArmorItem.Type.CHESTPLATE) {
-                return armorStack;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static ItemStack findPouchUpgrade(ItemStack chestplate) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack upgradeItem = ExoSuitData.getUpgradeInSlot(chestplate, slot);
-            if (!upgradeItem.isEmpty()) {
-                ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(upgradeItem);
-                if (upgrade != null && upgrade.getType().equals("pouches")) {
-                    return upgradeItem;
-                }
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static String getPouchId(ItemStack pouchUpgrade) {
-        return pouchUpgrade.getItem().toString();
-    }
-
-    private static ItemStackHandler getPouchInventory(ItemStack chestplate, String pouchId, int size) {
-        CompoundTag pouchData = getOrCreateCustomData(chestplate).getCompound("PouchData");
-
-        ItemStackHandler handler = new ItemStackHandler(size);
-        if (pouchData.contains(pouchId)) {
-            handler.deserializeNBT(Gun.builtInRegistryProvider(), pouchData.getCompound(pouchId));
-        }
-
-        return handler;
-    }
-
-    private static void savePouchInventory(ItemStack chestplate, String pouchId, ItemStackHandler handler) {
-        CompoundTag root = getOrCreateCustomData(chestplate);
-        CompoundTag pouchData = root.getCompound("PouchData");
-        pouchData.put(pouchId, handler.serializeNBT(Gun.builtInRegistryProvider()));
-        root.put("PouchData", pouchData);
-        setCustomData(chestplate, root);
-    }
 
     private static CompoundTag getCustomData(ItemStack stack) {
         CustomData data = stack.get(DataComponents.CUSTOM_DATA);

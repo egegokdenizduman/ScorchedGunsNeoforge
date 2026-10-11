@@ -14,7 +14,6 @@ import top.ribs.scguns.event.GunFireEvent;
 import top.ribs.scguns.item.GunItem;
 import top.ribs.scguns.util.GunEnchantmentHelper;
 import top.ribs.scguns.util.GunModifierHelper;
-import top.ribs.scguns.util.ExoSuitRecoilHelper;
 
 import java.util.Random;
 
@@ -77,7 +76,7 @@ public class RecoilHandler {
         if(Minecraft.getInstance().player == null) return;
 
         float baseRecoilAngle = modifiedGun.getGeneral().getRecoilAngle();
-        float exoSuitModifiedRecoil = ExoSuitRecoilHelper.getModifiedRecoilAngle(Minecraft.getInstance().player, baseRecoilAngle);
+        float exoSuitModifiedRecoil = baseRecoilAngle;
 
         float recoilModifier = 1.0F - GunModifierHelper.getRecoilModifier(heldItem);
         if (Minecraft.getInstance().player != null) {
@@ -157,7 +156,7 @@ public class RecoilHandler {
 
         float baseRecoilAngle = modifiedGun.getGeneral().getRecoilAngle();
         if(Minecraft.getInstance().player != null) {
-            float exoSuitModifiedRecoil = ExoSuitRecoilHelper.getModifiedRecoilAngle(Minecraft.getInstance().player, baseRecoilAngle);
+            float exoSuitModifiedRecoil = baseRecoilAngle;
 
             float recoilModifier = 1.0F - GunModifierHelper.getRecoilModifier(heldItem);
             float enchantmentMultiplier = GunEnchantmentHelper.getRecoilModifier(Minecraft.getInstance().player, heldItem);

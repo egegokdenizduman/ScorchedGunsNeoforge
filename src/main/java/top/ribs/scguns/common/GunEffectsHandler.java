@@ -57,8 +57,6 @@ public class GunEffectsHandler {
 
         if (entity.getType() == EntityType.PIGLIN ||
                 entity.getType() == EntityType.PIGLIN_BRUTE ||
-                entity.getType() == ModEntities.HORNLIN.get() ||
-                entity.getType() == ModEntities.ZOMBIFIED_HORNLIN.get() ||
                 entity.getType() == EntityType.ZOMBIFIED_PIGLIN ||
                 entity.getType() == EntityType.ENDERMAN) {
             return true;

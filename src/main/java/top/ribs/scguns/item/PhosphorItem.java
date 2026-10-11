@@ -38,23 +38,7 @@ public class PhosphorItem extends Item {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        if (state.is(ModBlocks.PHOSPHOR_LAYER.get())) {
-            int layers = state.getValue(SnowLayerBlock.LAYERS);
-            if (layers < 8) {
-                level.setBlock(pos, state.setValue(SnowLayerBlock.LAYERS, layers + 1), 2);
-                shrinkUnlessCreative(stack, player);
-                return InteractionResult.SUCCESS;
-            }
-        }
-
-        BlockPos above = pos.above();
-        if (level.getBlockState(above).isAir() && state.isFaceSturdy(level, pos, Direction.UP)) {
-            level.setBlock(above, ModBlocks.PHOSPHOR_LAYER.get().defaultBlockState(), 2);
-            shrinkUnlessCreative(stack, player);
-            return InteractionResult.SUCCESS;
-        }
-
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     public static boolean applyPhosphorFertilizer(ItemStack stack, Level level, BlockPos pos) {
@@ -86,11 +70,5 @@ public class PhosphorItem extends Item {
             stack.shrink(1);
         }
         return true;
-    }
-
-    private static void shrinkUnlessCreative(ItemStack stack, Player player) {
-        if (player == null || !player.getAbilities().instabuild) {
-            stack.shrink(1);
-        }
     }
 }

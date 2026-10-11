@@ -44,11 +44,6 @@ import top.ribs.scguns.item.ammo_boxes.CreativeAmmoBoxItem;
 import top.ribs.scguns.item.animated.AnimatedGunItem;
 import top.ribs.scguns.util.GunModifierHelper;
 import top.theillusivec4.curios.api.CuriosApi;
-import top.ribs.scguns.common.exosuit.ExoSuitData;
-import top.ribs.scguns.common.exosuit.ExoSuitPowerManager;
-import top.ribs.scguns.common.exosuit.ExoSuitUpgrade;
-import top.ribs.scguns.common.exosuit.ExoSuitUpgradeManager;
-import top.ribs.scguns.item.animated.ExoSuitItem;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -99,7 +94,6 @@ public class HUDRenderHandler {
         GuiGraphics guiGraphics = event.getGuiGraphics();
         PoseStack poseStack = guiGraphics.pose();
 
-        renderExoSuitStatusHUD(poseStack, guiGraphics, player);
 
         if (!Config.CLIENT.display.displayGunInfo.get()) {
             return;
@@ -150,79 +144,12 @@ public class HUDRenderHandler {
             });
             cachedHasCreativeBox = hasBox.get();
         }
-
-        if (!cachedHasCreativeBox) {
-            cachedHasCreativeBox = hasCreativeAmmoBoxInExoSuit(player);
-        }
     }
 
-    private static boolean hasCreativeAmmoBoxInExoSuit(Player player) {
-        ItemStack chestplate = getEquippedChestplate(player);
-        if (chestplate.isEmpty()) {
-            return false;
-        }
 
-        ItemStack pouchUpgrade = findPouchUpgrade(chestplate);
-        if (pouchUpgrade.isEmpty()) {
-            return false;
-        }
 
-        ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(pouchUpgrade);
-        if (upgrade == null) {
-            return false;
-        }
 
-        String pouchId = getPouchId(pouchUpgrade);
-        ItemStackHandler pouchInventory = getPouchInventory(chestplate, pouchId, upgrade.getDisplay().getStorageSize());
 
-        for (int i = 0; i < pouchInventory.getSlots(); i++) {
-            ItemStack stack = pouchInventory.getStackInSlot(i);
-            if (!stack.isEmpty() && stack.getItem() instanceof CreativeAmmoBoxItem) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private static ItemStack getEquippedChestplate(Player player) {
-        for (ItemStack armorStack : player.getArmorSlots()) {
-            if (armorStack.getItem() instanceof ExoSuitItem exosuit &&
-                    exosuit.getType() == net.minecraft.world.item.ArmorItem.Type.CHESTPLATE) {
-                return armorStack;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static ItemStack findPouchUpgrade(ItemStack chestplate) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack upgradeItem = ExoSuitData.getUpgradeInSlot(chestplate, slot);
-            if (!upgradeItem.isEmpty()) {
-                ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(upgradeItem);
-                if (upgrade != null && upgrade.getType().equals("pouches")) {
-                    return upgradeItem;
-                }
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static String getPouchId(ItemStack pouchUpgrade) {
-        return pouchUpgrade.getItem().toString();
-    }
-
-    private static ItemStackHandler getPouchInventory(ItemStack chestplate, String pouchId, int size) {
-        CompoundTag stackTag = getCustomData(chestplate);
-        CompoundTag pouchData = stackTag != null ? stackTag.getCompound("PouchData") : new CompoundTag();
-
-        ItemStackHandler handler = new ItemStackHandler(size);
-        if (pouchData.contains(pouchId)) {
-            handler.deserializeNBT(registryAccess(), pouchData.getCompound(pouchId));
-        }
-
-        return handler;
-    }
 
     private static CompoundTag getCustomData(ItemStack stack) {
         CustomData data = stack.get(DataComponents.CUSTOM_DATA);
@@ -512,269 +439,16 @@ public class HUDRenderHandler {
     public static boolean getHitMarkerCrit() {
         return hitMarkerCrit;
     }
-    private static void renderExoSuitStatusHUD(PoseStack poseStack, GuiGraphics guiGraphics, Player player) {
-        if (!hasAnyExoSuitPiece(player)) {
-            return;
-        }
 
-        int hudX = 3;
-        int hudY = cachedScreenHeight - 60;
-        int lineHeight = 10;
-        int currentY = hudY;
 
-        Minecraft mc = Minecraft.getInstance();
 
-        // Power Core Display
-        ItemStack chestplate = getEquippedExoSuitChestplate(player);
-        if (!chestplate.isEmpty()) {
-            ItemStack powerCore = findPowerCoreInChestplate(chestplate);
-            if (!powerCore.isEmpty()) {
-                IEnergyStorage energyStorage = powerCore.getCapability(Capabilities.EnergyStorage.ITEM);
-                int energyStored = energyStorage != null ? energyStorage.getEnergyStored() : 0;
-                int maxEnergy = energyStorage != null ? energyStorage.getMaxEnergyStored() : 0;
 
-                if (maxEnergy > 0) {
-                    int energyPercent = (energyStored * 100) / maxEnergy;
-                    ChatFormatting energyColor = getEnergyColorForHUD(energyPercent);
-                    Component powerText = Component.translatable("tooltip.scguns.exosuit.energy_level", energyPercent)
-                            .withStyle(energyColor);
-                    guiGraphics.drawString(mc.font, powerText, hudX, currentY,
-                            energyColor.getColor() != null ? energyColor.getColor() : 0xFFFFFF);
-                    currentY += lineHeight;
-                }
-            } else {
-                Component noPowerText = Component.translatable("hud.scguns.exosuit.no_power_core")
-                        .withStyle(ChatFormatting.RED);
-                guiGraphics.drawString(mc.font, noPowerText, hudX, currentY, 0xFF5555);
-                currentY += lineHeight;
-            }
-        }
 
-        ItemStack helmet = getEquippedExoSuitHelmet(player);
-        if (!helmet.isEmpty() && hasHudModule(helmet)) {
-            boolean hudEnabled = ExoSuitPowerManager.isPowerEnabled(player, "hud");
-            boolean canFunction = ExoSuitPowerManager.canUpgradeFunction(player, "hud");
 
-            String hudModuleKey = getHudModuleTranslationKey(helmet);
-            String statusText = getModuleStatusText(hudEnabled, canFunction);
-            ChatFormatting statusColor = getModuleStatusColor(hudEnabled, canFunction);
 
-            Component helmetText = Component.translatable(hudModuleKey)
-                    .append(": " + statusText)
-                    .withStyle(statusColor);
-            guiGraphics.drawString(mc.font, helmetText, hudX, currentY,
-                    statusColor.getColor() != null ? statusColor.getColor() : 0xFFFFFF);
-            currentY += lineHeight;
-        }
 
-        if (!chestplate.isEmpty() && hasUtilityModule(chestplate)) {
-            boolean utilityEnabled = ExoSuitPowerManager.isPowerEnabled(player, "utility");
-            boolean canFunction = ExoSuitPowerManager.canUpgradeFunction(player, "utility");
 
-            String utilityModuleKey = getUtilityModuleTranslationKey(chestplate);
-            String statusText = getModuleStatusText(utilityEnabled, canFunction);
-            ChatFormatting statusColor = getModuleStatusColor(utilityEnabled, canFunction);
 
-            Component chestText = Component.translatable(utilityModuleKey)
-                    .append(": " + statusText)
-                    .withStyle(statusColor);
-            guiGraphics.drawString(mc.font, chestText, hudX, currentY,
-                    statusColor.getColor() != null ? statusColor.getColor() : 0xFFFFFF);
-            currentY += lineHeight;
-        }
 
-        // Boots Mobility Module Display
-        ItemStack boots = getEquippedExoSuitBoots(player);
-        if (!boots.isEmpty() && hasMobilityModule(boots)) {
-            boolean mobilityEnabled = ExoSuitPowerManager.isPowerEnabled(player, "mobility");
-            boolean canFunction = ExoSuitPowerManager.canUpgradeFunction(player, "mobility");
 
-            String mobilityModuleKey = getMobilityModuleTranslationKey(boots);
-            String statusText = getModuleStatusText(mobilityEnabled, canFunction);
-            ChatFormatting statusColor = getModuleStatusColor(mobilityEnabled, canFunction);
-
-            Component bootsText = Component.translatable(mobilityModuleKey)
-                    .append(": " + statusText)
-                    .withStyle(statusColor);
-            guiGraphics.drawString(mc.font, bootsText, hudX, currentY,
-                    statusColor.getColor() != null ? statusColor.getColor() : 0xFFFFFF);
-        }
-    }
-    private static boolean hasUtilityModule(ItemStack chestplate) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack upgradeItem = ExoSuitData.getUpgradeInSlot(chestplate, slot);
-            if (!upgradeItem.isEmpty()) {
-                ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(upgradeItem);
-                if (upgrade != null && upgrade.getType().equals("utility")) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private static String getUtilityModuleTranslationKey(ItemStack chestplate) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack upgradeItem = ExoSuitData.getUpgradeInSlot(chestplate, slot);
-            if (!upgradeItem.isEmpty()) {
-                ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(upgradeItem);
-                if (upgrade != null && upgrade.getType().equals("utility")) {
-                    if (upgradeItem.getItem() instanceof top.ribs.scguns.item.exosuit.JetpackModuleItem) {
-                        return "exosuit.upgrade.jetpack";
-                    }
-                    else if (upgrade.getEffects().hasFlight()) {
-                        return "exosuit.upgrade.jetpack";
-                    }
-                    else {
-                        return "exosuit.upgrade.utility";
-                    }
-                }
-            }
-        }
-        return "exosuit.upgrade.utility";
-    }
-    private static boolean hasAnyExoSuitPiece(Player player) {
-        for (ItemStack armorStack : player.getArmorSlots()) {
-            if (armorStack.getItem() instanceof ExoSuitItem) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static ItemStack getEquippedExoSuitHelmet(Player player) {
-        for (ItemStack armorStack : player.getArmorSlots()) {
-            if (armorStack.getItem() instanceof ExoSuitItem exosuit &&
-                    exosuit.getType() == net.minecraft.world.item.ArmorItem.Type.HELMET) {
-                return armorStack;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static ItemStack getEquippedExoSuitChestplate(Player player) {
-        for (ItemStack armorStack : player.getArmorSlots()) {
-            if (armorStack.getItem() instanceof ExoSuitItem exosuit &&
-                    exosuit.getType() == net.minecraft.world.item.ArmorItem.Type.CHESTPLATE) {
-                return armorStack;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static ItemStack getEquippedExoSuitBoots(Player player) {
-        for (ItemStack armorStack : player.getArmorSlots()) {
-            if (armorStack.getItem() instanceof ExoSuitItem exosuit &&
-                    exosuit.getType() == net.minecraft.world.item.ArmorItem.Type.BOOTS) {
-                return armorStack;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static ItemStack findPowerCoreInChestplate(ItemStack chestplate) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack upgradeItem = ExoSuitData.getUpgradeInSlot(chestplate, slot);
-            if (!upgradeItem.isEmpty()) {
-                ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(upgradeItem);
-                if (upgrade != null && upgrade.getType().equals("power_core")) {
-                    return upgradeItem;
-                }
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    private static boolean hasHudModule(ItemStack helmet) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack upgradeItem = ExoSuitData.getUpgradeInSlot(helmet, slot);
-            if (!upgradeItem.isEmpty()) {
-                ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(upgradeItem);
-                if (upgrade != null && upgrade.getType().equals("hud")) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private static boolean hasMobilityModule(ItemStack boots) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack upgradeItem = ExoSuitData.getUpgradeInSlot(boots, slot);
-            if (!upgradeItem.isEmpty()) {
-                ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(upgradeItem);
-                if (upgrade != null && upgrade.getType().equals("mobility")) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private static String getHudModuleTranslationKey(ItemStack helmet) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack upgradeItem = ExoSuitData.getUpgradeInSlot(helmet, slot);
-            if (!upgradeItem.isEmpty()) {
-                ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(upgradeItem);
-                if (upgrade != null && upgrade.getType().equals("hud")) {
-                    if (upgradeItem.getItem() instanceof top.ribs.scguns.item.exosuit.NightVisionModuleItem) {
-                        return "exosuit.upgrade.night_vision";
-                    } else if (upgradeItem.getItem() instanceof top.ribs.scguns.item.exosuit.TargetTrackerModuleItem) {
-                        return "exosuit.upgrade.target_tracker";
-                    } else {
-                        return "exosuit.upgrade.hud";
-                    }
-                }
-            }
-        }
-        return "exosuit.upgrade.hud";
-    }
-
-    private static String getMobilityModuleTranslationKey(ItemStack boots) {
-        for (int slot = 0; slot < 4; slot++) {
-            ItemStack upgradeItem = ExoSuitData.getUpgradeInSlot(boots, slot);
-            if (!upgradeItem.isEmpty()) {
-                ExoSuitUpgrade upgrade = ExoSuitUpgradeManager.getUpgradeForItem(upgradeItem);
-                if (upgrade != null && upgrade.getType().equals("mobility")) {
-                    return "exosuit.upgrade.mobility";
-                }
-            }
-        }
-        return "exosuit.upgrade.mobility";
-    }
-
-    // Simple status text method
-    private static String getModuleStatusText(boolean enabled, boolean canFunction) {
-        if (!enabled) {
-            return "Disabled";
-        } else if (!canFunction) {
-            return "No Power";
-        } else {
-            return "Active";
-        }
-    }
-
-    private static ChatFormatting getEnergyColorForHUD(int energyPercent) {
-        if (energyPercent > 75) {
-            return ChatFormatting.GREEN;
-        } else if (energyPercent > 50) {
-            return ChatFormatting.YELLOW;
-        } else if (energyPercent > 25) {
-            return ChatFormatting.GOLD;
-        } else if (energyPercent > 0) {
-            return ChatFormatting.RED;
-        } else {
-            return ChatFormatting.DARK_RED;
-        }
-    }
-
-    private static ChatFormatting getModuleStatusColor(boolean enabled, boolean canFunction) {
-        if (!enabled) {
-            return ChatFormatting.GRAY;
-        } else if (!canFunction) {
-            return ChatFormatting.RED;
-        } else {
-            return ChatFormatting.GREEN;
-        }
-    }
 }

@@ -8,7 +8,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import top.ribs.scguns.client.SwayType;
 import top.ribs.scguns.client.render.crosshair.DotRenderMode;
 import top.ribs.scguns.client.screen.ButtonAlignment;
-import top.ribs.scguns.entity.projectile.turret.TurretProjectileEntity;
 
 
 import java.nio.file.Files;
@@ -203,15 +202,10 @@ public class Config
         public final Network network;
         public final AggroMobs aggroMobs;
         public final FleeingMobs fleeingMobs;
-        public final NaturalMobSpawning naturalMobSpawning;
-        public final GunnerMobs gunnerMobs;
-        public final Raids raids;
         public final Rockets rockets;
         public final Grenades grenades;
         public final StunGrenades stunGrenades;
         public final ProjectileSpread projectileSpread;
-        public final Gunsmith Gunsmith;
-        public final Turret turret;
 
 
         public Common(ModConfigSpec.Builder builder)
@@ -222,15 +216,10 @@ public class Config
                 this.network = new Network(builder);
                 this.aggroMobs = new AggroMobs(builder);
                 this.fleeingMobs = new FleeingMobs(builder);
-                this.naturalMobSpawning = new NaturalMobSpawning(builder);
-                this.gunnerMobs = new GunnerMobs(builder);
-                this.raids = new Raids(builder);
                 this.rockets = new Rockets(builder);
                 this.grenades = new Grenades(builder);
                 this.stunGrenades = new StunGrenades(builder);
                 this.projectileSpread = new ProjectileSpread(builder);
-                this.Gunsmith = new Gunsmith(builder);
-                this.turret = new Turret(builder);
             }
             builder.pop();
         }
@@ -445,140 +434,8 @@ public class Config
         }
     }
 
-    public static class NaturalMobSpawning {
-        public final ModConfigSpec.BooleanValue enableDaytimeAggressiveMobSpawns;
-        public final ModConfigSpec.IntValue daytimeAggressiveMobBaseProtectionRadius;
 
-        public NaturalMobSpawning(ModConfigSpec.Builder builder) {
-            builder.comment("Properties relating to natural Scorched Guns mob spawning").push("natural_mob_spawning");
-            {
-                this.enableDaytimeAggressiveMobSpawns = builder.comment(
-                        "If true, naturally-spawning hostile Scorched Guns mobs can also spawn during daytime.",
-                        "Night spawning is unchanged."
-                ).define("enableDaytimeAggressiveMobSpawns", false);
-                this.daytimeAggressiveMobBaseProtectionRadius = builder.comment(
-                        "Hostile Scorched Guns mobs allowed to spawn during daytime will not naturally spawn within this many blocks of a bed.",
-                        "This protects player bases without blocking daytime spawns in naturally bright open areas. Set to 0 to disable."
-                ).defineInRange("daytimeAggressiveMobBaseProtectionRadius", 48, 0, 256);
-            }
-            builder.pop();
-        }
-    }
 
-    /**
-     * Gunner mob related config options
-     */
-    public static class GunnerMobs {
-        public final ModConfigSpec.BooleanValue gunnerMobSpawning;
-        public final ModConfigSpec.DoubleValue gunnerSpawnChance;
-        public final ModConfigSpec.BooleanValue scaleToDifficulty;
-        public final ModConfigSpec.BooleanValue eliteSpawning;
-        public final ModConfigSpec.DoubleValue eliteChance;
-        public final ModConfigSpec.DoubleValue gunnerMobInaccuracyMultiplier;
-
-        public GunnerMobs(ModConfigSpec.Builder builder) {
-            builder.comment("Gun Mob Spawning Configuration").push("gunner_config");
-            {
-                this.gunnerMobSpawning = builder.comment("If enabled, mobs will have a chance to spawn with guns.").define("gunnerMobSpawning", true);
-                this.gunnerSpawnChance = builder.comment(
-                        "Global chance multiplier for mobs spawning with guns (0.0 = never, 1.0 = full configured chance).",
-                        "Progression-based gunner mobs use this as their base chance. Thematic mob JSON spawn chances are multiplied by this value."
-                ).defineInRange("gunnerSpawnChance", 0.3, 0.0, 1.0);
-                this.scaleToDifficulty = builder.comment(
-                        "If enabled, spawn chances scale with game difficulty.",
-                        "PEACEFUL: 50% of base chance, EASY: 75%, NORMAL: 100%, HARD: 150%"
-                ).define("scaleToDifficulty", true);
-                this.eliteSpawning = builder.comment("If enabled, gunner mobs will have a chance to spawn as Elites with better armor.").define("eliteSpawning", true);
-                this.eliteChance = builder.comment(
-                        "Base chance for Elite Gunners to spawn (0.0 = never, 1.0 = always).",
-                        "This is the spawn chance on NORMAL difficulty."
-                ).defineInRange("eliteChance", 0.2, 0.0, 1.0);
-                this.gunnerMobInaccuracyMultiplier = builder.comment(
-                        "Multiplier for extra aim inaccuracy used by hostile gunner and raid mobs.",
-                        "1.0 keeps the base mob weapon spread, values above 1.0 make mobs less accurate, values below 1.0 make mobs more accurate.",
-                        "This does not change player weapon spread or gun JSON values."
-                ).defineInRange("gunnerMobInaccuracyMultiplier", 1.5, 0.0, 10.0);
-            }
-            builder.pop();
-        }
-    }
-
-    public static class Raids {
-        public final ModConfigSpec.BooleanValue raidsEnabled;
-        public final ModConfigSpec.DoubleValue nightlyRaidChance;
-        public final ModConfigSpec.IntValue minDaysBetweenRaids;
-        public final ModConfigSpec.IntValue raidTimeoutMinutes;
-
-        public Raids(ModConfigSpec.Builder builder) {
-            builder.comment("Scorched Guns raid configuration").push("raids");
-            {
-                this.raidsEnabled = builder.comment("If enabled, Scorched Guns raid flares and nightly raid scheduling can start custom raids.").define("raidsEnabled", true);
-                this.nightlyRaidChance = builder.comment("Chance each night to schedule a progression raid for an eligible player.").defineInRange("nightlyRaidChance", 0.2, 0.0, 1.0);
-                this.minDaysBetweenRaids = builder.comment("Minimum in-game days between automatic nightly raids per dimension.").defineInRange("minDaysBetweenRaids", 2, 0, Integer.MAX_VALUE);
-                this.raidTimeoutMinutes = builder.comment("Minutes before an active custom raid times out. Use 0 to disable timeout.").defineInRange("raidTimeoutMinutes", 20, 0, Integer.MAX_VALUE);
-            }
-            builder.pop();
-        }
-    }
-    /**
-     * Gunsmith related config options
-     */
-    public static class Gunsmith
-    {
-        public Gunsmith(ModConfigSpec.Builder builder) {
-            builder.comment("Properties relating to gunsmith").push("gunsmith");
-            {
-
-            }
-            builder.pop();
-        }
-    }
-    public static class Turret
-    {
-        public final Map<TurretProjectileEntity.BulletType, ModConfigSpec.DoubleValue> bulletDamage;
-        public final ModConfigSpec.BooleanValue enableDamageScaling;
-        public final ModConfigSpec.DoubleValue damageScalingRate;
-        public final ModConfigSpec.DoubleValue maxScaledDamage;
-
-        public Turret(ModConfigSpec.Builder builder)
-        {
-            builder.comment("Properties relating to turrets").push("turret");
-            {
-                bulletDamage = new EnumMap<>(TurretProjectileEntity.BulletType.class);
-                for (TurretProjectileEntity.BulletType type : TurretProjectileEntity.BulletType.values()) {
-                    bulletDamage.put(type, builder
-                            .comment("Base damage for " + type.name() + " turret projectile")
-                            .defineInRange(type.name().toLowerCase() + "_damage", getDefaultDamage(type), 0.0, Double.MAX_VALUE));
-                }
-
-                this.enableDamageScaling = builder
-                        .comment("If true, turret damage will scale over time")
-                        .define("enable_damage_scaling", false);
-
-                this.damageScalingRate = builder
-                        .comment("The rate at which turret damage increases per day")
-                        .defineInRange("damage_scaling_rate", 0.03, 0.0, Double.MAX_VALUE);
-
-                this.maxScaledDamage = builder
-                        .comment("The maximum damage that turret scaling can reach")
-                        .defineInRange("max_scaled_damage", Double.MAX_VALUE, 0.0, Double.MAX_VALUE);
-            }
-            builder.pop();
-        }
-
-        private double getDefaultDamage(TurretProjectileEntity.BulletType type) {
-            return switch (type) {
-                case STANDARD_COPPER_ROUND -> 6.0;
-                case ADVANCED_ROUND -> 8.0;
-                case GIBBS_ROUND -> 10.0;
-                case COMPACT_COPPER_ROUND -> 5.0;
-                case COMPACT_ADVANCED_ROUND ->6.5;
-                case HOG_ROUND -> 7.0;
-                case SHOTGUN_SHELL -> 22.0;
-                case BEARPACK_SHELL -> 28.0;
-            };
-        }
-    }
     /**
      * Stun Grenade related config options
      */

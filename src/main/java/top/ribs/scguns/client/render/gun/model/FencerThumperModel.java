@@ -39,14 +39,6 @@ public class FencerThumperModel implements IOverrideModel {
                 RenderUtil.renderModel(SpecialModels.FENCER_THUMPER_VERTICAL_GRIP.getModel(), stack, matrixStack, buffer, light, overlay);
             } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.LIGHT_GRIP.get()) {
                 RenderUtil.renderModel(SpecialModels.FENCER_THUMPER_LIGHT_GRIP.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.IRON_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.FENCER_THUMPER_IRON_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.ANTHRALITE_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.FENCER_THUMPER_ANTHRALITE_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.DIAMOND_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.FENCER_THUMPER_DIAMOND_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.NETHERITE_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.FENCER_THUMPER_NETHERITE_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
             }
         }
 

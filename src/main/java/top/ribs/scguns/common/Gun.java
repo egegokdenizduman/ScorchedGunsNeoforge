@@ -34,7 +34,6 @@ import top.ribs.scguns.Reference;
 import top.ribs.scguns.annotation.Ignored;
 import top.ribs.scguns.annotation.Optional;
 import top.ribs.scguns.client.ClientHandler;
-import top.ribs.scguns.common.exosuit.ExoSuitAmmoHelper;
 import top.ribs.scguns.debug.Debug;
 import top.ribs.scguns.debug.IDebugWidget;
 import top.ribs.scguns.debug.IEditorMenu;
@@ -3118,12 +3117,6 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
             }
         }
 
-        // Check exo suit pouches
-        ItemStack exoSuitAmmo = ExoSuitAmmoHelper.findAmmoInExoSuit(player, item);
-        if (!exoSuitAmmo.isEmpty()) {
-            return new AmmoContext(exoSuitAmmo, null);
-        }
-
         // Check Curios slots
         AtomicReference<AmmoContext> ammoContextRef = new AtomicReference<>(AmmoContext.NONE);
         CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
@@ -3178,16 +3171,6 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
                     if (!ammoStack.isEmpty() && gun.acceptsProjectileItem(ammoStack.getItem())) {
                         return new AmmoContext(ammoStack, null);
                     }
-                }
-            }
-        }
-
-        for (Projectile projectile : gun.getAcceptedProjectiles()) {
-            Item item = projectile.getItem();
-            if (item != null) {
-                ItemStack exoSuitAmmo = ExoSuitAmmoHelper.findAmmoInExoSuit(player, item);
-                if (!exoSuitAmmo.isEmpty()) {
-                    return new AmmoContext(exoSuitAmmo, null);
                 }
             }
         }
@@ -3252,10 +3235,6 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
             }
         }
 
-        // Check exo suit pouches
-        List<ItemStack> exoSuitAmmo = ExoSuitAmmoHelper.findAllAmmoInExoSuit(player, item);
-        ammoStacks.addAll(exoSuitAmmo);
-
         // Check Curios slots for the CreativeAmmoBoxItem and other ammo
         CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
             IItemHandlerModifiable curios = handler.getEquippedCurios();
@@ -3309,10 +3288,6 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
                 }
             }
         }
-
-        // Check exo suit pouches
-        int exoSuitAmmoCount = ExoSuitAmmoHelper.getAmmoCountInExoSuit(player, item);
-        ammoCount.addAndGet(exoSuitAmmoCount);
 
         // Check Curios slots
         CuriosApi.getCuriosInventory(player).ifPresent(handler -> {

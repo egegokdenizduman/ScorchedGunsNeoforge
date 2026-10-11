@@ -47,7 +47,6 @@ import top.ribs.scguns.init.*;
 import top.ribs.scguns.interfaces.IProjectileFactory;
 import top.ribs.scguns.item.GunItem;
 import top.ribs.scguns.item.ammo_boxes.CreativeAmmoBoxItem;
-import top.ribs.scguns.item.animated.ExoSuitItem;
 import top.ribs.scguns.network.PacketHandler;
 import top.ribs.scguns.network.message.*;
 import top.ribs.scguns.util.GunEnchantmentHelper;
@@ -610,10 +609,6 @@ public class ServerPlayHandler {
         ItemStack heldItem = player.getMainHandItem();
         if (heldItem.getItem() instanceof GunItem) {
             player.openMenu(new SimpleMenuProvider((windowId, playerInventory, player1) -> new AttachmentContainer(windowId, playerInventory, heldItem), Component.translatable("container.scguns.attachments")));
-        } else if (heldItem.getItem() instanceof ExoSuitItem) {
-            player.openMenu(new ExoSuitItem.ExoSuitMenuProvider(InteractionHand.MAIN_HAND), buf -> {
-                buf.writeEnum(InteractionHand.MAIN_HAND);
-            });
         }
     }
 

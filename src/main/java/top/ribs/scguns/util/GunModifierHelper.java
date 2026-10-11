@@ -90,8 +90,6 @@ public class GunModifierHelper
 
         spread = GunEnchantmentHelper.getHotBarrelSpread(player, weapon, spread);
 
-        spread = ExoSuitRecoilHelper.getModifiedSpread(player, spread);
-
         return spread;
     }
 

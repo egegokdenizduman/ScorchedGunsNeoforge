@@ -18,7 +18,6 @@ import top.ribs.scguns.init.ModEnchantments;
 import top.ribs.scguns.init.ModSyncedDataKeys;
 import top.ribs.scguns.init.ModTags;
 import top.ribs.scguns.item.GunItem;
-import top.ribs.scguns.item.animated.ExoSuitItem;
 
 @EventBusSubscriber(modid = "scguns")
 public class WeaponMovementEventHandler {
@@ -74,7 +73,6 @@ public class WeaponMovementEventHandler {
         movementSpeed.removeModifier(RELOAD_SPEED_MODIFIER_ID);
         movementSpeed.removeModifier(LIGHTWEIGHT_SPEED_MODIFIER_ID);
 
-        boolean hasExoSuitLegs = legsItem.getItem() instanceof ExoSuitItem;
         boolean isReloading = ModSyncedDataKeys.RELOADING.getValue(player);
 
         boolean holdingGun = (mainHandItem.getItem() instanceof GunItem) || (offHandItem.getItem() instanceof GunItem);
@@ -86,8 +84,8 @@ public class WeaponMovementEventHandler {
         }
 
         // Calculate base weapon speed modifiers
-        float mainHandSpeedModifier = getEffectiveSpeedModifier(mainHandItem, hasExoSuitLegs);
-        float offHandSpeedModifier = getEffectiveSpeedModifier(offHandItem, hasExoSuitLegs);
+        float mainHandSpeedModifier = getEffectiveSpeedModifier(mainHandItem);
+        float offHandSpeedModifier = getEffectiveSpeedModifier(offHandItem);
         float finalSpeedModifier = Math.min(mainHandSpeedModifier, offHandSpeedModifier);
 
         // Determine which weapon is the relevant one for enchantments
@@ -185,17 +183,11 @@ public class WeaponMovementEventHandler {
         }
     }
 
-    private static float getEffectiveSpeedModifier(ItemStack stack, boolean hasExoSuitLegs) {
+    private static float getEffectiveSpeedModifier(ItemStack stack) {
         if (stack.isEmpty()) return 1.0F;
 
         if (stack.getItem() instanceof GunItem gunItem) {
-            float baseModifier = gunItem.getGunProperties().getGeneral().getSpeedModifier();
-
-            if (hasExoSuitLegs && baseModifier < 1.0F && isHeavyWeapon(stack)) {
-                return 1.0F;
-            }
-
-            return baseModifier;
+            return gunItem.getGunProperties().getGeneral().getSpeedModifier();
         }
 
         return 1.0F;

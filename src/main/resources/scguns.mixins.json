@@ -11,9 +11,7 @@
     "common.ItemRarityMixin",
     "common.LivingEntityMixin",
     "common.LootItemRandomChanceWithEnchantedBonusConditionMixin",
-    "common.SittingPhaseMixin",
-    "common.compat.guardvillagers.GuardGunnerEquipmentMixin",
-    "common.compat.sable.TurretBlockEntitySableActorMixin"
+    "common.SittingPhaseMixin"
   ],
   "client": [
     "client.GameRendererMixin",
@@ -24,7 +22,6 @@
     "client.VehiclePoseMixin",
     "client.compat.fa.EMFModelPartRootMixin",
     "client.compat.fa.PlayerRendererMixin",
-    "client.compat.guardvillagers.GuardModelGunPoseMixin",
     "client.compat.punchy.HandRenderBobContextMixin",
     "client.compat.punchy.MovementStateMachineMixin",
     "client.compat.punchy.PunchyArmRendererMixin"

@@ -76,14 +76,6 @@ public class IronSpearModel implements IOverrideModel {
                 RenderUtil.renderModel(SpecialModels.IRON_SPEAR_TACT_GRIP.getModel(), stack, matrixStack, buffer, light, overlay);
             else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.LIGHT_GRIP.get())
                 RenderUtil.renderModel(SpecialModels.IRON_SPEAR_LIGHT_GRIP.getModel(), stack, matrixStack, buffer, light, overlay);
-            else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.IRON_BAYONET.get())
-                RenderUtil.renderModel(SpecialModels.IRON_SPEAR_IRON_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.ANTHRALITE_BAYONET.get())
-                RenderUtil.renderModel(SpecialModels.IRON_SPEAR_ANTHRALITE_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.DIAMOND_BAYONET.get())
-                RenderUtil.renderModel(SpecialModels.IRON_SPEAR_DIAMOND_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.NETHERITE_BAYONET.get())
-                RenderUtil.renderModel(SpecialModels.IRON_SPEAR_NETHERITE_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
         }
     }
 

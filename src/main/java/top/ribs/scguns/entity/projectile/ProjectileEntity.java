@@ -52,8 +52,6 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import net.neoforged.neoforge.event.EventHooks;
 import top.ribs.scguns.ScorchedGuns;
 import top.ribs.scguns.attributes.SCAttributes;
-import top.ribs.scguns.block.NitroKegBlock;
-import top.ribs.scguns.block.PowderKegBlock;
 import top.ribs.scguns.cache.HotBarrelCache;
 import top.ribs.scguns.common.*;
 import top.ribs.scguns.common.Gun.Projectile;
@@ -965,20 +963,6 @@ public class ProjectileEntity extends Entity implements IEntityWithComplexSpawn 
         if (block == Blocks.TNT) {
             if (!level.isClientSide()) {
                 TntBlock.explode(level, pos);
-                level.removeBlock(pos, false);
-            }
-            return true;
-        }
-        if (block == ModBlocks.POWDER_KEG.get()) {
-            if (!level.isClientSide()) {
-                PowderKegBlock.explode(level, pos);
-                level.removeBlock(pos, false);
-            }
-            return true;
-        }
-        if (block == ModBlocks.NITRO_KEG.get()) {
-            if (!level.isClientSide()) {
-                NitroKegBlock.explode(level, pos);
                 level.removeBlock(pos, false);
             }
             return true;

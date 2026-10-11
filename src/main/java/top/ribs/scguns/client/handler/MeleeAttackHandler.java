@@ -33,7 +33,6 @@ import top.ribs.scguns.common.Gun;
 import top.ribs.scguns.common.ReloadType;
 import top.ribs.scguns.event.GunEventBus;
 import top.ribs.scguns.init.ModSyncedDataKeys;
-import top.ribs.scguns.item.BayonetItem;
 import top.ribs.scguns.item.GunItem;
 import top.ribs.scguns.item.animated.AnimatedGunItem;
 import top.ribs.scguns.item.attachment.IAttachment;
@@ -48,7 +47,7 @@ import java.util.List;
 public class MeleeAttackHandler {
     private static final float ENCHANTMENT_DAMAGE_SCALING_FACTOR = 0.70f;
     private static final float BASE_SPEED_DAMAGE_SCALING_FACTOR = 0.0f;
-    private static final float[] BANZAI_SCALING_FACTORS = {3.0f, 5.5f, 7.0f};
+;
     private static final String WALL_COLLISION_COOLDOWN_TAG = "WallCollisionCooldown";
     private static final String MELEE_COOLDOWN_TAG = "MeleeCooldown";
     private static final int KNOCKBACK_GRACE_PERIOD_TICKS = 5;
@@ -257,13 +256,11 @@ public class MeleeAttackHandler {
 
         DamageSource damageSource = player.serverLevel().damageSources().playerAttack(player);
 
-        float enchantmentDamage = getEnchantmentDamageFromBayonet(player, heldItem, target, gunItem, damageSource);
-
         Gun modifiedGun = gunItem.getModifiedGun(heldItem);
         float meleeDamage = modifiedGun.getGeneral().getMeleeDamage();
 
 
-        float attackDamage = baseDamage + additionalDamage + enchantmentDamage + meleeDamage;
+        float attackDamage = baseDamage + additionalDamage + meleeDamage;
 
         if (isBanzaiAttack) {
             float speedDamageMultiplier = getBanzaiDamageMultiplier(player, heldItem);
@@ -291,7 +288,6 @@ public class MeleeAttackHandler {
                     );
 
                     applyKnockback(player, aoeTarget, heldItem);
-                    applySpecialEnchantmentsFromBayonet(heldItem, aoeTarget, player, gunItem);
                     triggerBanzaiImpactIfNecessary(heldItem);
                 }
             }
@@ -302,7 +298,6 @@ public class MeleeAttackHandler {
                 spawnSuccessfulHitParticles(player, raycastTarget);
 
                 applyKnockback(player, raycastTarget, heldItem);
-                applySpecialEnchantmentsFromBayonet(heldItem, raycastTarget, player, gunItem);
                 triggerBanzaiImpactIfNecessary(heldItem);
                 return true;
             }
@@ -351,18 +346,6 @@ public class MeleeAttackHandler {
         }
     }
 
-    private static void applySpecialEnchantmentsFromBayonet(ItemStack gunStack, LivingEntity target, Player player, GunItem gunItem) {
-        for (IAttachment.Type type : IAttachment.Type.values()) {
-            ItemStack attachmentStack = gunItem.getAttachment(gunStack, type);
-            if (attachmentStack.getItem() instanceof BayonetItem) {
-                applyEnchantmentEffects(Enchantments.FIRE_ASPECT, getEnchantmentLevel(attachmentStack, Enchantments.FIRE_ASPECT), target, player);
-                applyEnchantmentEffects(Enchantments.KNOCKBACK, getEnchantmentLevel(attachmentStack, Enchantments.KNOCKBACK), target, player);
-                applyEnchantmentEffects(Enchantments.SMITE, getEnchantmentLevel(attachmentStack, Enchantments.SMITE), target, player);
-                applyEnchantmentEffects(Enchantments.BANE_OF_ARTHROPODS, getEnchantmentLevel(attachmentStack, Enchantments.BANE_OF_ARTHROPODS), target, player);
-                applyEnchantmentEffects(Enchantments.SHARPNESS, getEnchantmentLevel(attachmentStack, Enchantments.SHARPNESS), target, player);
-            }
-        }
-    }
 
     public static void performNormalMeleeAttack(ServerPlayer player) {
         performMeleeAttack(player);
@@ -497,25 +480,9 @@ public class MeleeAttackHandler {
 
     private static float getBanzaiDamageMultiplier(ServerPlayer player, ItemStack heldItem) {
         double speed = player.getDeltaMovement().length();
-        int banzaiLevel = ((GunItem) heldItem.getItem()).getBayonetBanzaiLevel(heldItem);
-        float scalingFactor = BASE_SPEED_DAMAGE_SCALING_FACTOR;
-        if (banzaiLevel > 0 && banzaiLevel <= 3) {
-            scalingFactor = BANZAI_SCALING_FACTORS[banzaiLevel - 1];
-        }
-        return 1.0f + (float) speed * scalingFactor;
+        return 1.0f + (float) speed * BASE_SPEED_DAMAGE_SCALING_FACTOR;
     }
 
-    private static float getEnchantmentDamageFromBayonet(ServerPlayer player, ItemStack gunStack, LivingEntity target, GunItem gunItem, DamageSource damageSource) {
-        float enchantmentDamage = 0.0f;
-        for (IAttachment.Type type : IAttachment.Type.values()) {
-            ItemStack attachmentStack = gunItem.getAttachment(gunStack, type);
-            if (attachmentStack.getItem() instanceof BayonetItem) {
-                float damageBonus = EnchantmentHelper.modifyDamage(player.serverLevel(), attachmentStack, target, damageSource, 0.0F);
-                enchantmentDamage += damageBonus * ENCHANTMENT_DAMAGE_SCALING_FACTOR;
-            }
-        }
-        return enchantmentDamage;
-    }
 
     private static void applyEnchantmentEffects(ResourceKey<Enchantment> enchantment, int level, LivingEntity target, Player player) {
         if (level <= 0) {

@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import top.ribs.scguns.block.SulfurLayerBlock;
 import top.ribs.scguns.init.ModBlocks;
 
 public class SulfurDustItem extends Item {
@@ -36,27 +35,7 @@ public class SulfurDustItem extends Item {
                 return InteractionResult.sidedSuccess(world.isClientSide);
             }
         }
-        if (blockstate.is(ModBlocks.SULFUR_LAYER.get())) {
-            int i = blockstate.getValue(SnowLayerBlock.LAYERS);
-            if (i < 8) {
-                world.setBlock(blockpos, blockstate.setValue(SnowLayerBlock.LAYERS, i + 1), 2);
-                if (player == null || !player.getAbilities().instabuild) {
-                    itemstack.shrink(1);
-                }
-                return InteractionResult.SUCCESS;
-            }
-        }
-        BlockPos blockposAbove = blockpos.above();
-        if (world.getBlockState(blockposAbove).isAir()) {
-            BlockState newState = ModBlocks.SULFUR_LAYER.get().defaultBlockState();
-            world.setBlock(blockposAbove, newState, 2);
-            if (player == null || !player.getAbilities().instabuild) {
-                itemstack.shrink(1);
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     public static boolean applyCoinFlipEffect(ItemStack stack, Level world, BlockPos pos, Player player) {

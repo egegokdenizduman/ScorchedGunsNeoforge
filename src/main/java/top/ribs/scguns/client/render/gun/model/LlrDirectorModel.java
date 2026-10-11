@@ -130,15 +130,6 @@ public class LlrDirectorModel implements IOverrideModel {
 
     private void renderUnderBarrelAttachments(ItemStack stack, PoseStack matrixStack, MultiBufferSource buffer, int light, int overlay) {
         if (Gun.hasAttachmentEquipped(stack, IAttachment.Type.UNDER_BARREL)) {
-            if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.IRON_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.LLR_DIRECTOR_IRON_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.ANTHRALITE_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.LLR_DIRECTOR_ANTHRALITE_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.DIAMOND_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.LLR_DIRECTOR_DIAMOND_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.NETHERITE_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.LLR_DIRECTOR_NETHERITE_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            }
         }
     }
 

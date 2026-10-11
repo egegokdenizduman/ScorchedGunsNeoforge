@@ -2,7 +2,6 @@ package top.ribs.scguns.enchantment;
 
 import top.ribs.scguns.common.FireMode;
 import top.ribs.scguns.init.ModTags;
-import top.ribs.scguns.item.BayonetItem;
 import top.ribs.scguns.item.GunItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SwordItem;
@@ -18,7 +17,6 @@ public class EnchantmentTypes {
     public static final Predicate<Item> GUN = item -> item instanceof GunItem;
     public static final Predicate<Item> WEAPON = item -> item instanceof SwordItem;
     public static final Predicate<Item> SEMI_AUTO_GUN = item -> item instanceof GunItem && ((GunItem) item).getGun().getGeneral().getFireMode() != FireMode.AUTOMATIC;
-    public static final Predicate<Item> BAYONET = item -> item instanceof BayonetItem;
 
     public static final Predicate<Item> TRIGGER_FINGER_COMPATIBLE = item -> item instanceof GunItem && !item.builtInRegistryHolder().is(ModTags.Items.SINGLE_SHOT);
 

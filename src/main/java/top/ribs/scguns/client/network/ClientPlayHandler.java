@@ -44,12 +44,10 @@ import top.ribs.scguns.client.particle.BloodParticle;
 import top.ribs.scguns.common.Gun;
 import top.ribs.scguns.common.NetworkGunManager;
 import top.ribs.scguns.common.ReloadType;
-import top.ribs.scguns.common.exosuit.ExoSuitData;
 import top.ribs.scguns.init.ModParticleTypes;
 import top.ribs.scguns.init.ModSyncedDataKeys;
 import top.ribs.scguns.item.GunItem;
 import top.ribs.scguns.item.animated.AnimatedGunItem;
-import top.ribs.scguns.item.animated.ExoSuitItem;
 import top.ribs.scguns.network.message.*;
 import top.ribs.scguns.particles.BulletHoleData;
 import top.ribs.scguns.util.GunModifierHelper;
@@ -76,37 +74,6 @@ public class ClientPlayHandler {
         }
     }
 
-    public static void handleSyncExoSuitUpgrades(S2CMessageSyncExoSuitUpgrades message) {
-        LocalPlayer localPlayer = Minecraft.getInstance().player;
-        if (localPlayer != null) {
-            // Find the player by UUID
-            Player targetPlayer = null;
-            if (localPlayer.getUUID().equals(message.getPlayerId())) {
-                targetPlayer = localPlayer;
-            } else {
-                for (Player player : localPlayer.level().players()) {
-                    if (player.getUUID().equals(message.getPlayerId())) {
-                        targetPlayer = player;
-                        break;
-                    }
-                }
-            }
-
-            if (targetPlayer != null) {
-                ItemStack armorPiece = targetPlayer.getItemBySlot(message.getArmorSlot());
-                if (!armorPiece.isEmpty() && armorPiece.getItem() instanceof ExoSuitItem exoSuitItem) {
-                    ExoSuitData.setUpgradeData(armorPiece, message.getUpgradeData());
-
-                    if (targetPlayer == localPlayer) {
-                        localPlayer.inventoryMenu.broadcastChanges();
-
-                        ItemStack refreshedStack = armorPiece.copy();
-                        targetPlayer.setItemSlot(message.getArmorSlot(), refreshedStack);
-                    }
-                }
-            }
-        }
-    }
     public static void handleMessageDualWieldShotCount(S2CMessageDualWieldShotCount message) {
         GunRenderingHandler.get().updateDualWieldShotCount(message.getEntityId(), message.getShotCount());
     }

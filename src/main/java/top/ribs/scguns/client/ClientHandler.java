@@ -27,17 +27,12 @@ import top.ribs.scguns.client.compat.OptionalClientCompat;
 import top.ribs.scguns.client.handler.*;
 import top.ribs.scguns.client.render.block.*;
 import top.ribs.scguns.client.render.curios.AmmoBoxRenderer;
-import top.ribs.scguns.client.render.entity.TurretProjectileRenderer;
 import top.ribs.scguns.client.render.gun.ModelOverrides;
 import top.ribs.scguns.client.render.gun.model.*;
 import top.ribs.scguns.client.screen.*;
-import top.ribs.scguns.client.screen.VentCollectorScreen;
-import top.ribs.scguns.client.screen.widget.ThermolithScreen;
 import top.ribs.scguns.client.util.PropertyHelper;
 import top.ribs.scguns.debug.IEditorMenu;
 import top.ribs.scguns.debug.client.screen.EditorScreen;
-import top.ribs.scguns.entity.client.*;
-import top.ribs.scguns.entity.monster.BeaconProjectileEntity;
 import top.ribs.scguns.init.*;
 import top.ribs.scguns.item.AmmoBoxItem;
 import top.ribs.scguns.item.GunItem;
@@ -77,39 +72,8 @@ public class ClientHandler {
                     new SimpleTexture(ResourceLocation.withDefaultNamespace("textures/entity/beacon_beam.png"))
             );
         });
-        EntityRenderers.register(ModEntities.PRIMED_POWDER_KEG.get(), PowderKegRenderer::new);
-        EntityRenderers.register(ModEntities.PRIMED_NITRO_KEG.get(), NitroKegRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.MACERATOR.get(), MaceratorRenderer::new);
         BlockEntityRenderers.register(ModBlockEntities.GUN_SHELF_BLOCK_ENTITY.get(), GunShelfRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.POWERED_MACERATOR.get(), PoweredMaceratorRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.MECHANICAL_PRESS.get(), MechanicalPressRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.BASIC_TURRET.get(), BasicTurretRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.ENEMY_TURRET.get(), EnemyTurretRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.AUTO_TURRET.get(), AutoTurretRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.SHOTGUN_TURRET.get(), ShotgunTurretRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.SNIPER_TURRET.get(), SniperTurretRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.POWERED_MECHANICAL_PRESS.get(), PoweredMechanicalPressRenderer::new);
-        BlockEntityRenderers.register(ModBlockEntities.POLAR_GENERATOR.get(), PolarGeneratorRenderer::new);
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.PLASMA_LANTERN.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.WHITE_NITER_GLASS.get(), RenderType.translucent());;
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.RED_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.GREEN_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLUE_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.YELLOW_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.ORANGE_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.PURPLE_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BLACK_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.PINK_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.BROWN_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CYAN_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIGHT_BLUE_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIME_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.MAGENTA_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.GRAY_NITER_GLASS.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.LIGHT_GRAY_NITER_GLASS.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.FAKE_SOUL_FIRE.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(ModBlocks.CHARGED_AMETHYST_RELAY.get(), RenderType.cutout());
 
         registerAmmoCountProperty(ModItems.PISTOL_AMMO_BOX.get());
         registerAmmoCountProperty(ModItems.RIFLE_AMMO_BOX.get());
@@ -119,47 +83,10 @@ public class ClientHandler {
         registerAmmoCountProperty(ModItems.ROCKET_AMMO_BOX.get());
         registerAmmoCountProperty(ModItems.SPECIAL_AMMO_BOX.get());
         registerAmmoCountProperty(ModItems.EMPTY_CASING_POUCH.get());
-        registerAmmoCountProperty(ModItems.DISHES_POUCH.get());
-        registerAmmoCountProperty(ModItems.ROCK_POUCH.get());
         registerAmmoCountProperty(ModItems.CREATIVE_AMMO_BOX.get());
         NeoForge.EVENT_BUS.register(new PlayerModelHandler());
-        EntityRenderers.register(ModEntities.COG_MINION.get(), CogMinionRenderer::new);
-        EntityRenderers.register(ModEntities.COG_KNIGHT.get(), CogKnightRenderer::new);
-        EntityRenderers.register(ModEntities.SKY_CARRIER.get(), SkyCarrierRenderer::new);
-        EntityRenderers.register(ModEntities.SUPPLY_SCAMP.get(), SupplyScampRenderer::new);
-        EntityRenderers.register(ModEntities.REDCOAT.get(), RedcoatRenderer::new);
-        EntityRenderers.register(ModEntities.HIVE.get(), HiveRenderer::new);
-        EntityRenderers.register(ModEntities.SWARM.get(), SwarmRenderer::new);
-        EntityRenderers.register(ModEntities.DISSIDENT.get(), DissidentRenderer::new);
-        EntityRenderers.register(ModEntities.HORNLIN.get(), HornlinRenderer::new);
-        EntityRenderers.register(ModEntities.ZOMBIFIED_HORNLIN.get(), ZombifiedHornlinRenderer::new);
-        EntityRenderers.register(ModEntities.TRAUMA_UNIT.get(), TraumaUnitRenderer::new);
-        EntityRenderers.register(ModEntities.THE_MERCHANT.get(), TheMerchantRenderer::new);
 
-        EntityRenderers.register(ModEntities.BLUNDERER.get(), BlundererRenderer::new);
-        EntityRenderers.register(ModEntities.ADJUDICATOR.get(), AdjudicatorRenderer::new);
-        EntityRenderers.register(ModEntities.SUBJUGATOR.get(), SubjugatorRenderer::new);
-        EntityRenderers.register(ModEntities.FINFORCER.get(), FinforcerRenderer::new);
-        EntityRenderers.register(ModEntities.PRAETOR.get(), PraetorRenderer::new);
-        EntityRenderers.register(ModEntities.MOTHER_GHAST.get(), MotherGhastRenderer::new);
-        EntityRenderers.register(ModEntities.VIVENTRUM.get(), ViventrumRenderer::new);
-        EntityRenderers.register(ModEntities.SULFURHEAD.get(), SulfurheadRenderer::new);
-        EntityRenderers.register(ModEntities.SIGNAL_BEACON.get(), SignalBeaconRenderer::new);
-        EntityRenderers.register(ModEntities.BRASS_BOLT.get(), BrassBoltRenderer::new);
-        EntityRenderers.register(ModEntities.TRAUMA_HOOK.get(), TraumaHookRenderer::new);
-        EntityRenderers.register(ModEntities.SCAMP_TANK.get(), ScampTankRenderer::new);
-        EntityRenderers.register(ModEntities.SCAMP_ROCKET.get(), ScampRocketRenderer::new);
-        EntityRenderers.register(ModEntities.SCAMPLER.get(), ScamplerRenderer::new);
-        EntityRenderers.register(ModEntities.BEACON_PROJECTILE.get(), (context) ->
-                new EntityRenderer<BeaconProjectileEntity>(context) {
-                    @Override
-                    public ResourceLocation getTextureLocation(BeaconProjectileEntity entity) {
-                        return ResourceLocation.fromNamespaceAndPath("minecraft", "textures/item/beacon.png");
-                    }
-                });
 
-        EntityRenderers.register(ModEntities.TURRET_PROJECTILE.get(), TurretProjectileRenderer::new);
-        EntityRenderers.register(ModEntities.RAID_FLARE.get(), RaidFlareRenderer::new);
 
         // Register the AmmoBoxRenderer for each ammo box item
         CuriosRendererRegistry.register(ModItems.PISTOL_AMMO_BOX.get(), AmmoBoxRenderer::new);
@@ -170,8 +97,6 @@ public class ClientHandler {
         CuriosRendererRegistry.register(ModItems.ROCKET_AMMO_BOX.get(), AmmoBoxRenderer::new);
         CuriosRendererRegistry.register(ModItems.SPECIAL_AMMO_BOX.get(), AmmoBoxRenderer::new);
         CuriosRendererRegistry.register(ModItems.EMPTY_CASING_POUCH.get(), AmmoBoxRenderer::new);
-        CuriosRendererRegistry.register(ModItems.DISHES_POUCH.get(), AmmoBoxRenderer::new);
-        CuriosRendererRegistry.register(ModItems.ROCK_POUCH.get(), AmmoBoxRenderer::new);
         CuriosRendererRegistry.register(ModItems.CREATIVE_AMMO_BOX.get(), AmmoBoxRenderer::new);
 
         event.enqueueWork(ModMuzzleFlashes::init);
@@ -354,24 +279,6 @@ public class ClientHandler {
 
 
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
-        event.register(ModMenuTypes.MACERATOR_MENU.get(), MaceratorScreen::new);
-        event.register(ModMenuTypes.POWERED_MACERATOR_MENU.get(), PoweredMaceratorScreen::new);
-        event.register(ModMenuTypes.LIGHTING_BATTERY_MENU.get(), LightningBatteryScreen::new);
-        event.register(ModMenuTypes.SUPPLY_SCAMP_MENU.get(), SupplyScampScreen::new);
-        event.register(ModMenuTypes.SHELL_CATCHER_MODULE.get(), ShellCatcherModuleScreen::new);
-        event.register(ModMenuTypes.AMMO_MODULE.get(), AmmoModuleScreen::new);
-        event.register(ModMenuTypes.BASIC_TURRET_MENU.get(), BasicTurretScreen::new);
-        event.register(ModMenuTypes.AUTO_TURRET_MENU.get(), AutoTurretScreen::new);
-        event.register(ModMenuTypes.SHOTGUN_TURRET_MENU.get(), ShotgunTurretScreen::new);
-        event.register(ModMenuTypes.SNIPER_TURRET_MENU.get(), SniperTurretScreen::new);
-        event.register(ModMenuTypes.VENT_COLLECTOR_MENU.get(), VentCollectorScreen::new);
-        event.register(ModMenuTypes.MECHANICAL_PRESS_MENU.get(), MechanicalPressScreen::new);
-        event.register(ModMenuTypes.POWERED_MECHANICAL_PRESS_MENU.get(), PoweredMechanicalPressScreen::new);
-        event.register(ModMenuTypes.POLAR_GENERATOR_MENU.get(), PolarGeneratorScreen::new);
-        event.register(ModMenuTypes.EXOSUIT_MENU.get(), ExoSuitScreen::new);
-        event.register(ModMenuTypes.CRYONITER_MENU.get(), CryoniterScreen::new);
-        event.register(ModMenuTypes.THERMOLITH_MENU.get(), ThermolithScreen::new);
-        event.register(ModMenuTypes.GUN_BENCH.get(), GunBenchScreen::new);
         event.register(ModContainers.ATTACHMENTS.get(), AttachmentScreen::new);
     }
 
@@ -381,23 +288,6 @@ public class ClientHandler {
         if (mc.player != null && mc.screen == null && event.getAction() == GLFW.GLFW_PRESS) {
             if (KeyBinds.KEY_ATTACHMENTS.isDown()) {
                 PacketHandler.getPlayChannel().sendToServer(new C2SMessageAttachments());
-            }
-
-            // ExoSuit power toggles
-            if (KeyBinds.KEY_ENABLE_EXO_HELMET.consumeClick()) {
-                PacketHandler.getPlayChannel().sendToServer(
-                        new C2SMessageToggleExoSuitPower(C2SMessageToggleExoSuitPower.PowerType.HELMET_HUD)
-                );
-            }
-
-            if (KeyBinds.KEY_ENABLE_EXO_BOOTS.consumeClick()) {
-                PacketHandler.getPlayChannel().sendToServer(
-                        new C2SMessageToggleExoSuitPower(C2SMessageToggleExoSuitPower.PowerType.BOOTS_MOBILITY)
-                );
-            }
-
-            if (KeyBinds.KEY_ENABLE_EXO_CHESTPLATE.consumeClick()) {
-                PacketHandler.getPlayChannel().sendToServer(new C2SMessageUtilityAction());
             }
         }
     }

@@ -74,14 +74,6 @@ public class Zilk45Model implements IOverrideModel {
                 RenderUtil.renderModel(SpecialModels.ZILK_45_GRIP_VERTICAL.getModel(), stack, matrixStack, buffer, light, overlay);
             } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.LIGHT_GRIP.get()) {
                 RenderUtil.renderModel(SpecialModels.ZILK_45_GRIP_LIGHT.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.IRON_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.ZILK_45_IRON_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.ANTHRALITE_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.ZILK_45_ANTHRALITE_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.DIAMOND_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.ZILK_45_DIAMOND_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
-            } else if (Gun.getAttachment(IAttachment.Type.UNDER_BARREL, stack).getItem() == ModItems.NETHERITE_BAYONET.get()) {
-                RenderUtil.renderModel(SpecialModels.ZILK_45_NETHERITE_BAYONET.getModel(), stack, matrixStack, buffer, light, overlay);
             }
         }
     }

@@ -27,37 +27,22 @@ import top.ribs.scguns.client.handler.*;
 import top.ribs.scguns.client.screen.*;
 import top.ribs.scguns.common.BoundingBoxManager;
 import top.ribs.scguns.common.ProjectileManager;
-import top.ribs.scguns.common.exosuit.ExoSuitUpgradeManager;
-import top.ribs.scguns.config.EliteTierConfig;
-import top.ribs.scguns.config.GunMobValues;
-import top.ribs.scguns.config.GunnerMobConfig;
-import top.ribs.scguns.config.GunnerMobSpawner;
 import top.ribs.scguns.compat.CreateModCondition;
 import top.ribs.scguns.compat.FarmersDelightModCondition;
 import top.ribs.scguns.compat.IEModCondition;
-import top.ribs.scguns.config.RaidConfig;
-import top.ribs.scguns.config.RaidFlareConfig;
-import top.ribs.scguns.event.SculkHordeEvents;
-import top.ribs.scguns.config.MerchantTradeConfig;
 import top.ribs.scguns.config.ProjectileAdvantageConfig;
-import top.ribs.scguns.config.TieredWeaponConfig;
-import top.ribs.scguns.entity.config.ConfigLoader;
 import top.ribs.scguns.entity.projectile.*;
 import top.ribs.scguns.entity.throwable.GrenadeEntity;
 import top.ribs.scguns.event.*;
 import top.ribs.scguns.init.ModBlockEntities;
 import top.ribs.scguns.client.ClientHandler;
-import top.ribs.scguns.entity.config.CogMinionConfig;
-import top.ribs.scguns.entity.raid.RaidManager;
 import top.ribs.scguns.init.*;
 import top.ribs.scguns.network.PacketHandler;
-import top.ribs.scguns.world.VillageStructures;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 
 import static top.ribs.scguns.Reference.MOD_ID;
-import static top.ribs.scguns.compat.CompatManager.SCULK_HORDE_LOADED;
 
 @Mod(MOD_ID)
 public class ScorchedGuns {
@@ -71,10 +56,6 @@ public class ScorchedGuns {
             CONDITION_CODECS.register(FarmersDelightModCondition.ID, () -> FarmersDelightModCondition.CODEC);
     private static final DeferredHolder<MapCodec<? extends ICondition>, MapCodec<IEModCondition>> IE_MOD_LOADED_CONDITION =
             CONDITION_CODECS.register(IEModCondition.ID, () -> IEModCondition.CODEC);
-    public static CogMinionConfig COG_MINION_CONFIG = new CogMinionConfig();
-    public static GunnerMobConfig GUNNER_MOB_CONFIG = new GunnerMobConfig();
-    public static TieredWeaponConfig TIERED_WEAPON_CONFIG = new TieredWeaponConfig(Collections.emptyMap());
-    public static EliteTierConfig ELITE_TIER_CONFIG = new EliteTierConfig(Collections.emptyMap());
     public static boolean backpackedLoaded;
     public static boolean curiosLoaded;
     public static boolean controllableLoaded;
@@ -97,39 +78,27 @@ public class ScorchedGuns {
         IEventBus bus = modEventBus;
         modEventBus.addListener(this::onConfigLoad);
         modEventBus.addListener(this::onConfigReload);
-        ModFluids.FLUID_TYPES.register(bus);
-        ModFluids.FLUIDS.register(bus);
         ModItems.REGISTER.register(bus);
         CONDITION_CODECS.register(bus);
 
         SCAttributes.ATTRIBUTES.register(modEventBus);
         modEventBus.addListener(ModCapabilities::registerCapabilities);
         modEventBus.addListener(SCEntityAttributes::onEntityAttributeModification);
-        modEventBus.addListener(ModCommonEventBus::entityAttributes);
-        modEventBus.addListener(ModCommonEventBus::registerSpawnPlacements);
 
         initializeModDependencies();
         ModItems.registerItems();
         // Register other mod features
-        NeoForge.EVENT_BUS.addListener(VillageStructures::addNewVillageBuilding);
         ModCreativeModeTabs.register(bus);
         ModBlockEntities.BLOCK_ENTITIES.register(bus);
         ModBlocks.REGISTER.register(bus);
         ModContainers.REGISTER.register(bus);
         ModEffects.REGISTER.register(bus);
-        ModMenuTypes.register(bus);
         ModEnchantments.REGISTER.register(bus);
         ModEntities.REGISTER.register(bus);
         ModParticleTypes.REGISTER.register(bus);
         ModSounds.REGISTER.register(bus);
-        ModVillagers.register(bus);
-        ModFeatures.register(bus);
         ModLootModifiers.LOOT_MODIFIERS.register(bus);
-        ModPointOfInterestTypes.REGISTER.register(bus);
-        ModRecipes.register(modEventBus);
-        modEventBus.addListener(ModCauldronInteractions::registerCauldronFluidContent);
 
-        ModStructures.REGISTRY.register(bus);
         bus.addListener(this::onCommonSetup);
 
         // Ensure client-specific code is run only on the client side
@@ -147,21 +116,9 @@ public class ScorchedGuns {
         NeoForge.EVENT_BUS.register(WeaponMovementEventHandler.class);
         NeoForge.EVENT_BUS.register(OceanWeaponEventHandler.class);
         NeoForge.EVENT_BUS.register(PiglinWeaponEventHandler.class);
-        NeoForge.EVENT_BUS.register(MerchantTradeConfig.class);
         NeoForge.EVENT_BUS.register(ProjectileAdvantageConfig.class);
-        NeoForge.EVENT_BUS.register(GunnerMobSpawner.class);
-        NeoForge.EVENT_BUS.register(GunProgressionEventHandler.class);
-        NeoForge.EVENT_BUS.register(RaidEventHandler.class);
-        NeoForge.EVENT_BUS.register(RaidConfig.class);
-        NeoForge.EVENT_BUS.register(RaidFlareConfig.class);
-        NeoForge.EVENT_BUS.register(RaidManager.class);
-        NeoForge.EVENT_BUS.register(GuanoItemEventHandler.class);
-        NeoForge.EVENT_BUS.register(CogMaceEventHandler.class);
 
 
-        if (SCULK_HORDE_LOADED) {
-            NeoForge.EVENT_BUS.register(SculkHordeEvents.class);
-        }
     }
     private void onConfigLoad(ModConfigEvent.Loading event) {
         handleConfigEvent(event.getConfig());
@@ -173,10 +130,6 @@ public class ScorchedGuns {
 
     private void handleConfigEvent(ModConfig config) {
         if (!MOD_ID.equals(config.getModId())) {
-            return;
-        }
-        if (config.getType() == ModConfig.Type.COMMON) {
-            GunMobValues.init();
             return;
         }
         if (config.getType() == ModConfig.Type.SERVER) {
@@ -200,10 +153,6 @@ public class ScorchedGuns {
         mekanismLoaded = ModList.get().isLoaded("mekanism");
         marjLoaded = ModList.get().isLoaded("majruszsdifficulty");
     }
-    @SubscribeEvent
-    public void onAddReloadListeners(AddReloadListenerEvent event) {
-        event.addListener(new ExoSuitUpgradeManager());
-    }
 
     public static boolean shouldUseEnergyGuns() {
         return !createLoaded || useEnergyGuns;
@@ -212,7 +161,6 @@ public class ScorchedGuns {
     private void onCommonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             PacketHandler.init();
-            ModCauldronInteractions.register();
             FrameworkAPI.registerSyncedDataKey(ModSyncedDataKeys.AIMING);
             FrameworkAPI.registerSyncedDataKey(ModSyncedDataKeys.RELOADING);
             FrameworkAPI.registerSyncedDataKey(ModSyncedDataKeys.SHOOTING);
@@ -256,21 +204,9 @@ public class ScorchedGuns {
             ProjectileManager.getInstance().registerFactory(ModItems.MICROJET.get(), (worldIn, entity, weapon, item, modifiedGun) -> new MicroJetEntity(ModEntities.MICROJET.get(), worldIn, entity, weapon, item, modifiedGun));
             ProjectileManager.getInstance().registerFactory(ModItems.GRENADE.get(), (worldIn, entity, weapon, item, modifiedGun) -> new GrenadeEntity(ModEntities.GRENADE.get(), worldIn, entity, weapon, item, modifiedGun));
             useEnergyGuns = Config.COMMON.gameplay.forceEnergyGuns.get();
-            GunnerMobSpawner.reloadConfigs();
 
           if (Config.COMMON.gameplay.improvedHitboxes.get()) {
                 NeoForge.EVENT_BUS.register(new BoundingBoxManager());
-            }
-            try {
-                InputStream inputStream = ScorchedGuns.class.getClassLoader().getResourceAsStream("data/scguns/entity/cog_minion_item.json");
-                if (inputStream != null) {
-                    COG_MINION_CONFIG = ConfigLoader.loadCogMinionConfig(inputStream);
-                    inputStream.close();
-                } else {
-                    LOGGER.error("Could not find Cog Minion config");
-                }
-            } catch (IOException e) {
-                LOGGER.error("Failed to load Cog Minion config", e);
             }
         });
     }

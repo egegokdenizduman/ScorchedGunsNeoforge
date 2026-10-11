@@ -35,7 +35,6 @@ public class ModCreativeModeTabs {
             ModEnchantments.ACCELERATOR,
             ModEnchantments.PUNCTURING,
             ModEnchantments.SHELL_CATCHER,
-            ModEnchantments.BANZAI,
             ModEnchantments.HEAVY_SHOT,
             ModEnchantments.ELEMENTAL_POP,
             ModEnchantments.WATER_PROOF,
@@ -215,100 +214,17 @@ public class ModCreativeModeTabs {
                         CreativeTabHelper.addItemWithFullAmmo(pOutput, ModItems.TERRA_INCOGNITA.get());
                         CreativeTabHelper.addItemWithFullAmmo(pOutput, ModItems.ASTELLA.get());
 
-                        pOutput.accept(ModItems.ANTHRALITE_PICKAXE.get());
-                        pOutput.accept(ModItems.ANTHRALITE_AXE.get());
-                        pOutput.accept(ModItems.ANTHRALITE_HAMMER.get());
-                        pOutput.accept(ModItems.ANTHRALITE_PAXEL.get());
-                        pOutput.accept(ModItems.ANTHRALITE_SHOVEL.get());
-                        pOutput.accept(ModItems.ANTHRALITE_HOE.get());
-                        pOutput.accept(ModItems.ANTHRALITE_SWORD.get());
-                        pOutput.accept(ModItems.COG_MACE.get());
-                        pOutput.accept(ModItems.WARAXE.get());
                         if (ModCompat.isFarmersDelightLoaded()) {
-                            pOutput.accept(ModItems.ANTHRALITE_KNIFE.get());
                         }
-                        pOutput.accept(ModItems.ANTHRALITE_HELMET.get());
-                        pOutput.accept(ModItems.ANTHRALITE_RESPIRATOR.get());
-                        pOutput.accept(ModItems.ANTHRALITE_CHESTPLATE.get());
-                        pOutput.accept(ModItems.ANTHRALITE_LEGGINGS.get());
-                        pOutput.accept(ModItems.ANTHRALITE_BOOTS.get());
-                        pOutput.accept(ModItems.RIDGETOP.get());
-                        pOutput.accept(ModItems.IRON_MASK.get());
-                        pOutput.accept(ModItems.ADRIEN_HELM.get());
-                        pOutput.accept(ModItems.ADRIEN_CHESTPLATE.get());
-                        pOutput.accept(ModItems.ADRIEN_LEGGINGS.get());
-                        pOutput.accept(ModItems.ADRIEN_BOOTS.get());
-                        pOutput.accept(ModItems.BRASS_MASK.get());
-                        pOutput.accept(ModItems.COG_KNIGHT_HELMET.get());
-                        pOutput.accept(ModItems.COG_KNIGHT_CHESTPLATE.get());
-                        pOutput.accept(ModItems.COG_KNIGHT_LEGGINGS.get());
-                        pOutput.accept(ModItems.COG_KNIGHT_BOOTS.get());
-                        pOutput.accept(ModItems.EXO_SUIT_HELMET.get());
-                        pOutput.accept(ModItems.EXO_SUIT_CHESTPLATE.get());
-                        pOutput.accept(ModItems.EXO_SUIT_LEGGINGS.get());
-                        pOutput.accept(ModItems.EXO_SUIT_BOOTS.get());
-                        pOutput.accept(ModItems.NETHERITE_RESPIRATOR.get());
-                        pOutput.accept(ModItems.DIAMOND_STEEL_HELMET.get());
-                        pOutput.accept(ModItems.DIAMOND_STEEL_CHESTPLATE.get());
-                        pOutput.accept(ModItems.DIAMOND_STEEL_LEGGINGS.get());
-                        pOutput.accept(ModItems.DIAMOND_STEEL_BOOTS.get());
-                        pOutput.accept(ModItems.TREATED_BRASS_HELMET.get());
-                        pOutput.accept(ModItems.TREATED_BRASS_CHESTPLATE.get());
-                        pOutput.accept(ModItems.TREATED_BRASS_LEGGINGS.get());
-                        pOutput.accept(ModItems.TREATED_BRASS_BOOTS.get());
-                        pOutput.accept(ModItems.REDCOAT_HAT.get());
-                        pOutput.accept(ModItems.REDCOAT_COAT.get());
-                        pOutput.accept(ModItems.REDCOAT_PANTS.get());
-                        pOutput.accept(ModItems.REDCOAT_BOOTS.get());
-                        pOutput.accept(ModItems.SCRAP_HELMET.get());
-                        pOutput.accept(ModItems.SCRAP_CHESTPLATE.get());
-                        pOutput.accept(ModItems.SCRAP_LEGGINGS.get());
-                        pOutput.accept(ModItems.SCRAP_BOOTS.get());
                         pOutput.accept(ModItems.REPAIR_KIT.get());
-                        pOutput.accept(ModItems.COMPOSITE_FILTER.get());
-                        pOutput.accept(ModItems.RANGE_FINDER.get());
-                        pOutput.accept(ModItems.METAL_DETECTOR.get());
-                        pOutput.accept(ModItems.FLARE_PISTOL.get());
-                        pOutput.accept(ModItems.WHITE_FLAG.get());
-                        pOutput.accept(ModItems.RUSTY_MEDAL.get());
-                        pOutput.accept(ModItems.LABOR_TROPHY.get());
-                        pOutput.accept(ModItems.SNAPPED_COGWHEEL.get());
-                        pOutput.accept(ModItems.COG_HEART.get());
-                        pOutput.accept(ModItems.GOLD_IDOL.get());
-                        pOutput.accept(ModItems.LEVIATHAN_TOOTH.get());
-                        pOutput.accept(ModItems.CEREMONIAL_COD.get());
-                        pOutput.accept(ModItems.SCULK_TOME.get());
 
-                        pOutput.accept(ModItems.EXO_SUIT_CORE.get());
-                        pOutput.accept(ModItems.ADVANCED_EXO_SUIT_CORE.get());
 
-                        pOutput.accept(ModItems.NIGHT_VISION_MODULE.get());
-                        pOutput.accept(ModItems.TARGET_TRACKER_MODULE.get());
-                        pOutput.accept(ModItems.GAS_MASK_MODULE.get());
-                        pOutput.accept(ModItems.REBREATHER_MODULE.get());
-                        pOutput.accept(ModItems.JETPACK_MODULE.get());
-                        pOutput.accept(ModItems.RABBIT_MODULE.get());
-                        pOutput.accept(ModItems.SUIT_GREASE.get());
-                        pOutput.accept(ModItems.TENSION_SPRING.get());
-                        pOutput.accept(ModItems.SHOCK_ABSORBER.get());
 
-                        pOutput.accept(ModItems.ARMOR_PLATE.get());
-                        pOutput.accept(ModItems.PAULDRON.get());
-                        pOutput.accept(ModItems.HEAVY_ARMOR_PLATE.get());
-                        pOutput.accept(ModItems.HEAVY_PAULDRON.get());
-                        pOutput.accept(ModItems.ARMOR_POUCHES.get());
-                        pOutput.accept(ModItems.HEAVY_ARMOR_POUCHES.get());
 
                         pOutput.accept(ModItems.PEBBLES.get());
-                        pOutput.accept(ModItems.SULFUR_CHUNK.get());
                         pOutput.accept(ModItems.SULFUR_DUST.get());
-                        pOutput.accept(ModItems.RAW_PHOSPHOR.get());
                         pOutput.accept(ModItems.PHOSPHOR_DUST.get());
-                        pOutput.accept(ModItems.VICIOUS_ACID_BUCKET.get());
-                        pOutput.accept(ModItems.NITER_DUST.get());
-                        pOutput.accept(ModItems.BAT_GUANO.get());
                         pOutput.accept(ModItems.GUNPOWDER_DUST.get());
-                        pOutput.accept(ModItems.AUREOUS_SLAG.get());
                         pOutput.accept(ModItems.SHEOL.get());
                         pOutput.accept(ModItems.SHEOL_DUST.get());
                         pOutput.accept(ModItems.PEAL.get());
@@ -337,7 +253,6 @@ public class ModCreativeModeTabs {
                         }
                         pOutput.accept(ModItems.ANTHRALITE_INGOT.get());
                         pOutput.accept(ModItems.ANTHRALITE_NUGGET.get());
-                        pOutput.accept(ModItems.ANCIENT_BRASS.get());
                         pOutput.accept(ModItems.TREATED_IRON_BLEND.get());
                         pOutput.accept(ModItems.TREATED_IRON_INGOT.get());
                         pOutput.accept(ModItems.TREATED_IRON_NUGGET.get());
@@ -357,20 +272,6 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.BULLET_MOLD.get());
                         pOutput.accept(ModItems.GUN_PARTS_MOLD.get());
                         pOutput.accept(ModItems.DISC_MOLD.get());
-                        pOutput.accept(ModItems.ANTIQUE_BLUEPRINT.get());
-                        pOutput.accept(ModItems.FRONTIER_BLUEPRINT.get());
-                        pOutput.accept(ModItems.COPPER_BLUEPRINT.get());
-                        pOutput.accept(ModItems.IRON_BLUEPRINT.get());
-                        pOutput.accept(ModItems.WRECKER_BLUEPRINT.get());
-                        pOutput.accept(ModItems.TREATED_BRASS_BLUEPRINT.get());
-                        pOutput.accept(ModItems.DIAMOND_STEEL_BLUEPRINT.get());
-                        pOutput.accept(ModItems.OCEAN_BLUEPRINT.get());
-                        pOutput.accept(ModItems.PIGLIN_BLUEPRINT.get());
-                        pOutput.accept(ModItems.DEEP_DARK_BLUEPRINT.get());
-                        pOutput.accept(ModItems.END_BLUEPRINT.get());
-                        pOutput.accept(ModItems.SCORCHED_BLUEPRINT.get());
-                        pOutput.accept(ModItems.EXO_SUIT_BLUEPRINT.get());
-                        pOutput.accept(ModItems.BLUEPRINT_SCRAP.get());
 
                         pOutput.accept(ModItems.SMALL_COPPER_CASING.get());
                         pOutput.accept(ModItems.MEDIUM_COPPER_CASING.get());
@@ -414,16 +315,6 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.GAS_GRENADE_ROUND.get());
                         pOutput.accept(ModItems.BOUNCY_GRENADE_ROUND.get());
                         pOutput.accept(ModItems.OSBORNE_SLUG.get());
-                        pOutput.accept(ModItems.ANTIQUE_FLARE.get());
-                        pOutput.accept(ModItems.FRONTIER_FLARE.get());
-                        pOutput.accept(ModItems.COPPER_FLARE.get());
-                        pOutput.accept(ModItems.IRON_FLARE.get());
-                        pOutput.accept(ModItems.WRECKER_FLARE.get());
-                        pOutput.accept(ModItems.GOLD_FLARE.get());
-                        pOutput.accept(ModItems.DIAMOND_STEEL_FLARE.get());
-                        pOutput.accept(ModItems.TREATED_BRASS_FLARE.get());
-                        pOutput.accept(ModItems.OCEAN_FLARE.get());
-                        pOutput.accept(ModItems.SCULK_FLARE.get());
 
 //                        pOutput.accept(ModItems.UNFINISHED_COMPACT_COPPER_ROUND.get());
 //                        pOutput.accept(ModItems.UNFINISHED_STANDARD_COPPER_ROUND.get());
@@ -458,8 +349,6 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.SPECIAL_AMMO_BOX.get());
                         pOutput.accept(ModItems.CREATIVE_AMMO_BOX.get());
                         pOutput.accept(ModItems.EMPTY_CASING_POUCH.get());
-                        pOutput.accept(ModItems.DISHES_POUCH.get());
-                        pOutput.accept(ModItems.ROCK_POUCH.get());
 
 
 
@@ -478,7 +367,6 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.HEAVY_GUN_BARREL.get());
                         pOutput.accept(ModItems.GUN_GRIP.get());
                         pOutput.accept(ModItems.GUN_MAGAZINE.get());
-                        pOutput.accept(ModItems.TURRET_PLATFORM.get());
                         pOutput.accept(ModItems.CHARGED_AMETHYST_SHARD.get());
                         pOutput.accept(ModItems.EMPTY_TANK.get());
                         pOutput.accept(ModItems.AIR_CANISTER.get());
@@ -495,13 +383,6 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.STUN_GRENADE.get());
                         pOutput.accept(ModItems.SHOTBALL.get());
                         pOutput.accept(ModItems.MOLOTOV_COCKTAIL.get());
-                        pOutput.accept(ModItems.CHOKE_BOMB.get());
-                        pOutput.accept(ModItems.SWARM_BOMB.get());
-                        pOutput.accept(ModItems.NAIL_BOMB.get());
-                        pOutput.accept(ModItems.HELLFIRE_BOMB.get());
-                        pOutput.accept(ModItems.GAS_GRENADE.get());
-                        pOutput.accept(ModItems.BEACON_GRENADE.get());
-                        pOutput.accept(ModItems.WEIRD_FLESH.get());
 
                         pOutput.accept(ModItems.COLD_PACK.get());
                         pOutput.accept(ModItems.BASIC_POULTICE.get());
@@ -524,198 +405,24 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.MUZZLE_BRAKE.get());
                         pOutput.accept(ModItems.LIGHT_GRIP.get());
                         pOutput.accept(ModItems.VERTICAL_GRIP.get());
-                        pOutput.accept(ModItems.IRON_BAYONET.get());
-                        pOutput.accept(ModItems.ANTHRALITE_BAYONET.get());
-                        pOutput.accept(ModItems.DIAMOND_BAYONET.get());
-                        pOutput.accept(ModItems.NETHERITE_BAYONET.get());
                         pOutput.accept(ModItems.EXTENDED_MAG.get());
                         pOutput.accept(ModItems.SPEED_MAG.get());
                         // pOutput.accept(ModItems.PLUS_P_MAG.get());
                         CreativeTabHelper.addAllEnchantmentBookVariants(pParameters, pOutput);
-                        pOutput.accept(ModItems.MASS_PRODUCTION_MUSIC_DISC.get());
-                        pOutput.accept(ModItems.MASS_DESTRUCTION_MUSIC_DISC.get());
-                        pOutput.accept(ModItems.MASS_DESTRUCTION_EXTENDED_MUSIC_DISC.get());
-                        pOutput.accept(ModItems.TEAM_LOG.get());
-                        pOutput.accept(ModItems.ENEMY_LOG.get());
-                        pOutput.accept(ModItems.SCAMP_PACKAGE.get());
-                        pOutput.accept(ModItems.VIVENTRUM_PACKAGE.get());
-                        pOutput.accept(ModItems.COG_LOCATOR.get());
-                        pOutput.accept(ModItems.THE_PACT.get());
 
 
                         pOutput.accept(ModBlocks.ANTHRALITE_ORE.get());
                         pOutput.accept(ModBlocks.DEEPSLATE_ANTHRALITE_ORE.get());
-                        pOutput.accept(ModBlocks.ANTHRALITE_BLOCK.get());
-                        pOutput.accept(ModBlocks.ANTHRALITE_GRATE.get());
-                        pOutput.accept(ModBlocks.ANTHRALITE_GRATE_PANE.get());
-                        pOutput.accept(ModBlocks.ANTHRALITE_TILES.get());
-                        pOutput.accept(ModBlocks.ANTHRALITE_TILES_STAIRS.get());
-                        pOutput.accept(ModBlocks.ANTHRALITE_TILES_SLAB.get());
-                        pOutput.accept(ModBlocks.ANTHRALITE_PLATES.get());
-                        pOutput.accept(ModBlocks.CHISELED_ANTHRALITE_BLOCK.get());
-                        pOutput.accept(ModBlocks.CUT_ANTHRALITE.get());
-                        pOutput.accept(ModBlocks.CUT_ANTHRALITE_STAIRS.get());
-                        pOutput.accept(ModBlocks.CUT_ANTHRALITE_SLAB.get());
-                        pOutput.accept(ModBlocks.ANTHRALITE_PILLAR.get());
-                        pOutput.accept(ModBlocks.ANTHRALITE_LAMP.get());
-                        pOutput.accept(ModBlocks.RAW_ANTHRALITE_BLOCK.get());
-                        pOutput.accept(ModBlocks.SULFUR_ORE.get());
-                        pOutput.accept(ModBlocks.DEEPSLATE_SULFUR_ORE.get());
-                        pOutput.accept(ModBlocks.NETHER_SULFUR_ORE.get());
                         pOutput.accept(ModBlocks.VEHEMENT_COAL_ORE.get());
 
-                        pOutput.accept(ModBlocks.RICH_PHOSPHORITE.get());
-                        pOutput.accept(ModBlocks.RAW_PHOSPHOR_BLOCK.get());
-                        pOutput.accept(ModBlocks.SULFUR_BLOCK.get());
-                        pOutput.accept(ModBlocks.ANCIENT_BRASS_BLOCK.get());
-                        pOutput.accept(ModBlocks.SCORCHED_BLOCK.get());
-                        pOutput.accept(ModBlocks.TREATED_IRON_BLOCK.get());
-                        pOutput.accept(ModBlocks.CHISELED_TREATED_IRON_BLOCK.get());
-                        pOutput.accept(ModBlocks.CUT_TREATED_IRON.get());
-                        pOutput.accept(ModBlocks.CUT_TREATED_IRON_STAIRS.get());
-                        pOutput.accept(ModBlocks.CUT_TREATED_IRON_SLAB.get());
-                        pOutput.accept(ModBlocks.TREATED_IRON_LAMP.get());
-                        pOutput.accept(ModBlocks.TREATED_IRON_PLATES.get());
-                        pOutput.accept(ModBlocks.TREATED_IRON_BARS.get());
-                        pOutput.accept(ModBlocks.TREATED_IRON_GRATE_PANE.get());
-                        pOutput.accept(ModBlocks.TREATED_BRASS_BLOCK.get());
-                        pOutput.accept(ModBlocks.CHISELED_TREATED_BRASS_BLOCK.get());
-                        pOutput.accept(ModBlocks.TREATED_BRASS_TILES.get());
-                        pOutput.accept(ModBlocks.TREATED_BRASS_TILES_STAIRS.get());
-                        pOutput.accept(ModBlocks.TREATED_BRASS_TILES_SLAB.get());
-                        pOutput.accept(ModBlocks.TREATED_BRASS_GRATE.get());
-                        pOutput.accept(ModBlocks.TREATED_BRASS_GRATE_PANE.get());
-                        pOutput.accept(ModBlocks.TREATED_BRASS_LAMP.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_BLOCK.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_GRATE.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_GRATE_PANE.get());
-                        pOutput.accept(ModBlocks.CHISELED_DIAMOND_STEEL_BLOCK.get());
-                        pOutput.accept(ModBlocks.CUT_DIAMOND_STEEL.get());
-                        pOutput.accept(ModBlocks.CUT_DIAMOND_STEEL_STAIRS.get());
-                        pOutput.accept(ModBlocks.CUT_DIAMOND_STEEL_SLAB.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_BARS.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_PANEL.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_PILLAR.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_LAMP.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_TILES.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_TILES_STAIRS.get());
-                        pOutput.accept(ModBlocks.DIAMOND_STEEL_TILES_SLAB.get());
-                        pOutput.accept(ModBlocks.VEHEMENT_COAL_BLOCK.get());
-                        pOutput.accept(ModBlocks.PLASMA_BLOCK.get());
-                        pOutput.accept(ModBlocks.NITER_BLOCK.get());
-                        pOutput.accept(ModBlocks.NITER_GLASS.get());
-
-                        pOutput.accept(ModBlocks.WHITE_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.LIGHT_GRAY_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.GRAY_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.BLACK_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.BROWN_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.RED_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.ORANGE_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.YELLOW_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.LIME_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.GREEN_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.CYAN_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.LIGHT_BLUE_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.BLUE_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.PURPLE_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.MAGENTA_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.PINK_NITER_GLASS.get());
-                        pOutput.accept(ModBlocks.PHOSPHORITE.get());
-                        pOutput.accept(ModBlocks.SMOOTH_PHOSPHORITE.get());
-                        pOutput.accept(ModBlocks.POLISHED_PHOSPHORITE.get());
-                        pOutput.accept(ModBlocks.PHOSPHORITE_BRICKS.get());
-                        pOutput.accept(ModBlocks.CRACKED_PHOSPHORITE_BRICKS.get());
-                        pOutput.accept(ModBlocks.PHOSPHORITE_BRICK_STAIRS.get());
-                        pOutput.accept(ModBlocks.PHOSPHORITE_BRICK_SLAB.get());
-                        pOutput.accept(ModBlocks.PHOSPHORITE_BRICK_WALL.get());
-                        pOutput.accept(ModBlocks.ASGHARIAN_BRICKS.get());
-                        pOutput.accept(ModBlocks.REINFORCED_ASGHARIAN_TILES.get());
-                        pOutput.accept(ModBlocks.ASGHARIAN_TILES.get());
-                        pOutput.accept(ModBlocks.CRACKED_ASGHARIAN_TILES.get());
-                        pOutput.accept(ModBlocks.MOSSY_ASGHARIAN_BRICKS.get());
-                        pOutput.accept(ModBlocks.MOSSY_ASGHARIAN_TILES.get());
-                        pOutput.accept(ModBlocks.CHISELED_ASGHARIAN_BRICKS.get());
-                        pOutput.accept(ModBlocks.POLISHED_ASGHARIAN_PANEL.get());
-                        pOutput.accept(ModBlocks.ASGHARIAN_BRICK_STAIRS.get());
-                        pOutput.accept(ModBlocks.ASGHARIAN_BRICK_SLAB.get());
-                        pOutput.accept(ModBlocks.ASGHARIAN_BRICK_WALL.get());
-                        pOutput.accept(ModBlocks.ASGHARIAN_PILLAR.get());
-                        pOutput.accept(ModBlocks.CRACKED_ASGHARIAN_BRICKS.get());
-                        pOutput.accept(ModBlocks.TREATED_BRASS_PLATES.get());
-                        pOutput.accept(ModBlocks.CUT_TREATED_BRASS.get());
-                        pOutput.accept(ModBlocks.CUT_TREATED_BRASS_STAIRS.get());
-                        pOutput.accept(ModBlocks.CUT_TREATED_BRASS_SLAB.get());
-                        pOutput.accept(ModBlocks.TREATED_IRON_GRATE.get());
-                        pOutput.accept(ModBlocks.SANDBAG.get());
-                        pOutput.accept(ModBlocks.SUPPLY_CRATE.get());
-                        pOutput.accept(ModBlocks.POWDER_KEG.get());
-                        pOutput.accept(ModBlocks.NITRO_KEG.get());
-                        pOutput.accept(ModBlocks.PENETRATOR.get());
 
 
-                        pOutput.accept(ModBlocks.ADVANCED_COMPOSTER.get());
-                        pOutput.accept(ModBlocks.GUANO_CANDLE.get());
-                        pOutput.accept(ModBlocks.GEOTHERMAL_VENT.get());
-                        pOutput.accept(ModBlocks.SULFUR_VENT.get());
-                        pOutput.accept(ModBlocks.VENT_COLLECTOR.get());
-                        pOutput.accept(ModBlocks.CRYONITER.get());
-                        pOutput.accept(ModBlocks.THERMOLITH.get());
-                        pOutput.accept(ModBlocks.POLAR_GENERATOR.get());
-                        pOutput.accept(ModBlocks.LIGHTNING_BATTERY.get());
-                        pOutput.accept(ModBlocks.LIGHTNING_ROD_CONNECTOR.get());
-                        pOutput.accept(ModBlocks.GUN_BENCH.get());
-                        pOutput.accept(ModBlocks.MACERATOR.get());
-                        pOutput.accept(ModBlocks.MECHANICAL_PRESS.get());
-                        pOutput.accept(ModBlocks.POWERED_MACERATOR.get());
-                        pOutput.accept(ModBlocks.POWERED_MECHANICAL_PRESS.get());
+
                         pOutput.accept(ModBlocks.GUN_SHELF.get());
-                        pOutput.accept(ModBlocks.AMMO_BOX.get());
-                        pOutput.accept(ModBlocks.PLASMA_LANTERN.get());
-                        pOutput.accept(ModBlocks.CHARGED_AMETHYST_RELAY.get());
-                        pOutput.accept(ModBlocks.SHOCK_COIL.get());
-                        pOutput.accept(ModBlocks.MINE_UNIT.get());
-                        pOutput.accept(ModBlocks.BASIC_TURRET.get());
-                        pOutput.accept(ModBlocks.AUTO_TURRET.get());
-                        pOutput.accept(ModBlocks.SHOTGUN_TURRET.get());
-                        pOutput.accept(ModBlocks.SNIPER_TURRET.get());
-                        pOutput.accept(ModBlocks.HOSTILE_TURRET_TARGETING_BLOCK.get());
-                        pOutput.accept(ModBlocks.PLAYER_TURRET_TARGETING_BLOCK.get());
-                        pOutput.accept(ModBlocks.TURRET_TARGETING_BLOCK.get());
-                        pOutput.accept(ModBlocks.FIRE_RATE_TURRET_MODULE.get());
-                        pOutput.accept(ModBlocks.DAMAGE_TURRET_MODULE.get());
-                        pOutput.accept(ModBlocks.RANGE_TURRET_MODULE.get());
-                        pOutput.accept(ModBlocks.SHELL_CATCHER_TURRET_MODULE.get());
-                        pOutput.accept(ModBlocks.AMMO_TURRET_MODULE.get());
-
-                        pOutput.accept(ModBlocks.ENEMY_TURRET.get());
-                        pOutput.accept(ModBlocks.MOB_TRAP.get());
-                        pOutput.accept(ModBlocks.FELIX_MEMORIAL.get());
 
 
 
-                        pOutput.accept(ModItems.COG_KNIGHT_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.TRAUMA_UNIT_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.COG_MINION_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.SKY_CARRIER_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.SUPPLY_SCAMP_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.DISSIDENT_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.REDCOAT_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.BLUNDERER_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.HORNLIN_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.ZOMBIFIED_HORNLIN_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.HIVE_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.SWARM_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.ADJUDICATOR_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.SUBJUGATOR_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.FINFORCER_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.PRAETOR_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.MOTHER_GHAST_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.VIVENTRUM_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.SULFURHEAD_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.SIGNAL_BEACON_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.SCAMP_TANK_SPAWN_EGG.get());
-                        pOutput.accept(ModItems.SCAMPLER_SPAWN_EGG.get());
+
                        // pOutput.accept(ModItems.THE_MERCHANT_SPAWN_EGG.get());
                     })
                     .build());

@@ -498,18 +498,6 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
             case "vertical_grip":
                 bone.setHidden(attachmentItem != ModItems.VERTICAL_GRIP.get());
                 break;
-            case "iron_bayonet":
-                bone.setHidden(attachmentItem != ModItems.IRON_BAYONET.get());
-                break;
-            case "anthralite_bayonet":
-                bone.setHidden(attachmentItem != ModItems.ANTHRALITE_BAYONET.get());
-                break;
-            case "diamond_bayonet":
-                bone.setHidden(attachmentItem != ModItems.DIAMOND_BAYONET.get());
-                break;
-            case "netherite_bayonet":
-                bone.setHidden(attachmentItem != ModItems.NETHERITE_BAYONET.get());
-                break;
         }
     }
     private void handleMagazineVisibility(GeoBone bone) {
@@ -747,10 +735,6 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
                 ModItems.MUZZLE_BRAKE.get(),
                 ModItems.VERTICAL_GRIP.get(),
                 ModItems.LIGHT_GRIP.get(),
-                ModItems.IRON_BAYONET.get(),
-                ModItems.ANTHRALITE_BAYONET.get(),
-                ModItems.DIAMOND_BAYONET.get(),
-                ModItems.NETHERITE_BAYONET.get(),
                 ModItems.EXTENDED_BARREL.get(),
                 ModItems.WOODEN_STOCK.get(),
                 ModItems.LIGHT_STOCK.get(),

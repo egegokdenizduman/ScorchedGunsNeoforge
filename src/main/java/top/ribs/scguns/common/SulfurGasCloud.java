@@ -129,9 +129,6 @@ public class SulfurGasCloud {
                 continue;
             }
 
-            if (entity instanceof Player player && top.ribs.scguns.common.exosuit.ExoSuitGasMaskHandler.hasProtection(player)) {
-                continue;
-            }
             ItemStack helmet = entity.getItemBySlot(EquipmentSlot.HEAD);
             if (helmet.is(ModTags.Items.GAS_MASK)) {
                 damageGasMask(entity, helmet);

@@ -193,22 +193,11 @@ public class GunItem extends Item implements IColored, IMeta {
 
 
 
-    public float getBayonetAdditionalDamage(ItemStack gunStack) {
-        float additionalDamage = 0.0F;
-        for (IAttachment.Type type : IAttachment.Type.values()) {
-            ItemStack attachmentStack = Gun.getAttachment(type, gunStack);
-            if (attachmentStack != null && attachmentStack.getItem() instanceof BayonetItem) {
-                additionalDamage += ((BayonetItem) attachmentStack.getItem()).getAdditionalDamage();
-            }
-        }
-        return additionalDamage;
-    }
 
     public float getTotalMeleeDamage(ItemStack stack) {
         Gun gun = this.getModifiedGun(stack);
         float baseMeleeDamage = gun.getGeneral().getMeleeDamage();
-        float bayonetDamage = getBayonetAdditionalDamage(stack);
-        return baseMeleeDamage + bayonetDamage;
+        return baseMeleeDamage;
     }
 
     @Override
@@ -313,16 +302,7 @@ public class GunItem extends Item implements IColored, IMeta {
     }
 
     public boolean hasBayonet(ItemStack gunStack) {
-        if (isBuiltInBayonetGun(gunStack)) {
-            return true;
-        }
-        for (IAttachment.Type type : IAttachment.Type.values()) {
-            ItemStack attachmentStack = Gun.getAttachment(type, gunStack);
-            if (attachmentStack != null && attachmentStack.getItem() instanceof BayonetItem) {
-                return true;
-            }
-        }
-        return false;
+        return isBuiltInBayonetGun(gunStack);
     }
     public boolean isBuiltInBayonetGun(ItemStack gunStack) {
         return gunStack.is(ModTags.Items.BUILT_IN_BAYONET);
@@ -347,15 +327,6 @@ public class GunItem extends Item implements IColored, IMeta {
         setStackTag(stack, tag);
     }
 
-    public int getBayonetBanzaiLevel(ItemStack gunStack) {
-        for (IAttachment.Type type : IAttachment.Type.values()) {
-            ItemStack attachmentStack = Gun.getAttachment(type, gunStack);
-            if (attachmentStack != null && attachmentStack.getItem() instanceof BayonetItem) {
-                return EnchantmentHelper.getItemEnchantmentLevel(ModEnchantments.BANZAI, attachmentStack);
-            }
-        }
-        return 0;
-    }
 
     public Gun getGunProperties() {
         return this.gun;
