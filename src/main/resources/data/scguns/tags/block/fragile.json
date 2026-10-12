@@ -4,7 +4,7 @@
       "id": "#c:glass_panes",
       "required": false
     },
-    "#c:glass",
+    "#c:glass_blocks",
     "#minecraft:candles",
     "minecraft:lily_pad",
     "minecraft:cocoa",

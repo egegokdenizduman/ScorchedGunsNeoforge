@@ -79,7 +79,7 @@ public class AnimatedAirGunItem extends AnimatedGunItem implements IAirGun {
         super.appendHoverText(stack, context, tooltip, flag);
 
         Gun gun = this.getModifiedGun(stack);
-        int airUsage = gun.getGeneral().getEnergyUse();
+        int airUsage = top.ribs.scguns.event.GunEventBus.getAirCostPerShot(gun);
 
         tooltip.add(Component.translatable("info.airgun.air_usage")
                 .append(": ").withStyle(ChatFormatting.GRAY)

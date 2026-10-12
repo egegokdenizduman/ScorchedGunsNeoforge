@@ -1131,5 +1131,7 @@
   "enchantment.minecraft.vanishing_curse.desc": "The item disappears on death.",
   "enchantment.minecraft.density.desc": "Increases mace damage per block fallen.",
   "enchantment.minecraft.breach.desc": "Mace attacks ignore part of the target's armor.",
-  "enchantment.minecraft.wind_burst.desc": "Mace hits launch you upward."
+  "enchantment.minecraft.wind_burst.desc": "Mace hits launch you upward.",
+  "item.scguns.niter_dust": "Niter Dust",
+  "item.scguns.lime_powder": "Lime Powder"
 }

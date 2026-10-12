@@ -11,7 +11,8 @@
     "common.ItemRarityMixin",
     "common.LivingEntityMixin",
     "common.LootItemRandomChanceWithEnchantedBonusConditionMixin",
-    "common.SittingPhaseMixin"
+    "common.SittingPhaseMixin",
+    "common.compat.create.BasinRecipeMoldMixin"
   ],
   "client": [
     "client.GameRendererMixin",

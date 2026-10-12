@@ -122,6 +122,11 @@ public class AimingHandler
         if (heldItem.getItem() instanceof GunItem) {
             CompoundTag tag = getStackTag(heldItem);
             inCriticalPhase = tag != null && tag.getBoolean("InCriticalReloadPhase");
+            // The client starts the reload (and its animation) before the server's RELOADING flag syncs back;
+            // treat that window as reloading too, otherwise holding aim flips ADS on/off and restarts the reload.
+            if (tag != null && (tag.getBoolean("scguns:IsReloading") || tag.getBoolean("IsReloading"))) {
+                isReloading = true;
+            }
             Gun gun = ((GunItem) heldItem.getItem()).getModifiedGun(heldItem);
             if (inCriticalPhase && gun.getReloads().getReloadType() != ReloadType.MANUAL) {
                 this.aiming = false;

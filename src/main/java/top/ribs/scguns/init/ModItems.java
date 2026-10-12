@@ -1681,6 +1681,8 @@ public class ModItems {
     public static final DeferredItem<Item> PEAL_DUST = REGISTER.register("peal_dust", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> VEHEMENT_COAL = REGISTER.register("vehement_coal", () -> new FuelItem(new Item.Properties(), 4800));
     public static final DeferredItem<Item> SHEOL_DUST = REGISTER.register("sheol_dust", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> NITER_DUST = REGISTER.register("niter_dust", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> LIME_POWDER = REGISTER.register("lime_powder", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> SULFUR_DUST = REGISTER.register("sulfur_dust", () -> new SulfurDustItem(new Item.Properties()));
     public static final DeferredItem<Item> PHOSPHOR_DUST = REGISTER.register("phosphor_dust", () -> new PhosphorItem(new Item.Properties()));
     public static final DeferredItem<Item> BUCKSHOT = REGISTER.register("buckshot", () -> new Item(new Item.Properties()));

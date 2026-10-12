@@ -1,5 +1,6 @@
 package top.ribs.scguns.item;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -7,6 +8,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.ribs.scguns.init.ModItems;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
@@ -35,6 +38,18 @@ public final class GunRepairMaterials {
             }
         }
         return isIron(repair);
+    }
+
+    /** Every registered item that repairs the given gun or attachment; used for JEI anvil recipes. */
+    public static List<ItemStack> getRepairItems(ItemStack toRepair) {
+        List<ItemStack> items = new ArrayList<>();
+        for (Item item : BuiltInRegistries.ITEM) {
+            ItemStack candidate = new ItemStack(item);
+            if (isValidRepair(toRepair, candidate)) {
+                items.add(candidate);
+            }
+        }
+        return items;
     }
 
     private static boolean isIron(ItemStack stack) {

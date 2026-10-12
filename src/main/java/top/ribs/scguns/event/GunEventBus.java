@@ -172,7 +172,7 @@ public class GunEventBus {
                 }
 
                 if (heldItem.getItem() instanceof IAirGun) {
-                    int airCostPerShot = Math.max(1, (int) Math.ceil(calculateAirCostPerShot(gun)));
+                    int airCostPerShot = getAirCostPerShot(gun);
                     boolean consumedAir = false;
                     if (ScorchedGuns.createLoaded) {
                         List<ItemStack> backtanks = CreateBacktankBridge.getAllWithAir(player);
@@ -410,8 +410,12 @@ public class GunEventBus {
 
 
 
-    private static float calculateAirCostPerShot(Gun gun) {
-        return gun.getGeneral().getEnergyUse();
+    /**
+     * Backtank air used per shot. A full Create backtank (900 air) gives a potato cannon 200 shots; guns hit harder,
+     * so they draw a bit more: a quarter of the gun's air rating, i.e. roughly 90-225 shots per tank.
+     */
+    public static int getAirCostPerShot(Gun gun) {
+        return Math.max(1, Math.round(gun.getGeneral().getEnergyUse() * 0.25F));
     }
 
     public static void broken(ItemStack stack, Level level, Player player) {

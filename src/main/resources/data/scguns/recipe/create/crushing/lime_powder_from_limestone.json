@@ -1,0 +1,25 @@
+{
+  "type": "create:crushing",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "create:limestone"
+    }
+  ],
+  "processing_time": 150,
+  "results": [
+    {
+      "id": "scguns:lime_powder",
+      "count": 2
+    },
+    {
+      "id": "scguns:lime_powder",
+      "chance": 0.25
+    }
+  ]
+}

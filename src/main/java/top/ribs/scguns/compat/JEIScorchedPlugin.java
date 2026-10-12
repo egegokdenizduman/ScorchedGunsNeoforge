@@ -10,7 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
+import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import top.ribs.scguns.item.GunItem;
+import top.ribs.scguns.item.GunRepairMaterials;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeManager;
 import top.ribs.scguns.Reference;
@@ -19,6 +26,7 @@ import top.ribs.scguns.init.ModBlocks;
 import top.ribs.scguns.init.ModItems;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
 import java.util.List;
 
 @JeiPlugin
@@ -53,6 +61,29 @@ public class JEIScorchedPlugin implements IModPlugin {
 
 
         registration.addIngredientInfo(new ItemStack(ModItems.SUPER_SHOTGUN.get()), VanillaTypes.ITEM_STACK, getTranslation("jei.info.super_shotgun"));
+
+        // Anvil repairs: each gun is repaired with the ingot of its tier
+        IVanillaRecipeFactory factory = registration.getVanillaRecipeFactory();
+        List<IJeiAnvilRecipe> repairs = new ArrayList<>();
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (!(item instanceof GunItem)) {
+                continue;
+            }
+            ItemStack gun = new ItemStack(item);
+            if (!gun.isDamageableItem()) {
+                continue;
+            }
+            List<ItemStack> materials = GunRepairMaterials.getRepairItems(gun);
+            if (materials.isEmpty()) {
+                continue;
+            }
+            ItemStack damaged = gun.copy();
+            damaged.setDamageValue(damaged.getMaxDamage() * 3 / 4);
+            ItemStack repaired = gun.copy();
+            repaired.setDamageValue(repaired.getMaxDamage() / 2);
+            repairs.add(factory.createAnvilRecipe(damaged, materials, List.of(repaired)));
+        }
+        registration.addRecipes(RecipeTypes.ANVIL, repairs);
 
 
 

@@ -221,6 +221,8 @@ public class ModCreativeModeTabs {
 
                         pOutput.accept(ModItems.PEBBLES.get());
                         pOutput.accept(ModItems.SULFUR_DUST.get());
+                        pOutput.accept(ModItems.LIME_POWDER.get());
+                        pOutput.accept(ModItems.NITER_DUST.get());
                         pOutput.accept(ModItems.PHOSPHOR_DUST.get());
                         pOutput.accept(ModItems.GUNPOWDER_DUST.get());
                         pOutput.accept(ModItems.SHEOL.get());

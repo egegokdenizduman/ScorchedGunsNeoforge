@@ -58,6 +58,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
         if (mixinClassName.startsWith("top.ribs.scguns.mixin.client.compat.punchy.")) {
             return isPunchyInstalled;
         }
+        if (mixinClassName.startsWith("top.ribs.scguns.mixin.common.compat.create.")) {
+            return isModLoaded("create") || isClassPresent("com.simibubi.create.content.processing.basin.BasinRecipe");
+        }
         if (mixinClassName.startsWith("top.ribs.scguns.mixin.common.compat.sable.")) {
             return isSableInstalled;
         }

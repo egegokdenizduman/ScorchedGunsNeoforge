@@ -3,6 +3,7 @@ package top.ribs.scguns.item;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
@@ -20,7 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * Molds are used in a Create basin under a mechanical press. Every press consumes one point of durability
  * (returned to the basin as a crafting remainder). Molds accept Unbreaking and Mending, and a Create spout
- * filled with Create: Enchantment Industry liquid experience repairs them like Mending does.
+ * filled with Create: Enchantment Industry liquid experience repairs Mending molds like experience orbs do.
  */
 public class MoldItem extends Item {
     public static final int DURABILITY = 1024;
@@ -66,8 +67,12 @@ public class MoldItem extends Item {
     }
 
     private static int getUnbreakingLevel(ItemStack stack) {
+        return getEnchantmentLevel(stack, Enchantments.UNBREAKING);
+    }
+
+    private static int getEnchantmentLevel(ItemStack stack, ResourceKey<Enchantment> enchantment) {
         for (Object2IntMap.Entry<Holder<Enchantment>> entry : stack.getTagEnchantments().entrySet()) {
-            if (entry.getKey().is(Enchantments.UNBREAKING)) {
+            if (entry.getKey().is(enchantment)) {
                 return entry.getIntValue();
             }
         }
@@ -97,6 +102,10 @@ public class MoldItem extends Item {
         }
 
         private int getRequiredAmount() {
+            // Liquid experience only repairs molds that carry Mending, just like experience orbs
+            if (getEnchantmentLevel(this.container, Enchantments.MENDING) <= 0) {
+                return 0;
+            }
             return (this.container.getDamageValue() + DURABILITY_PER_MB - 1) / DURABILITY_PER_MB;
         }
 
