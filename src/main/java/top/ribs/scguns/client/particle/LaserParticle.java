@@ -45,4 +45,10 @@ public class LaserParticle extends TextureSheetParticle {
          return particle;
       }
    }
+    @Override
+    public int getLightColor(float partialTick) {
+        // Gun effects are light sources: always full-bright so they glow (also under shader packs)
+        return 15728880;
+    }
+
 }

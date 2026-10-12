@@ -69,9 +69,9 @@ public class RocketExplosionParticle extends TextureSheetParticle {
             this.bCol = Math.max(this.bCol, 1F);
         }
     }
-
     @Override
-    public int getLightColor(float pPartialTick) {
+    public int getLightColor(float partialTick) {
+        // Gun effects are light sources: always full-bright so they glow (also under shader packs)
         return 15728880;
     }
 

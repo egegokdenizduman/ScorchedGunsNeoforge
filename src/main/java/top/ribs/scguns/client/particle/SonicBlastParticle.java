@@ -42,20 +42,10 @@ public class SonicBlastParticle extends RisingParticle {
             this.setAlpha(1.0F - ((float) this.age / (float) this.lifetime));
         }
     }
-
     @Override
-    public int getLightColor(float p_106821_) {
-        float f = ((float) this.age + p_106821_) / (float) this.lifetime;
-        f = Mth.clamp(f, 0.0F, 1.0F);
-        int i = super.getLightColor(p_106821_);
-        int j = i & 255;
-        int k = i >> 16 & 255;
-        j += (int) (f * 15.0F * 16.0F);
-        if (j > 240) {
-            j = 240;
-        }
-
-        return j | k << 16;
+    public int getLightColor(float partialTick) {
+        // Gun effects are light sources: always full-bright so they glow (also under shader packs)
+        return 15728880;
     }
 
     @OnlyIn(Dist.CLIENT)

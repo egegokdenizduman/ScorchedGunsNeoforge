@@ -24,9 +24,9 @@ public class PlasmaExplosionParticle extends TextureSheetParticle {
         super.tick();
         this.setSpriteFromAge(this.sprites);
     }
-
     @Override
-    public int getLightColor(float pPartialTick) {
+    public int getLightColor(float partialTick) {
+        // Gun effects are light sources: always full-bright so they glow (also under shader packs)
         return 15728880;
     }
 

@@ -35,6 +35,12 @@ public class SmallLaserParticle extends LaserParticle{
         }
     }
     @OnlyIn(Dist.CLIENT)
+    @Override
+    public int getLightColor(float partialTick) {
+        // Gun effects are light sources: always full-bright so they glow (also under shader packs)
+        return 15728880;
+    }
+
     public static class Provider implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet sprite;
         public Provider(SpriteSet sprite) {

@@ -13,7 +13,7 @@ public class GreenFlameParticle extends RisingParticle {
     }
 
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_OPAQUE;
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     public void move(double p_106817_, double p_106818_, double p_106819_) {
@@ -25,19 +25,19 @@ public class GreenFlameParticle extends RisingParticle {
         float f = ((float)this.age + p_106824_) / (float)this.lifetime;
         return this.quadSize * (1.0F - f * f * 0.5F);
     }
+    @Override
+    public int getLightColor(float partialTick) {
+        // Gun effects are light sources: always full-bright so they glow (also under shader packs)
+        return 15728880;
+    }
 
-    public int getLightColor(float p_106821_) {
-        float f = ((float)this.age + p_106821_) / (float)this.lifetime;
-        f = Mth.clamp(f, 0.0F, 1.0F);
-        int i = super.getLightColor(p_106821_);
-        int j = i & 255;
-        int k = i >> 16 & 255;
-        j += (int)(f * 15.0F * 16.0F);
-        if (j > 240) {
-            j = 240;
-        }
-
-        return j | k << 16;
+    @Override
+    public void tick() {
+        super.tick();
+        // start bright, then fade and shrink away
+        float life = (float) this.age / (float) Math.max(1, this.lifetime);
+        this.alpha = 1.0F - life;
+        this.quadSize *= 0.96F;
     }
 
     @OnlyIn(Dist.CLIENT)

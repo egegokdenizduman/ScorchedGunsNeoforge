@@ -28,6 +28,12 @@ public class RocketTrailParticle extends TextureSheetParticle {
             this.remove();
         }
     }
+    @Override
+    public int getLightColor(float partialTick) {
+        // Gun effects are light sources: always full-bright so they glow (also under shader packs)
+        return 15728880;
+    }
+
     public static class Factory implements ParticleProvider<SimpleParticleType> {
         private final SpriteSet spriteSet;
         public Factory(SpriteSet spriteSet) {

@@ -26,9 +26,10 @@ public class TrailParticle extends BaseAshSmokeParticle
         this.bCol = blue;
         this.alpha = 1.0F;
     }
-
-    public int getLightColor(float pPartialTick) {
-        return 0xF000F0;
+    @Override
+    public int getLightColor(float partialTick) {
+        // Gun effects are light sources: always full-bright so they glow (also under shader packs)
+        return 15728880;
     }
 
     @OnlyIn(Dist.CLIENT)
