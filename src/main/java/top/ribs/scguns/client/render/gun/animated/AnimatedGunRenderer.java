@@ -985,5 +985,6 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
         builder.addVertex(matrix, 1, 0, 0).setColor(1.0F, 1.0F, 1.0F, 1.0F).setUv(minU, 1.0F).setLight(15728880);
         builder.addVertex(matrix, 1, 1, 0).setColor(1.0F, 1.0F, 1.0F, 1.0F).setUv(minU, 0).setLight(15728880);
         builder.addVertex(matrix, 0, 1, 0).setColor(1.0F, 1.0F, 1.0F, 1.0F).setUv(maxU, 0).setLight(15728880);
+        EmissiveTextures.emissiveQuad(poseStack.last(), buffer, flashTexture, minU, maxU, 0.6F);
     }
 }

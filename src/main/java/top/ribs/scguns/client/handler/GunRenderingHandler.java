@@ -47,6 +47,7 @@ import top.ribs.scguns.Reference;
 import top.ribs.scguns.ScorchedGuns;
 import top.ribs.scguns.client.GunModel;
 import top.ribs.scguns.client.GunRenderType;
+import top.ribs.scguns.client.render.EmissiveTextures;
 import top.ribs.scguns.client.render.gun.IOverrideModel;
 import top.ribs.scguns.client.render.gun.ModelOverrides;
 import top.ribs.scguns.client.util.PropertyHelper;
@@ -1005,6 +1006,7 @@ public class GunRenderingHandler {
         emitMuzzleFlashVertex(builder, pose, matrix, 1, 0, 0, minU, 1.0F);
         emitMuzzleFlashVertex(builder, pose, matrix, 1, 1, 0, minU, 0);
         emitMuzzleFlashVertex(builder, pose, matrix, 0, 1, 0, maxU, 0);
+        EmissiveTextures.emissiveQuad(pose, buffer, flashTexture, minU, maxU, 0.6F);
         poseStack.popPose();
         poseStack.pushPose();
         poseStack.translate(weaponOrigin.x * 0.0625, weaponOrigin.y * 0.0625, weaponOrigin.z * 0.0625);
@@ -1028,6 +1030,7 @@ public class GunRenderingHandler {
         emitMuzzleFlashVertex(builder, pose, matrix, 1, 0, 0, minU, 1.0F);
         emitMuzzleFlashVertex(builder, pose, matrix, 1, 1, 0, minU, 0);
         emitMuzzleFlashVertex(builder, pose, matrix, 0, 1, 0, maxU, 0);
+        EmissiveTextures.emissiveQuad(pose, buffer, flashTexture, minU, maxU, 0.6F);
 
         poseStack.popPose();
     }

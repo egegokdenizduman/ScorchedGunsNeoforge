@@ -31,6 +31,22 @@ public final class EmissiveTextures {
         return glowmask != null ? RenderType.eyes(glowmask) : null;
     }
 
+    /**
+     * Adds an emissive copy of a flat textured quad (unit square in the current pose) through {@link RenderType#eyes},
+     * so muzzle flashes and similar effects glow under shader packs.
+     */
+    public static void emissiveQuad(com.mojang.blaze3d.vertex.PoseStack.Pose pose, net.minecraft.client.renderer.MultiBufferSource buffer,
+                                    ResourceLocation texture, float minU, float maxU, float alpha) {
+        com.mojang.blaze3d.vertex.VertexConsumer consumer = buffer.getBuffer(RenderType.eyes(texture));
+        org.joml.Matrix4f matrix = pose.pose();
+        float[][] corners = {{0, 0, maxU, 1}, {1, 0, minU, 1}, {1, 1, minU, 0}, {0, 1, maxU, 0}};
+        for (float[] c : corners) {
+            consumer.addVertex(matrix, c[0], c[1], 0).setColor(alpha, alpha, alpha, 1.0F).setUv(c[2], c[3])
+                    .setOverlay(net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY)
+                    .setLight(net.minecraft.client.renderer.LightTexture.FULL_BRIGHT).setNormal(pose, 0.0F, 0.0F, 1.0F);
+        }
+    }
+
     public static void clearCache() {
         CACHE.clear();
     }
