@@ -1,9 +1,14 @@
-# Scorched Guns
+### AI SLOP WARNING!!!
 
-NeoForge 1.21.1 port of Scorched Guns.
+# Scorched Guns
+Port of NeoForge 1.21.1 port of Scorched Guns.
+
+# Scope
+I am making this so I can play with friends, it is not meant to be stable nor sustainable. This is a 2 week
+Minecraft phase project. If you still want to download be my guest, I am bugtesing it rigourusly since I want to
+obliterate my friends consistently but that doesn't change the fact that it is still AI slop.
 
 ## Requirements
-
 - Minecraft 1.21.1
 - NeoForge 21.1.228+
 - Framework 0.13.9+
@@ -11,5 +16,4 @@ NeoForge 1.21.1 port of Scorched Guns.
 - GeckoLib 4.8.4+
 
 ## Installation
-
 Place ScorchedGuns.jar into your mods folder together with the required dependencies.
