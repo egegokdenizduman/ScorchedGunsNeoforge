@@ -28,9 +28,6 @@
     },
     "A": {
       "item": "scguns:gun_magazine"
-    },
-    "C": {
-      "tag": "minecraft:planks"
     }
   },
   "pattern": [
