@@ -1,11 +1,7 @@
 {
   "replace": false,
   "values": [
-    "scguns:small_casing_mold",
-    "scguns:medium_casing_mold",
-    "scguns:large_casing_mold",
-    "scguns:bullet_mold",
-    "scguns:disc_mold",
-    "scguns:gun_parts_mold"
+    "#scguns:functional_mold",
+    "#scguns:broken_mold"
   ]
 }

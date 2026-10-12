@@ -271,6 +271,12 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.LARGE_CASING_MOLD.get());
                         pOutput.accept(ModItems.BULLET_MOLD.get());
                         pOutput.accept(ModItems.GUN_PARTS_MOLD.get());
+                        pOutput.accept(ModItems.BROKEN_SMALL_CASING_MOLD.get());
+                        pOutput.accept(ModItems.BROKEN_MEDIUM_CASING_MOLD.get());
+                        pOutput.accept(ModItems.BROKEN_LARGE_CASING_MOLD.get());
+                        pOutput.accept(ModItems.BROKEN_BULLET_MOLD.get());
+                        pOutput.accept(ModItems.BROKEN_DISC_MOLD.get());
+                        pOutput.accept(ModItems.BROKEN_GUN_PARTS_MOLD.get());
                         pOutput.accept(ModItems.DISC_MOLD.get());
 
                         pOutput.accept(ModItems.SMALL_COPPER_CASING.get());

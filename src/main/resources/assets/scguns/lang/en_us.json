@@ -1133,5 +1133,12 @@
   "enchantment.minecraft.breach.desc": "Mace attacks ignore part of the target's armor.",
   "enchantment.minecraft.wind_burst.desc": "Mace hits launch you upward.",
   "item.scguns.niter_dust": "Niter Dust",
-  "item.scguns.lime_powder": "Lime Powder"
+  "item.scguns.lime_powder": "Lime Powder",
+  "item.scguns.broken_small_casing_mold": "Broken Small Casing Mold",
+  "item.scguns.broken_medium_casing_mold": "Broken Medium Casing Mold",
+  "item.scguns.broken_large_casing_mold": "Broken Large Casing Mold",
+  "item.scguns.broken_bullet_mold": "Broken Bullet Mold",
+  "item.scguns.broken_disc_mold": "Broken Disc Mold",
+  "item.scguns.broken_gun_parts_mold": "Broken Gun Parts Mold",
+  "item.scguns.broken_mold.tooltip": "Worn out. Restore any durability (Mending, liquid experience, anvil) to use it again."
 }

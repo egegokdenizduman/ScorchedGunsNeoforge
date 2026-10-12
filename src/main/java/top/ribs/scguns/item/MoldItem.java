@@ -17,6 +17,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Supplier;
 
 /**
  * Molds are used in a Create basin under a mechanical press. Every press consumes one point of durability
@@ -26,8 +27,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MoldItem extends Item {
     public static final int DURABILITY = 1024;
 
-    public MoldItem(Properties properties) {
+    private final Supplier<? extends Item> brokenMold;
+
+    public MoldItem(Properties properties, Supplier<? extends Item> brokenMold) {
         super(properties);
+        this.brokenMold = brokenMold;
     }
 
     @Override
@@ -61,7 +65,10 @@ public class MoldItem extends Item {
         }
         remainingItem.setDamageValue(remainingItem.getDamageValue() + 1);
         if (remainingItem.getDamageValue() >= remainingItem.getMaxDamage()) {
-            return ItemStack.EMPTY;
+            // Worn out: becomes the broken variant (keeps enchantments) instead of disappearing
+            ItemStack broken = remainingItem.transmuteCopy(this.brokenMold.get(), 1);
+            broken.setDamageValue(broken.getMaxDamage());
+            return broken;
         }
         return remainingItem;
     }
@@ -88,7 +95,7 @@ public class MoldItem extends Item {
         private static final TagKey<Fluid> EXPERIENCE_TAG = FluidTags.create(ResourceLocation.fromNamespaceAndPath("c", "experience"));
         private static final int DURABILITY_PER_MB = 2;
 
-        private final ItemStack container;
+        private ItemStack container;
 
         public ExperienceRepairHandler(ItemStack container) {
             this.container = container;
@@ -145,6 +152,7 @@ public class MoldItem extends Item {
             }
             if (action.execute()) {
                 this.container.setDamageValue(Math.max(0, this.container.getDamageValue() - amount * DURABILITY_PER_MB));
+                this.container = BrokenMoldItem.restoreIfRepaired(this.container);
             }
             return amount;
         }

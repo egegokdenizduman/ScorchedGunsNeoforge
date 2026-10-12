@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Coerce;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.ribs.scguns.item.BrokenMoldItem;
 import top.ribs.scguns.item.MoldItem;
 
 import java.lang.reflect.Method;
@@ -61,14 +62,38 @@ public abstract class BasinRecipeMoldMixin {
             if (before.isEmpty() || !inventory.getStackInSlot(i).isEmpty()) {
                 continue;
             }
-            // The mold was used by the recipe: return it with one use of wear (Unbreaking applies)
-            inventory.setStackInSlot(i, before.getItem().getCraftingRemainingItem(before));
+            // The mold was used by the recipe: return it with one use of wear (Unbreaking applies).
+            // A worn-out mold comes back broken and goes to the output so funnels can pull it out for repair.
+            ItemStack worn = before.getItem().getCraftingRemainingItem(before);
+            if (worn.getItem() instanceof BrokenMoldItem && scguns$getOutput(basin) instanceof IItemHandlerModifiable output
+                    && scguns$putInEmptySlot(output, worn)) {
+                continue;
+            }
+            inventory.setStackInSlot(i, worn);
         }
     }
 
+    private static boolean scguns$putInEmptySlot(IItemHandlerModifiable handler, ItemStack stack) {
+        for (int i = 0; i < handler.getSlots(); i++) {
+            if (handler.getStackInSlot(i).isEmpty()) {
+                handler.setStackInSlot(i, stack);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static IItemHandler scguns$getOutput(Object basin) {
+        return scguns$getInventory(basin, "getOutputInventory");
+    }
+
     private static IItemHandler scguns$getInput(Object basin) {
+        return scguns$getInventory(basin, "getInputInventory");
+    }
+
+    private static IItemHandler scguns$getInventory(Object basin, String getter) {
         try {
-            Method method = basin.getClass().getMethod("getInputInventory");
+            Method method = basin.getClass().getMethod(getter);
             Object inventory = method.invoke(basin);
             return inventory instanceof IItemHandler handler ? handler : null;
         } catch (ReflectiveOperationException e) {

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "scguns:broken_small_casing_mold",
+    "scguns:broken_medium_casing_mold",
+    "scguns:broken_large_casing_mold",
+    "scguns:broken_bullet_mold",
+    "scguns:broken_disc_mold",
+    "scguns:broken_gun_parts_mold"
+  ]
+}

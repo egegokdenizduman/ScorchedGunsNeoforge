@@ -16,7 +16,13 @@ public class ModCapabilities {
                 ModItems.LARGE_CASING_MOLD.get(),
                 ModItems.BULLET_MOLD.get(),
                 ModItems.DISC_MOLD.get(),
-                ModItems.GUN_PARTS_MOLD.get()
+                ModItems.GUN_PARTS_MOLD.get(),
+                ModItems.BROKEN_SMALL_CASING_MOLD.get(),
+                ModItems.BROKEN_MEDIUM_CASING_MOLD.get(),
+                ModItems.BROKEN_LARGE_CASING_MOLD.get(),
+                ModItems.BROKEN_BULLET_MOLD.get(),
+                ModItems.BROKEN_DISC_MOLD.get(),
+                ModItems.BROKEN_GUN_PARTS_MOLD.get()
         );
         event.registerItem(
                 Capabilities.EnergyStorage.ITEM,
