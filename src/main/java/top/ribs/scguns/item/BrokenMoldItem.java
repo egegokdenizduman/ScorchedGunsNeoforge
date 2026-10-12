@@ -13,8 +13,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * A worn-out mold (like a broken elytra). It cannot be used in recipes, keeps its enchantments, and turns back into
- * its working mold as soon as any durability is restored (Mending orbs, liquid experience from a spout, anvil).
+ * A mold at 0 durability (like a broken elytra): always created fully damaged, cannot be used in recipes and keeps its
+ * enchantments. It only turns back into its working mold once durability is actually restored (Mending orbs,
+ * liquid experience from a spout, anvil).
  * Tagged scguns:broken_mold so Create attribute filters can pull it out of a basin for repair.
  */
 public class BrokenMoldItem extends Item {
