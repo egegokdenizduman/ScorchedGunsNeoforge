@@ -6,9 +6,7 @@ import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.conditions.ICondition;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
@@ -109,8 +107,6 @@ public class ScorchedGuns {
             NeoForge.EVENT_BUS.register(BeamHandler.class);
         }
 
-        // Register the mod itself to the event bus
-        NeoForge.EVENT_BUS.register(this);
         //NeoForge.EVENT_BUS.register(ArmorBoostEventHandler.class);
        /// NeoForge.EVENT_BUS.register(ArmorRemoveEventHandler.class);
         NeoForge.EVENT_BUS.register(WeaponMovementEventHandler.class);

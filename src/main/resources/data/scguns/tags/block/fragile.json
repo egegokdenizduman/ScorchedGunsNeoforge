@@ -1,6 +1,9 @@
 {
   "values": [
-    "#c:glass_panes",
+    {
+      "id": "#c:glass_panes",
+      "required": false
+    },
     "#c:glass",
     "#minecraft:candles",
     "minecraft:lily_pad",

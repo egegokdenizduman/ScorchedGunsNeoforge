@@ -2,7 +2,6 @@
   "replace": false,
   "values": [
     "scguns:anthralite_ore",
-    "scguns:deepslate_anthralite_ore",
-    "scguns:felix_memorial"
+    "scguns:deepslate_anthralite_ore"
   ]
 }

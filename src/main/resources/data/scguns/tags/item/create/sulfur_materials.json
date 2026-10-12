@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "#c:dusts/sulfur",
-    "#c:raw_materials/sulfur"
+    {
+      "id": "#c:raw_materials/sulfur",
+      "required": false
+    }
   ]
 }

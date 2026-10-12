@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "#c:dusts/phosphorus",
-    "#c:raw_materials/phosphorus"
+    {
+      "id": "#c:raw_materials/phosphorus",
+      "required": false
+    }
   ]
 }
