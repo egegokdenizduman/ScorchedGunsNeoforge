@@ -2,8 +2,6 @@ package top.ribs.scguns.init;
 
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import top.ribs.scguns.item.AirCanisterItem;
-import top.ribs.scguns.item.CreativeAirCanisterItem;
 import top.ribs.scguns.item.EnergyGunItem;
 import top.ribs.scguns.item.MoldItem;
 import top.ribs.scguns.item.animated.AnimatedEnergyGunItem;
@@ -35,21 +33,6 @@ public class ModCapabilities {
                 ModItems.GALE.get(),
                 ModItems.UMAX_PISTOL.get(),
                 ModItems.VENTURI.get()
-        );
-        event.registerItem(
-                Capabilities.EnergyStorage.ITEM,
-                (stack, context) -> {
-                    if (stack.getItem() instanceof CreativeAirCanisterItem) {
-                        return new CreativeAirCanisterItem.CreativeAirStorage();
-                    }
-                    if (stack.getItem() instanceof AirCanisterItem airCanister) {
-                        return new AirCanisterItem.AirStorage(stack, airCanister.getCapacity());
-                    }
-                    return null;
-                },
-                ModItems.AIR_CANISTER.get(),
-                ModItems.REINFORCED_AIR_CANISTER.get(),
-                ModItems.CREATIVE_AIR_CANISTER.get()
         );
     }
 }

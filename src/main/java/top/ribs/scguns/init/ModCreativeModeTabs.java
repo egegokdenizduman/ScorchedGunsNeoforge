@@ -215,7 +215,6 @@ public class ModCreativeModeTabs {
 
                         if (ModCompat.isFarmersDelightLoaded()) {
                         }
-                        pOutput.accept(ModItems.REPAIR_KIT.get());
 
 
 
@@ -283,7 +282,6 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.MEDIUM_BRASS_CASING.get());
                         pOutput.accept(ModItems.LARGE_BRASS_CASING.get());
                         pOutput.accept(ModItems.SHULKER_CASING.get());
-                        pOutput.accept(ModItems.SHULKER_CORE.get());
 
                         pOutput.accept(ModItems.POWDER_AND_BALL.get());
                         pOutput.accept(ModItems.NEEDLE.get());
@@ -368,9 +366,6 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.GUN_MAGAZINE.get());
                         pOutput.accept(ModItems.CHARGED_AMETHYST_SHARD.get());
                         pOutput.accept(ModItems.EMPTY_TANK.get());
-                        pOutput.accept(ModItems.AIR_CANISTER.get());
-                        pOutput.accept(ModItems.REINFORCED_AIR_CANISTER.get());
-                        pOutput.accept(ModItems.CREATIVE_AIR_CANISTER.get());
                         pOutput.accept(ModItems.EMPTY_CORE.get());
                         pOutput.accept(ModItems.ENERGY_CORE.get());
                         pOutput.accept(ModItems.DEPLETED_ENERGY_CORE.get());
@@ -382,8 +377,6 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.STUN_GRENADE.get());
                         pOutput.accept(ModItems.SHOTBALL.get());
                         pOutput.accept(ModItems.MOLOTOV_COCKTAIL.get());
-
-                        pOutput.accept(ModItems.COLD_PACK.get());
                         pOutput.accept(ModItems.BASIC_POULTICE.get());
                         pOutput.accept(ModItems.HONEY_SULFUR_POULTICE.get());
                         pOutput.accept(ModItems.ENCHANTED_BANDAGE.get());

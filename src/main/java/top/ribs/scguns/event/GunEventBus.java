@@ -178,16 +178,10 @@ public class GunEventBus {
                         List<ItemStack> backtanks = CreateBacktankBridge.getAllWithAir(player);
                         if (!backtanks.isEmpty()) {
                             CreateBacktankBridge.consumeAir(player, backtanks.get(0), airCostPerShot);
-                            if (!CreateBacktankBridge.hasAirRemaining(backtanks.get(0))) {
-                                player.displayClientMessage(Component.translatable("message.airgun.no_air")
-                                        .withStyle(ChatFormatting.RED), true);
-                                event.setCanceled(true);
-                                return;
-                            }
                             consumedAir = true;
                         }
                     }
-                    if (!consumedAir && !AirCanisterItem.consumeAir(player, airCostPerShot)) {
+                    if (!consumedAir) {
                         player.displayClientMessage(Component.translatable("message.airgun.no_air")
                                 .withStyle(ChatFormatting.RED), true);
                         event.setCanceled(true);
@@ -627,7 +621,7 @@ public class GunEventBus {
         private static List<ItemStack> getAllWithAir(Player player) {
             try {
                 Class<?> bridge = Class.forName(BACKTANK_UTIL);
-                Method method = bridge.getMethod("getAllWithAir", Player.class);
+                Method method = bridge.getMethod("getAllWithAir", net.minecraft.world.entity.LivingEntity.class);
                 Object value = method.invoke(null, player);
                 if (value instanceof List<?> list) {
                     return list.stream()
@@ -644,21 +638,11 @@ public class GunEventBus {
         private static void consumeAir(Player player, ItemStack stack, float amount) {
             try {
                 Class<?> bridge = Class.forName(BACKTANK_UTIL);
-                Method method = bridge.getMethod("consumeAir", Player.class, ItemStack.class, float.class);
-                method.invoke(null, player, stack, amount);
+                Method method = bridge.getMethod("consumeAir", net.minecraft.world.entity.LivingEntity.class, ItemStack.class, int.class);
+                method.invoke(null, player, stack, Math.max(1, Math.round(amount)));
             } catch (ReflectiveOperationException ignored) {
             }
         }
 
-        private static boolean hasAirRemaining(ItemStack stack) {
-            try {
-                Class<?> bridge = Class.forName(BACKTANK_UTIL);
-                Method method = bridge.getMethod("hasAirRemaining", ItemStack.class);
-                Object value = method.invoke(null, stack);
-                return value instanceof Boolean result && result;
-            } catch (ReflectiveOperationException ignored) {
-                return false;
-            }
-        }
     }
 }

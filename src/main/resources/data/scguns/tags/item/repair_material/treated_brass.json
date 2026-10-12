@@ -1,0 +1,31 @@
+{
+  "replace": false,
+  "values": [
+    "scguns:arc_worker",
+    "scguns:cogloader",
+    "scguns:cr4k_mining_laser",
+    "scguns:dozier_rl",
+    "scguns:gale",
+    "scguns:gattaler",
+    "scguns:gauss_rifle",
+    "scguns:grandle",
+    "scguns:grandle_og",
+    "scguns:hammer_gl",
+    "scguns:howler",
+    "scguns:howler_conversion",
+    "scguns:hyperbaria",
+    "scguns:jackhammer",
+    "scguns:jr_wristbreaker",
+    "scguns:libertas",
+    "scguns:lone_wonder",
+    "scguns:m22_waltz",
+    "scguns:niami",
+    "scguns:osgood_50",
+    "scguns:scratches",
+    "scguns:sequoia",
+    "scguns:spirulida",
+    "scguns:spitfire",
+    "scguns:thunderhead",
+    "scguns:waltz_conversion"
+  ]
+}

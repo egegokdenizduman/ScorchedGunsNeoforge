@@ -223,7 +223,7 @@ public class GunEffectsHandler {
         if (entity instanceof Monster monster) {
             float aggroChance = Config.COMMON.aggroMobs.aggroChance.get().floatValue();
             if (player.level().random.nextFloat() < aggroChance) {
-                monster.setTarget(player);
+                if (!player.isCreative() && !player.isSpectator()) monster.setTarget(player);
                 alertNearbyMobs(monster, player);
             }
         }
@@ -239,7 +239,7 @@ public class GunEffectsHandler {
         for (LivingEntity entity : nearbyMobs) {
             if (entity.getType() == mobType && entity instanceof Monster nearbyMonster && entity != alertedMob) {
                 if (player.level().random.nextFloat() < chainChance) {
-                    nearbyMonster.setTarget(player);
+                    if (!player.isCreative() && !player.isSpectator()) nearbyMonster.setTarget(player);
                 }
             }
         }

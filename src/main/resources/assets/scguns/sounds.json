@@ -31,22 +31,22 @@
       }
     ]
   },
-    "item.mag_out.mag_out": {
-        "subtitle": "subtitle.scguns.mag_out",
-        "sounds": [
-        {
-            "name": "scguns:item/mag_out/mag_out"
-        }
-        ]
-    },
-    "item.reload_end.reload_end": {
-        "subtitle": "subtitle.scguns.reload_end",
-        "sounds": [
-        {
-            "name": "scguns:item/reload_end/reload_end"
-        }
-        ]
-    },
+  "item.mag_out.mag_out": {
+    "subtitle": "subtitle.scguns.mag_out",
+    "sounds": [
+      {
+        "name": "scguns:item/mag_out/mag_out"
+      }
+    ]
+  },
+  "item.reload_end.reload_end": {
+    "subtitle": "subtitle.scguns.reload_end",
+    "sounds": [
+      {
+        "name": "scguns:item/reload_end/reload_end"
+      }
+    ]
+  },
   "item.gun_rustle.gun_rustle": {
     "subtitle": "subtitle.scguns.gun_rustle",
     "sounds": [
@@ -139,7 +139,8 @@
     "subtitle": "subtitle.scguns.fire",
     "sounds": [
       {
-        "name": "scguns:item/airgun/fire"
+        "name": "scguns:item/airgun/fire",
+        "volume": 0.35
       }
     ]
   },
@@ -295,14 +296,14 @@
       }
     ]
   },
-    "item.scorched_rifle.fire": {
-        "subtitle": "subtitle.scguns.fire",
-        "sounds": [
-        {
-            "name": "scguns:item/scorched_rifle/fire"
-        }
-        ]
-    },
+  "item.scorched_rifle.fire": {
+    "subtitle": "subtitle.scguns.fire",
+    "sounds": [
+      {
+        "name": "scguns:item/scorched_rifle/fire"
+      }
+    ]
+  },
   "item.rusty_gnat.silenced_fire": {
     "subtitle": "subtitle.scguns.fire",
     "sounds": [
@@ -311,7 +312,6 @@
       }
     ]
   },
-
   "item.boomstick.fire": {
     "subtitle": "subtitle.scguns.fire",
     "sounds": [
@@ -328,7 +328,6 @@
       }
     ]
   },
-
   "item.makeshift_rifle.fire": {
     "subtitle": "subtitle.scguns.fire",
     "sounds": [
@@ -345,8 +344,6 @@
       }
     ]
   },
-
-
   "item.makeshift_rifle.cock": {
     "subtitle": "subtitle.scguns.cock",
     "sounds": [
@@ -435,7 +432,6 @@
       }
     ]
   },
-
   "item.blackpowder.fire": {
     "subtitle": "subtitle.scguns.fire",
     "sounds": [
@@ -444,7 +440,6 @@
       }
     ]
   },
-
   "item.plasma.fire": {
     "subtitle": "subtitle.scguns.fire",
     "sounds": [
@@ -461,7 +456,6 @@
       }
     ]
   },
-
   "item.flamethrower.fire": {
     "subtitle": "subtitle.scguns.fire",
     "sounds": [
@@ -777,7 +771,6 @@
       }
     ]
   },
-
   "ui.weapon.attach": {
     "subtitle": "subtitle.scguns.attach",
     "sounds": [

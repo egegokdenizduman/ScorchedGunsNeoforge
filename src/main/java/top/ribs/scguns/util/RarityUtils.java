@@ -47,7 +47,6 @@ public class RarityUtils {
         ITEM_RARITY_MAP.put(scguns("carapice"), Constants.ENDISH);
         ITEM_RARITY_MAP.put(scguns("weevil"), Constants.ENDISH);
         ITEM_RARITY_MAP.put(scguns("shulkshot"), Constants.ENDISH);
-        ITEM_RARITY_MAP.put(scguns("shulker_core"), Constants.ENDISH);
 
         ITEM_RARITY_MAP.put(scguns("scorched_blueprint"), Constants.SCORCHED);
         ITEM_RARITY_MAP.put(scguns("scorched_ingot"), Constants.SCORCHED);

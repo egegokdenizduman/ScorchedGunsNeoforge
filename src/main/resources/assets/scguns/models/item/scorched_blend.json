@@ -1,6 +1,16 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "scguns:item/scorched_blend"
+    "layer0": "scguns:item/scorched_blend",
+    "layer1": "scguns:item/scorched_blend_e"
+  },
+  "loader": "neoforge:item_layers",
+  "neoforge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
   }
 }

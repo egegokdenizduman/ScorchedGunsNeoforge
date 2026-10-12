@@ -21,6 +21,6 @@ public class AttachmentItem extends Item implements IMeta
     }
 
     public boolean isValidRepairItem(ItemStack pToRepair, ItemStack pRepair) {
-        return pRepair.is(ModItems.REPAIR_KIT.get());
+        return GunRepairMaterials.isValidRepair(pToRepair, pRepair);
     }
 }

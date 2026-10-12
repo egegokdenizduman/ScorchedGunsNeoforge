@@ -31,7 +31,7 @@ public class AirGunItem extends GunItem implements IAirGun {
         }
         Player player = getClientPlayer();
         List<ItemStack> backtanks = CreateBacktankBridge.getAllWithAir(player);
-        return !backtanks.isEmpty() || AirCanisterItem.findFirstWithAir(player).isPresent() || stack.isDamaged();
+        return !backtanks.isEmpty() || stack.isDamaged();
     }
 
     @Override
@@ -47,11 +47,6 @@ public class AirGunItem extends GunItem implements IAirGun {
             float air = CreateBacktankBridge.getAir(backtank);
             return maxAir > 0 ? Math.round(13.0F * air / maxAir) : 0;
         }
-        ItemStack canister = AirCanisterItem.findFirstWithAir(player).orElse(ItemStack.EMPTY);
-        if (!canister.isEmpty()) {
-            int maxAir = AirCanisterItem.getMaxAirStored(canister);
-            return maxAir > 0 ? Math.round(13.0F * AirCanisterItem.getAirStored(canister) / maxAir) : 0;
-        }
         return Math.round(13.0F - (float) stack.getDamageValue() * 13.0F / (float) stack.getMaxDamage());
     }
 
@@ -64,10 +59,6 @@ public class AirGunItem extends GunItem implements IAirGun {
         List<ItemStack> backtanks = CreateBacktankBridge.getAllWithAir(player);
         if (!backtanks.isEmpty()) {
             return CreateBacktankBridge.getBarColor(backtanks.get(0), 1);
-        }
-        ItemStack canister = AirCanisterItem.findFirstWithAir(player).orElse(ItemStack.EMPTY);
-        if (!canister.isEmpty()) {
-            return AirCanisterItem.getAirBarColor(canister);
         }
         if (stack.getDamageValue() >= (stack.getMaxDamage() / 1.5)) {
             return Objects.requireNonNull(ChatFormatting.RED.getColor());
@@ -91,7 +82,7 @@ public class AirGunItem extends GunItem implements IAirGun {
             Player player = getClientPlayer();
             if (player != null) {
                 List<ItemStack> backtanks = CreateBacktankBridge.getAllWithAir(player);
-                if (backtanks.isEmpty() && AirCanisterItem.findFirstWithAir(player).isEmpty()) {
+                if (backtanks.isEmpty()) {
                     tooltip.add(Component.translatable("info.airgun.requires_airtank")
                             .withStyle(ChatFormatting.RED));
                 }
@@ -115,7 +106,7 @@ public class AirGunItem extends GunItem implements IAirGun {
             }
             try {
                 Class<?> bridge = Class.forName(BACKTANK_UTIL);
-                Method method = bridge.getMethod("getAllWithAir", Player.class);
+                Method method = bridge.getMethod("getAllWithAir", net.minecraft.world.entity.LivingEntity.class);
                 Object value = method.invoke(null, player);
                 if (value instanceof List<?> list) {
                     return list.stream()

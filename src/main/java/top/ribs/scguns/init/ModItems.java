@@ -1711,9 +1711,6 @@ public class ModItems {
     public static final DeferredItem<Item> SCORCHED_INGOT = REGISTER.register("scorched_ingot", () -> new ScorchedItem(new Item.Properties()));
     public static final DeferredItem<Item> CHARGED_AMETHYST_SHARD = REGISTER.register("charged_amethyst_shard", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> EMPTY_TANK = REGISTER.register("empty_tank", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> AIR_CANISTER = REGISTER.register("air_canister", () -> new AirCanisterItem(new Item.Properties().stacksTo(1), 1700));
-    public static final DeferredItem<Item> REINFORCED_AIR_CANISTER = REGISTER.register("reinforced_air_canister", () -> new AirCanisterItem(new Item.Properties().stacksTo(1), 3200));
-    public static final DeferredItem<Item> CREATIVE_AIR_CANISTER = REGISTER.register("creative_air_canister", () -> new CreativeAirCanisterItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC)));
     public static final DeferredItem<Item> EMPTY_CORE = REGISTER.register("empty_core", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> ENERGY_CORE = REGISTER.register("energy_core", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> DEPLETED_ENERGY_CORE = REGISTER.register("depleted_energy_core", () -> new Item(new Item.Properties()));
@@ -1749,7 +1746,6 @@ public class ModItems {
     public static final DeferredItem<Item> LARGE_IRON_CASING = REGISTER.register("large_iron_casing", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> EMPTY_CELL = REGISTER.register("empty_cell", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> SHULKER_CASING = REGISTER.register("shulker_casing", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> SHULKER_CORE = REGISTER.register("shulker_core", () -> new TooltipItem(new Item.Properties(), "item.scguns.shulker_core.tooltip", "item.scguns.shulker_core.tooltip_2"));
     public static final DeferredItem<Item> SMALL_DIAMOND_STEEL_CASING = REGISTER.register("small_diamond_steel_casing", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> MEDIUM_DIAMOND_STEEL_CASING = REGISTER.register("medium_diamond_steel_casing", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> SMALL_BRASS_CASING = REGISTER.register("small_brass_casing", () -> new Item(new Item.Properties()));
@@ -1857,7 +1853,6 @@ public class ModItems {
 
     public static final DeferredItem<Item> DRAGON_SALVE = REGISTER.register("dragon_salve", () -> new GlintedHealingBandageItem(new Item.Properties().stacksTo(16).rarity(Rarity.RARE), 16, new MobEffectInstance(MobEffects.REGENERATION, 200, 1), new MobEffectInstance(MobEffects.ABSORPTION, 700, 0)));
 
-    public static final DeferredItem<Item> COLD_PACK = REGISTER.register("cold_pack", () -> new ColdPackItem(new Item.Properties().stacksTo(16)));
 
     // Scope Attachments
     public static final DeferredItem<Item> LASER_SIGHT = REGISTER.register("laser_sight", () -> new LaserSightItem(Attachments.LASER_SIGHT, new Item.Properties().stacksTo(1).durability(1300)));
@@ -1885,7 +1880,6 @@ public class ModItems {
     public static final DeferredItem<Item> SPEED_MAG = REGISTER.register("speed_mag", () -> new MagazineItem(Magazine.create(GunModifiers.SPEED_MAG_MODIFIER), new Item.Properties().stacksTo(1).durability(1550)));
     public static final DeferredItem<Item> PLUS_P_MAG = REGISTER.register("plus_p_mag", () -> new MagazineItem(Magazine.create(GunModifiers.INCREASED_DAMAGE, GunModifiers.PLUS_P_MAG), new Item.Properties().stacksTo(1).durability(1400)));
     //ITEMS
-    public static final DeferredItem<Item> REPAIR_KIT = REGISTER.register("repair_kit", () -> new Item(new Item.Properties()));
     // Mobs
     public static void register(IEventBus eventBus) {
         REGISTER.register(eventBus);
