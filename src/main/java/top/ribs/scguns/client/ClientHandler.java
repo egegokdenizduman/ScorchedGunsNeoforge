@@ -295,6 +295,7 @@ public class ClientHandler {
     public static void onRegisterReloadListener(RegisterClientReloadListenersEvent event) {
         event.registerReloadListener((ResourceManagerReloadListener) manager -> {
             PropertyHelper.resetCache();
+            top.ribs.scguns.client.render.EmissiveTextures.clearCache();
         });
     }
 

@@ -40,6 +40,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animation.AnimationController;
@@ -49,6 +50,7 @@ import software.bernie.geckolib.util.RenderUtil;
 import top.ribs.scguns.Config;
 import top.ribs.scguns.Reference;
 import top.ribs.scguns.client.GunRenderType;
+import top.ribs.scguns.client.render.EmissiveTextures;
 import top.ribs.scguns.client.compat.OptionalClientCompat;
 import top.ribs.scguns.client.handler.*;
 import top.ribs.scguns.client.render.gun.IOverrideModel;
@@ -83,11 +85,14 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
     private static final long PARTICLE_COOLDOWN_MS = 100;
     private long lastParticleSpawnTime = 0;
     private GeoBone currentLaserOriginBone = null;
+    private boolean glowPass = false;
+    private final Map<BakedGeoModel, Boolean> glowBoneCache = new WeakHashMap<>();
 
 
     public AnimatedGunRenderer(ResourceLocation path) {
         super(new AnimatedGunModel(path));
         instance = this;
+        this.addRenderLayer(new GunGlowLayer(this));
     }
 
     public static AnimatedGunRenderer get() {
@@ -300,7 +305,7 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
 
         Minecraft client = Minecraft.getInstance();
         boolean shouldRenderCustomArms = false;
-        if (bone.getName().equals("laser_origin")) {
+        if (!this.glowPass && bone.getName().equals("laser_origin")) {
             this.currentLaserOriginBone = bone;
         }
 
@@ -355,11 +360,11 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
             handleBoneVisibility(bone);
         }
 
-        if (shouldRenderCustomArms && client.player != null) {
+        if (!this.glowPass && shouldRenderCustomArms && client.player != null) {
             renderPlayerArms(client, poseStack, bone, animatable, packedLight, packedOverlay);
         }
 
-        if (bone.getName().matches("attachment_bone")) {
+        if (!this.glowPass && bone.getName().matches("attachment_bone")) {
             renderAttachments(bone, this.currentRenderStack, poseStack, renderType, buffer,
                     packedLight, client.getTimer().getGameTimeDeltaPartialTick(false), packedOverlay);
         }
@@ -371,6 +376,44 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
                 renderColor);
 
         poseStack.popPose();
+    }
+
+    void setGlowPass(boolean glowPass) {
+        this.glowPass = glowPass;
+    }
+
+    private static boolean isGlowBone(GeoBone bone) {
+        String name = bone.getName();
+        return name.equals("glow") || name.equals("glow_2") || name.equals("glow_3");
+    }
+
+    private static boolean containsGlowBone(List<GeoBone> bones) {
+        for (GeoBone bone : bones) {
+            if (isGlowBone(bone) || containsGlowBone(bone.getChildBones())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean hasGlowContent(AnimatedGunItem animatable, BakedGeoModel model) {
+        if (EmissiveTextures.getGlowmask(this.getTextureLocation(animatable)) != null) {
+            return true;
+        }
+        return this.glowBoneCache.computeIfAbsent(model, m -> containsGlowBone(m.topLevelBones()));
+    }
+
+    @Override
+    public void renderCubesOfBone(PoseStack poseStack, GeoBone bone, VertexConsumer buffer, int packedLight, int packedOverlay, int colour) {
+        if (!this.glowPass) {
+            super.renderCubesOfBone(poseStack, bone, buffer, packedLight, packedOverlay, colour);
+            return;
+        }
+        ResourceLocation texture = this.getTextureLocation(this.animatable);
+        RenderType glowType = isGlowBone(bone) ? RenderType.eyes(texture) : EmissiveTextures.getGlowRenderType(texture);
+        if (glowType != null) {
+            super.renderCubesOfBone(poseStack, bone, this.bufferSource.getBuffer(glowType), LightTexture.FULL_BRIGHT, packedOverlay, colour);
+        }
     }
 
     private boolean isArmBone(GeoBone bone) {

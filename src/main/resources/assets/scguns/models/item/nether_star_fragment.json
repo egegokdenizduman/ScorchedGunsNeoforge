@@ -1,6 +1,16 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "scguns:item/nether_star_fragment"
+    "layer0": "scguns:item/nether_star_fragment",
+    "layer1": "scguns:item/nether_star_fragment_e"
+  },
+  "loader": "neoforge:item_layers",
+  "neoforge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
   }
 }
