@@ -1,4 +1,4 @@
-### AI SLOP WARNING!!!
+## AI SLOP WARNING!!! AI SLOP WARNING!!! AI SLOP WARNING!!!
 
 # Scorched Guns
 Port of NeoForge 1.21.1 port of Scorched Guns.
@@ -10,6 +10,7 @@ obliterate my friends consistently but that doesn't change the fact that it is s
 
 ## Requirements
 - Minecraft 1.21.1
+- Create 6.0.10
 - NeoForge 21.1.228+
 - Framework 0.13.9+
 - Curios 9.4.1+
