@@ -106,6 +106,57 @@ public class BulletTrailRenderingHandler
         this.bullets.clear();
     }
 
+    /**
+     * Voxel tracer (in the spirit of Iron's Artifice): a thin bright core plus a chain of small glowing cubes that
+     * shrink and fade toward the tail, white-hot at the bullet and blending into the gun's trail colour.
+     * Drawn with the additive, full-bright lightning render type so it glows (also under shader packs).
+     * The trail runs along -Y in the current pose, starting at the bullet.
+     */
+    private static void renderVoxelTracer(VertexConsumer consumer, Matrix4f matrix, float length, float width, float red, float green, float blue)
+    {
+        float core = Math.max(0.006F, width * 0.35F);
+        cube(consumer, matrix, -core, -length, -core, core, 0, core, red, green, blue, 0.55F);
+
+        float spacing = 0.3F;
+        int count = Math.max(1, (int) (length / spacing));
+        for(int i = 0; i < count; i++)
+        {
+            float t = (float) i / (float) count;          // 0 at the bullet, 1 at the tail
+            float size = Math.max(0.012F, width * 1.6F * (1.0F - t * 0.8F));
+            float heat = 1.0F - t;                          // white-hot head blending into the trail colour
+            float r = red + (1.0F - red) * heat * 0.8F;
+            float g = green + (1.0F - green) * heat * 0.8F;
+            float b = blue + (1.0F - blue) * heat * 0.8F;
+            float alpha = 0.9F * (1.0F - t) + 0.1F;
+            float y = -i * spacing;
+            cube(consumer, matrix, -size, y - size, -size, size, y + size, size, r, g, b, alpha);
+        }
+    }
+
+    private static void cube(VertexConsumer c, Matrix4f m, float x0, float y0, float z0, float x1, float y1, float z1, float r, float g, float b, float a)
+    {
+        // six faces, outward winding
+        face(c, m, x0, y0, z0, x1, y0, z0, x1, y1, z0, x0, y1, z0, r, g, b, a);
+        face(c, m, x1, y0, z1, x0, y0, z1, x0, y1, z1, x1, y1, z1, r, g, b, a);
+        face(c, m, x0, y0, z1, x0, y0, z0, x0, y1, z0, x0, y1, z1, r, g, b, a);
+        face(c, m, x1, y0, z0, x1, y0, z1, x1, y1, z1, x1, y1, z0, r, g, b, a);
+        face(c, m, x0, y1, z0, x1, y1, z0, x1, y1, z1, x0, y1, z1, r, g, b, a);
+        face(c, m, x0, y0, z1, x1, y0, z1, x1, y0, z0, x0, y0, z0, r, g, b, a);
+    }
+
+    private static void face(VertexConsumer c, Matrix4f m, float ax, float ay, float az, float bx, float by, float bz,
+                             float cx, float cy, float cz, float dx, float dy, float dz, float r, float g, float b, float a)
+    {
+        c.addVertex(m, ax, ay, az).setColor(r, g, b, a);
+        c.addVertex(m, bx, by, bz).setColor(r, g, b, a);
+        c.addVertex(m, cx, cy, cz).setColor(r, g, b, a);
+        c.addVertex(m, dx, dy, dz).setColor(r, g, b, a);
+        c.addVertex(m, dx, dy, dz).setColor(r, g, b, a);
+        c.addVertex(m, cx, cy, cz).setColor(r, g, b, a);
+        c.addVertex(m, bx, by, bz).setColor(r, g, b, a);
+        c.addVertex(m, ax, ay, az).setColor(r, g, b, a);
+    }
+
     private void renderBulletTrail(BulletTrail trail, PoseStack poseStack, float deltaTicks)
     {
         Minecraft mc = Minecraft.getInstance();
@@ -114,8 +165,7 @@ public class BulletTrailRenderingHandler
             return;
 
         Entity shooter = trail.getShooter();
-        if(mc.options.getCameraType().isFirstPerson() && shooter instanceof Player player && player.isLocalPlayer())
-            return;
+        boolean ownFirstPerson = mc.options.getCameraType().isFirstPerson() && shooter instanceof Player player && player.isLocalPlayer();
 
         poseStack.pushPose();
 
@@ -141,7 +191,14 @@ public class BulletTrailRenderingHandler
         // Prevents the trail length from being longer than the distance to shooter
         if(shooter != null)
         {
-            trailLength = (float) Math.min(trailLength, shooter.getEyePosition(deltaTicks).distanceTo(new Vec3(bulletX,bulletY, bulletZ)));
+            double toShooter = shooter.getEyePosition(deltaTicks).distanceTo(new Vec3(bulletX,bulletY, bulletZ));
+            // keep your own tracer from starting inside your face in first person
+            trailLength = (float) Math.min(trailLength, ownFirstPerson ? toShooter - 1.0 : toShooter);
+        }
+        if(ownFirstPerson && trailLength <= 0.1F)
+        {
+            poseStack.popPose();
+            return;
         }
 
         Matrix4f matrix4f = poseStack.last().pose();
@@ -149,17 +206,8 @@ public class BulletTrailRenderingHandler
 
         if(trail.isTrailVisible())
         {
-            RenderType bulletType = GunRenderType.getBulletTrail();
-            VertexConsumer builder = renderTypeBuffer.getBuffer(bulletType);
-            builder.addVertex(matrix4f, 0, 0, -trailWidth).setColor(red, green, blue, alpha).setLight(15728880);
-            builder.addVertex(matrix4f, 0, 0, trailWidth).setColor(red, green, blue, alpha).setLight(15728880);
-            builder.addVertex(matrix4f, 0, -trailLength, 0).setColor(red, green, blue, alpha).setLight(15728880);
-            builder.addVertex(matrix4f, 0, -trailLength, 0).setColor(red, green, blue, alpha).setLight(15728880);
-            builder.addVertex(matrix4f, -trailWidth, 0, 0).setColor(red, green, blue, alpha).setLight(15728880);
-            builder.addVertex(matrix4f, trailWidth, 0, 0).setColor(red, green, blue, alpha).setLight(15728880);
-            builder.addVertex(matrix4f, 0, -trailLength, 0).setColor(red, green, blue, alpha).setLight(15728880);
-            builder.addVertex(matrix4f, 0, -trailLength, 0).setColor(red, green, blue, alpha).setLight(15728880);
-            Minecraft.getInstance().renderBuffers().bufferSource().endBatch(bulletType);
+            renderVoxelTracer(renderTypeBuffer.getBuffer(RenderType.lightning()), matrix4f, trailLength, trailWidth, red, green, blue);
+            renderTypeBuffer.endBatch(RenderType.lightning());
         }
 
         if(!trail.getItem().isEmpty())
