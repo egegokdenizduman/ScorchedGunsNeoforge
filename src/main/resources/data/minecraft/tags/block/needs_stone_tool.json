@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "scguns:anthralite_block",
+    "scguns:treated_iron_block",
+    "scguns:treated_brass_block"
+  ]
+}

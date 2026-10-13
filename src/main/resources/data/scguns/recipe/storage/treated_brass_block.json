@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "group": "treated_brass_block",
+  "key": {
+    "#": {
+      "item": "scguns:treated_brass_ingot"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "scguns:treated_brass_block"
+  }
+}

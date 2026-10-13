@@ -24,6 +24,7 @@
     "client.VehiclePoseMixin",
     "client.compat.fa.EMFModelPartRootMixin",
     "client.compat.fa.PlayerRendererMixin",
+    "client.compat.iris.BlockMaterialMappingMixin",
     "client.compat.punchy.HandRenderBobContextMixin",
     "client.compat.punchy.MovementStateMachineMixin",
     "client.compat.punchy.PunchyArmRendererMixin"

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "diamond_steel_ingot",
+  "ingredients": [
+    {
+      "item": "scguns:diamond_steel_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "scguns:diamond_steel_ingot"
+  }
+}
