@@ -20,10 +20,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.FireBlock;
+import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import top.ribs.scguns.Config;
+import top.ribs.scguns.block.FakeSoulFireBlock;
 import top.ribs.scguns.common.Gun;
 import top.ribs.scguns.init.ModBlocks;
 import top.ribs.scguns.init.ModDamageTypes;
@@ -249,34 +252,50 @@ public class FireRoundEntity extends ProjectileEntity {
         return blockState.isSolidRender(level, pos);
     }
 
-    private BlockState getWallFireState(Direction attachedFace) {
+    /**
+     * The fire this projectile leaves at {@code firePos}, or null if that fire could not exist there.
+     * Regular fire takes the state vanilla itself computes for the position (faces only on flammable
+     * neighbours) instead of a hard-coded face, so it ages and burns out exactly like vanilla fire.
+     */
+    @Nullable
+    private BlockState getFireState(Level level, BlockPos firePos) {
         if (this.isSoulFireProjectile()) {
-            return ModBlocks.FAKE_SOUL_FIRE.get().defaultBlockState();
+            BlockState soulFire = ModBlocks.FAKE_SOUL_FIRE.get().defaultBlockState();
+            return soulFire.canSurvive(level, firePos) ? soulFire : null;
         }
-        BlockState fireState = Blocks.FIRE.defaultBlockState();
-        return switch (attachedFace) {
-            case UP -> fireState.setValue(FireBlock.UP, true);
-            case NORTH -> fireState.setValue(FireBlock.NORTH, true);
-            case SOUTH -> fireState.setValue(FireBlock.SOUTH, true);
-            case EAST -> fireState.setValue(FireBlock.EAST, true);
-            case WEST -> fireState.setValue(FireBlock.WEST, true);
-            default -> fireState;
-        };
+        BlockPos belowPos = firePos.below();
+        BlockState fire = Blocks.FIRE.defaultBlockState().updateShape(Direction.DOWN, level.getBlockState(belowPos), level, firePos, belowPos);
+        return fire.is(Blocks.FIRE) ? fire : null;
     }
 
+    /**
+     * Sets fire in the cell on the {@code face} side of the hit block. An existing fire of another type in
+     * that cell is replaced in place; the same type only has its burn timer refreshed. Fire is never put
+     * on top of another fire block.
+     */
     private void tryPlaceWallFire(Level level, BlockPos pos, Direction face) {
-        BlockPos offsetPos = pos.relative(face);
-
-        if (level.isEmptyBlock(offsetPos)) {
-            BlockState hitBlockState = level.getBlockState(pos);
-
-            if (canSustainFireOnFace(level, hitBlockState, pos, face)) {
-                BlockState fireState = getWallFireState(face.getOpposite());
-                if (fireState.canSurvive(level, offsetPos)) {
-                    level.setBlock(offsetPos, fireState, 11);
-                }
-            }
+        BlockPos firePos = pos.relative(face);
+        BlockState existing = level.getBlockState(firePos);
+        boolean existingIsFire = existing.getBlock() instanceof BaseFireBlock;
+        if (!existing.isAir() && !existingIsFire) {
+            return;
         }
+        if (level.getBlockState(firePos.below()).getBlock() instanceof BaseFireBlock) {
+            return;
+        }
+        if (!canSustainFireOnFace(level, level.getBlockState(pos), pos, face)) {
+            return;
+        }
+
+        BlockState fireState = this.getFireState(level, firePos);
+        if (fireState == null) {
+            return;
+        }
+        if (existing.is(fireState.getBlock())) {
+            FakeSoulFireBlock.refresh(level, firePos, existing);
+            return;
+        }
+        level.setBlock(firePos, fireState, Block.UPDATE_ALL_IMMEDIATE);
     }
 
     private Direction[] getAdjacentFaces(Direction face) {

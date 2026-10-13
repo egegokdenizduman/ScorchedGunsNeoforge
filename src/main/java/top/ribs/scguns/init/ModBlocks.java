@@ -27,7 +27,7 @@ public class ModBlocks {
 
     public static final DeferredRegister.Blocks REGISTER = DeferredRegister.createBlocks(Reference.MOD_ID);
     public static final DeferredBlock<Block> FAKE_SOUL_FIRE = REGISTER.register("fake_soul_fire",
-            () -> new FakeSoulFireBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_FIRE), 2.0F));
+            () -> new FakeSoulFireBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SOUL_FIRE).randomTicks().noLootTable(), 2.0F));
     public static final DeferredBlock<Block> TEMPORARY_LIGHT = REGISTER.register("temporary_light",
             TemporaryLightBlock::new);
     public static final DeferredBlock<Block> GUN_SHELF = register("gun_shelf",
