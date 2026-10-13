@@ -1849,6 +1849,7 @@ public class ModItems {
     public static final DeferredItem<Item> GRENADE = REGISTER.register("grenade", () -> new GrenadeItem(new Item.Properties().stacksTo(32), 20 * 3));
     public static final DeferredItem<Item> STUN_GRENADE = REGISTER.register("stun_grenade", () -> new StunGrenadeItem(new Item.Properties().stacksTo(32), 72000));
     public static final DeferredItem<Item> MOLOTOV_COCKTAIL = REGISTER.register("molotov_cocktail", () -> new MolotovCocktailItem(new Item.Properties().stacksTo(32), 72000));
+    public static final DeferredItem<Item> SOUL_MOLOTOV_COCKTAIL = REGISTER.register("soul_molotov_cocktail", () -> new SoulMolotovCocktailItem(new Item.Properties().stacksTo(32), 72000));
 
     // Medical Items
     public static final DeferredItem<Item> BASIC_POULTICE = REGISTER.register("basic_poultice",

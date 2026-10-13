@@ -53,6 +53,7 @@ public class ModEntities
     public static final DeferredHolder<EntityType<?>, EntityType<ThrowableGrenadeEntity>> THROWABLE_GRENADE = registerBasic("throwable_grenade", ThrowableGrenadeEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<ThrowableStunGrenadeEntity>> THROWABLE_STUN_GRENADE = registerBasic("throwable_stun_grenade", ThrowableStunGrenadeEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<ThrowableMolotovCocktailEntity>> THROWABLE_MOLOTOV_COCKTAIL = registerBasic("throwable_molotov_cocktail", ThrowableMolotovCocktailEntity::new);
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrowableSoulMolotovCocktailEntity>> THROWABLE_SOUL_MOLOTOV_COCKTAIL = registerBasic("throwable_soul_molotov_cocktail", ThrowableSoulMolotovCocktailEntity::new);
     public static final DeferredHolder<EntityType<?>, EntityType<ThrowableShotballEntity>> THROWABLE_SHOTBALL = registerBasic("throwable_shotball", ThrowableShotballEntity::new);
     /* Mobs */
 

@@ -1,7 +1,16 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "item/handheld",
-	"textures": {
-		"layer0": "scguns:item/molotov_cocktail"
-	}
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "scguns:item/molotov_cocktail",
+    "layer1": "scguns:item/molotov_cocktail_e"
+  },
+  "loader": "neoforge:item_layers",
+  "neoforge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  }
 }

@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "0": "scguns:item/soul_molotov_cocktail",
+    "particle": "scguns:item/soul_molotov_cocktail"
+  },
+  "loader": "neoforge:separate_transforms",
+  "base": {
+    "parent": "scguns:item/soul_molotov_cocktail_3d"
+  },
+  "perspectives": {
+    "firstperson_righthand": {
+      "parent": "scguns:item/soul_molotov_cocktail_3d"
+    },
+    "firstperson_lefthand": {
+      "parent": "scguns:item/soul_molotov_cocktail_3d"
+    },
+    "thirdperson_righthand": {
+      "parent": "scguns:item/soul_molotov_cocktail_3d"
+    },
+    "thirdperson_lefthand": {
+      "parent": "scguns:item/soul_molotov_cocktail_3d"
+    },
+    "fixed": {
+      "parent": "scguns:item/soul_molotov_cocktail_2d"
+    },
+    "gui": {
+      "parent": "scguns:item/soul_molotov_cocktail_2d"
+    },
+    "ground": {
+      "parent": "scguns:item/soul_molotov_cocktail_3d"
+    },
+    "frame": {
+      "parent": "scguns:item/soul_molotov_cocktail_2d"
+    }
+  }
+}
