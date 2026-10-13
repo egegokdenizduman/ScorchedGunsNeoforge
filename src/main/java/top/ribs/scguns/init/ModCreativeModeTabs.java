@@ -312,7 +312,6 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.ENERGY_CELL.get());
                         pOutput.accept(ModItems.SCULK_CELL.get());
                         pOutput.accept(ModItems.SHULKSHOT.get());
-                        pOutput.accept(ModItems.SYRINGE.get());
                         pOutput.accept(ModItems.MICROJET.get());
                         pOutput.accept(ModItems.ROCKET.get());
                         pOutput.accept(ModItems.HE_GRENADE_ROUND.get());

@@ -61,6 +61,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
     private static final HolderLookup.Provider BUILT_IN_REGISTRIES = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
     private static final String LOADED_PROJECTILE_KEY = "scguns:LoadedProjectile";
     private static final String SELECTED_PROJECTILE_KEY = "scguns:SelectedProjectile";
+    private static final String LOADED_AMMO_STACK_KEY = "scguns:LoadedAmmoStack";
 
     protected General general = new General();
     protected Reloads reloads = new Reloads();
@@ -383,8 +384,42 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
         if (tag != null) {
             tag.remove(getStackScopedProjectileKey(stack, LOADED_PROJECTILE_KEY));
             tag.remove(LOADED_PROJECTILE_KEY);
+            tag.remove(LOADED_AMMO_STACK_KEY);
             setStackTag(stack, tag);
         }
+    }
+
+    /**
+     * Remembers the data components of the loaded ammo (e.g. the potion on a tipped arrow) so the
+     * fired projectile and any ammo handed back on unload keep them. Ammo without component data
+     * clears the stored stack.
+     */
+    public static void setLoadedAmmoStack(ItemStack gunStack, ItemStack ammo, HolderLookup.Provider registries) {
+        CompoundTag tag = getOrCreateStackTag(gunStack);
+        if (ammo.isEmpty() || ammo.getComponentsPatch().isEmpty()) {
+            tag.remove(LOADED_AMMO_STACK_KEY);
+        } else {
+            tag.put(LOADED_AMMO_STACK_KEY, ammo.copyWithCount(1).save(registries));
+        }
+        setStackTag(gunStack, tag);
+    }
+
+    /**
+     * The loaded ammo as an item stack of the given size, including any stored component data.
+     */
+    public static ItemStack getLoadedAmmoStack(ItemStack gunStack, Gun gun, int count, HolderLookup.Provider registries) {
+        Item item = getLoadedProjectileItem(gunStack, gun);
+        if (item == null || count <= 0) {
+            return ItemStack.EMPTY;
+        }
+        CompoundTag tag = getStackTag(gunStack);
+        if (tag != null && tag.contains(LOADED_AMMO_STACK_KEY, Tag.TAG_COMPOUND)) {
+            ItemStack stored = ItemStack.parse(registries, tag.getCompound(LOADED_AMMO_STACK_KEY)).orElse(ItemStack.EMPTY);
+            if (!stored.isEmpty() && stored.getItem() == item) {
+                return stored.copyWithCount(count);
+            }
+        }
+        return new ItemStack(item, count);
     }
 
     public Sounds getSounds() {

@@ -25,7 +25,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -111,9 +112,10 @@ public class ServerPlayHandler {
         }
         else if (activeProjectile.firesArrows()) {
             int count = modifiedGun.getGeneral().getProjectileAmount();
+            ItemStack arrowStack = Gun.getLoadedAmmoStack(heldItem, modifiedGun, 1, world.registryAccess());
             for (int i = 0; i < count; i++) {
-                Arrow arrow = getArrow(player, world, activeProjectile);
-                arrow.pickup = Arrow.Pickup.ALLOWED;
+                AbstractArrow arrow = getArrow(player, world, activeProjectile, arrowStack);
+                arrow.pickup = player.isCreative() ? AbstractArrow.Pickup.CREATIVE_ONLY : AbstractArrow.Pickup.ALLOWED;
 
                 world.addFreshEntity(arrow);
             }
@@ -177,8 +179,10 @@ public class ServerPlayHandler {
         }
     }
     @NotNull
-    private static Arrow getArrow(ServerPlayer player, Level world, Gun.Projectile projectile) {
-        Arrow arrow = new Arrow(world, player, Items.ARROW.getDefaultInstance(), null);
+    private static AbstractArrow getArrow(ServerPlayer player, Level world, Gun.Projectile projectile, ItemStack ammo) {
+        // Let the arrow item build its own entity: tipped arrows keep their potion, spectral arrows glow, etc.
+        ItemStack arrowStack = ammo.getItem() instanceof ArrowItem ? ammo.copyWithCount(1) : Items.ARROW.getDefaultInstance();
+        AbstractArrow arrow = ((ArrowItem) arrowStack.getItem()).createArrow(world, arrowStack, player, null);
 
         float speed = (float) projectile.getSpeed() * 0.35f;
         float pitch = player.getXRot();
@@ -515,24 +519,22 @@ public class ServerPlayHandler {
             if (gun.getReloads().getReloadType() != ReloadType.SINGLE_ITEM) {
                 if (tag != null && tag.contains("AmmoCount", Tag.TAG_INT)) {
                     int count = tag.getInt("AmmoCount");
-                    Item loadedAmmoItem = Gun.getLoadedProjectileItem(stack, gun);
+                    ItemStack loadedAmmo = Gun.getLoadedAmmoStack(stack, gun, 1, player.registryAccess());
                     tag.putInt("AmmoCount", 0);
                     setCustomData(stack, tag);
                     Gun.clearLoadedProjectileItem(stack);
 
-                    ResourceLocation id = BuiltInRegistries.ITEM.getKey(loadedAmmoItem);
-                    Item item = BuiltInRegistries.ITEM.getOptional(id).orElse(null);
-                    if (item == null) return;
+                    if (loadedAmmo.isEmpty()) return;
 
-                    int maxStackSize = new ItemStack(item).getMaxStackSize();
+                    int maxStackSize = loadedAmmo.getMaxStackSize();
                     int stacks = count / maxStackSize;
                     for (int i = 0; i < stacks; i++) {
-                        spawnAmmo(player, new ItemStack(item, maxStackSize));
+                        spawnAmmo(player, loadedAmmo.copyWithCount(maxStackSize));
                     }
 
                     int remaining = count % maxStackSize;
                     if (remaining > 0) {
-                        spawnAmmo(player, new ItemStack(item, remaining));
+                        spawnAmmo(player, loadedAmmo.copyWithCount(remaining));
                     }
                 }
             }
@@ -571,11 +573,9 @@ public class ServerPlayHandler {
                     tag.putInt("AmmoCount", modifiedCapacity);
                     setCustomData(stack, tag);
                     if (!hasCreativeBox) {
-                        ResourceLocation id = BuiltInRegistries.ITEM.getKey(Gun.getLoadedProjectileItem(stack, gun));
-                        Item item = BuiltInRegistries.ITEM.getOptional(id).orElse(null);
-                        if (item != null) {
-                            int residue = currentAmmo - modifiedCapacity;
-                            spawnAmmo(player, new ItemStack(item, residue));
+                        ItemStack residue = Gun.getLoadedAmmoStack(stack, gun, currentAmmo - modifiedCapacity, player.registryAccess());
+                        if (!residue.isEmpty()) {
+                            spawnAmmo(player, residue);
                         }
                     }
                 }

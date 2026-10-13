@@ -5,6 +5,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +36,8 @@ import top.ribs.scguns.util.GunEnchantmentHelper;
 import top.ribs.scguns.util.GunModifierHelper;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
@@ -207,12 +210,81 @@ public class ReloadTracker {
         return amount - remaining[0];
     }
 
+    /**
+     * Ammo that carries data components (a tipped arrow's potion) can't be pooled by item alone:
+     * returns the stack whose exact components should be loaded, or EMPTY for ordinary ammo.
+     */
+    private ItemStack findComponentAmmoReference(Player player, Item ammoItem, int currentAmmo) {
+        if (currentAmmo > 0) {
+            ItemStack loaded = Gun.getLoadedAmmoStack(this.stack, this.gun, 1, player.registryAccess());
+            if (loaded.getItem() == ammoItem && !loaded.getComponentsPatch().isEmpty()) {
+                return loaded;
+            }
+        }
+        for (ItemStack invStack : inventoryAmmoSlots(player)) {
+            if (!invStack.isEmpty() && invStack.getItem() == ammoItem) {
+                return invStack.getComponentsPatch().isEmpty() ? ItemStack.EMPTY : invStack.copyWithCount(1);
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private static List<ItemStack> inventoryAmmoSlots(Player player) {
+        List<ItemStack> slots = new ArrayList<>(player.getInventory().offhand);
+        slots.addAll(player.getInventory().items);
+        return slots;
+    }
+
+    /** Loads only stacks identical to the reference (same item and components) from the player's own inventory. */
+    private void increaseMagAmmoExact(Player player, ItemStack reference, CompoundTag tag, int currentAmmo, int maxAmmo) {
+        List<ItemStack> matches = new ArrayList<>();
+        int available = 0;
+        for (ItemStack invStack : inventoryAmmoSlots(player)) {
+            if (ItemStack.isSameItemSameComponents(invStack, reference)) {
+                matches.add(invStack);
+                available += invStack.getCount();
+            }
+        }
+        int amount = player.isCreative() ? maxAmmo - currentAmmo : Math.min(maxAmmo - currentAmmo, available);
+        if (amount <= 0) {
+            return;
+        }
+        if (!player.isCreative()) {
+            int remaining = amount;
+            for (ItemStack match : matches) {
+                int take = Math.min(remaining, match.getCount());
+                match.shrink(take);
+                remaining -= take;
+                if (remaining == 0) {
+                    break;
+                }
+            }
+        }
+        tag.putInt("AmmoCount", currentAmmo + amount);
+        setCustomData(this.stack, tag);
+        Gun.setLoadedProjectileItem(this.stack, this.gun, reference.getItem());
+        Gun.setLoadedAmmoStack(this.stack, reference, player.registryAccess());
+    }
+
     public void increaseMagAmmo(Player player) {
         ItemStack[] ammoStack = this.findProjectileAmmoStacks(player);
         if (ammoStack.length > 0) {
             Item ammoItem = ammoStack[0].getItem();
             CompoundTag tag = getCustomData(this.stack);
             if (tag != null) {
+                int startAmmo = tag.getInt("AmmoCount");
+                ItemStack reference = this.findComponentAmmoReference(player, ammoItem, startAmmo);
+                if (!reference.isEmpty()) {
+                    int max = GunModifierHelper.getModifiedAmmoCapacity(this.stack, this.gun);
+                    this.increaseMagAmmoExact(player, reference, tag, Mth.clamp(startAmmo, 0, max), max);
+                    playReloadSound(player);
+                    return;
+                }
+                Gun.setLoadedAmmoStack(this.stack, ItemStack.EMPTY, player.registryAccess());
+                tag = getCustomData(this.stack);
+                if (tag == null) {
+                    tag = new CompoundTag();
+                }
                 int maxAmmo = GunModifierHelper.getModifiedAmmoCapacity(this.stack, this.gun);
                 boolean hasCreativeBox = player.getInventory().items.stream()
                         .anyMatch(i -> i.getItem() instanceof CreativeAmmoBoxItem) ||
@@ -271,6 +343,16 @@ public class ReloadTracker {
 
         if (!ammo.isEmpty()) {
             Item ammoItem = ammo.getItem();
+            CompoundTag currentTag = getCustomData(this.stack);
+            int loadedNow = currentTag != null ? currentTag.getInt("AmmoCount") : 0;
+            ItemStack reference = this.findComponentAmmoReference(player, ammoItem, loadedNow);
+            if (!reference.isEmpty()) {
+                int max = GunModifierHelper.getModifiedAmmoCapacity(this.stack, this.gun);
+                int target = Math.min(max, Math.max(loadedNow, 0) + this.gun.getReloads().getReloadAmount());
+                this.increaseMagAmmoExact(player, reference, currentTag != null ? currentTag : new CompoundTag(), Math.max(loadedNow, 0), target);
+                playReloadSound(player);
+                return;
+            }
             int amount = Math.min(ammo.getCount(), this.gun.getReloads().getReloadAmount());
             ItemStack currentStack = player.getMainHandItem();
             CompoundTag tag = getCustomData(currentStack);
@@ -282,7 +364,7 @@ public class ReloadTracker {
                 tag.putInt("AmmoCount", currentAmmo + amount);
                 setCustomData(currentStack, tag);
                 Gun.setLoadedProjectileItem(currentStack, this.gun, ammoItem);
-
+                Gun.setLoadedAmmoStack(currentStack, ItemStack.EMPTY, player.registryAccess());
             }
             shrinkFromAmmoPool(Gun.findAmmoStack(player, ammoItem), player, amount, ammoItem);
         }
