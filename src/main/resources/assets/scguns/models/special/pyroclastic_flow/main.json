@@ -3,7 +3,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "scguns:item/pyroclastic_flow",
-		"particle": "scguns:animated/gun/pyroclastic_flow"
+		"particle": "scguns:item/pyroclastic_flow"
 	},
 	"elements": [
 		{

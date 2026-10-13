@@ -11,6 +11,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -32,6 +33,7 @@ import top.ribs.scguns.init.ModEffects;
 import top.ribs.scguns.init.ModEntities;
 import top.ribs.scguns.init.ModItems;
 import top.ribs.scguns.init.ModSounds;
+import top.ribs.scguns.init.ModTags;
 import top.ribs.scguns.network.PacketHandler;
 import top.ribs.scguns.network.message.S2CMessageStunGrenade;
 
@@ -122,6 +124,10 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
         double angleMax = criteria.angleEffect.get() * 0.5;
         if(distance <= criteria.radius.get() && angleMax > 0 && angle <= angleMax)
         {
+            // A carved pumpkin (or anything tagged flash_protection) over the eyes blocks the flash
+            if(effect == ModEffects.BLINDED && entity.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.FLASH_PROTECTION))
+                return false;
+
             // Verify that light can pass through all blocks obstructing the entity's line of sight to the grenade
             if(effect != ModEffects.BLINDED || !Config.COMMON.stunGrenades.blind.criteria.raytraceOpaqueBlocks.get() || rayTraceOpaqueBlocks(this.level(), eyes, grenade, false, false, false) == null)
             {

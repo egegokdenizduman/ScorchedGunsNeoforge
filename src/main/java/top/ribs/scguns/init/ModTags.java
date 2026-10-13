@@ -51,6 +51,7 @@ public class ModTags
         public static final TagKey<Item> STRONG_COMPOST = tag("strong_compost");
         public static final TagKey<Item> COMPOST_DROPS= tag("compost_drops");
         public static final TagKey<Item> GAS_MASK = tag("gas_mask");
+        public static final TagKey<Item> FLASH_PROTECTION = tag("flash_protection");
         public static final TagKey<Item> EXPLOSIVE_BLOCK = tag("explosive_block");
         public static final TagKey<Item> GEOTHERMAL_VENT_OUTPUT = tag("geothermal_vent_output");
         public static final TagKey<Item> SULFUR_VENT_OUTPUT = tag("sulfur_vent_output");

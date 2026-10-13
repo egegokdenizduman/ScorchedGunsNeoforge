@@ -1,7 +1,6 @@
 {
   "replace": false,
   "entries": [
-    "scguns:pebbles_from_gravel",
-    "scguns:shulker_core_from_shulker"
+    "scguns:pebbles_from_gravel"
   ]
 }

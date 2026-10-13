@@ -1,22 +1,21 @@
-﻿{
-    "description":  {
-                        "translate":  "enchantment.scguns.trigger_finger"
-                    },
-    "supported_items":  "#scguns:enchantable/trigger_finger_compatible",
-    "primary_items":  "#scguns:enchantable/trigger_finger_compatible",
-    "weight":  5,
-    "max_level":  2,
-    "min_cost":  {
-                     "base":  15,
-                     "per_level_above_first":  10
-                 },
-    "max_cost":  {
-                     "base":  55,
-                     "per_level_above_first":  10
-                 },
-    "anvil_cost":  2,
-    "slots":  [
-                  "mainhand"
-              ],
-    "exclusive_set":  "#scguns:exclusive_set/weapon"
+{
+  "description": {
+    "translate": "enchantment.scguns.trigger_finger"
+  },
+  "supported_items": "#scguns:enchantable/trigger_finger_compatible",
+  "primary_items": "#scguns:enchantable/trigger_finger_compatible",
+  "weight": 5,
+  "max_level": 2,
+  "min_cost": {
+    "base": 15,
+    "per_level_above_first": 10
+  },
+  "max_cost": {
+    "base": 55,
+    "per_level_above_first": 10
+  },
+  "anvil_cost": 2,
+  "slots": [
+    "mainhand"
+  ]
 }

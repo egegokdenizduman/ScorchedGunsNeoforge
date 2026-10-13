@@ -1,19 +1,25 @@
 {
   "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "simulated"
+    }
+  ],
+  "category": "equipment",
   "key": {
-    "X": {
+    "N": {
       "item": "scguns:anthralite_nugget"
     },
-    "R": {
-      "item": "minecraft:redstone"
+    "L": {
+      "item": "simulated:laser_pointer"
     }
   },
   "pattern": [
-    "   ",
-    "XRX",
-    "   "
+    "NLN"
   ],
   "result": {
+    "count": 1,
     "id": "scguns:laser_sight"
   }
 }

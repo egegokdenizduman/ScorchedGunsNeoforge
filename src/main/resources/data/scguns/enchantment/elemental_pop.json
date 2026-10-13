@@ -1,22 +1,21 @@
-﻿{
-    "description":  {
-                        "translate":  "enchantment.scguns.elemental_pop"
-                    },
-    "supported_items":  "#scguns:enchantable/gun",
-    "primary_items":  "#scguns:enchantable/gun",
-    "weight":  1,
-    "max_level":  2,
-    "min_cost":  {
-                     "base":  15,
-                     "per_level_above_first":  10
-                 },
-    "max_cost":  {
-                     "base":  55,
-                     "per_level_above_first":  10
-                 },
-    "anvil_cost":  8,
-    "slots":  [
-                  "mainhand"
-              ],
-    "exclusive_set":  "#scguns:exclusive_set/weapon"
+{
+  "description": {
+    "translate": "enchantment.scguns.elemental_pop"
+  },
+  "supported_items": "#scguns:enchantable/gun",
+  "primary_items": "#scguns:enchantable/gun",
+  "weight": 1,
+  "max_level": 2,
+  "min_cost": {
+    "base": 15,
+    "per_level_above_first": 10
+  },
+  "max_cost": {
+    "base": 55,
+    "per_level_above_first": 10
+  },
+  "anvil_cost": 8,
+  "slots": [
+    "mainhand"
+  ]
 }

@@ -1,25 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
-    "Q": {
-      "item": "scguns:anthralite_ingot"
+    "S": {
+      "item": "minecraft:spyglass"
     },
-    "W": {
+    "N": {
       "item": "scguns:anthralite_nugget"
     },
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "X": {
-      "tag": "c:glass_panes"
+    "Q": {
+      "item": "scguns:anthralite_ingot"
     }
   },
   "pattern": [
-    "   ",
-    "XRX",
-    "WQW"
+    " S ",
+    "NQN"
   ],
   "result": {
+    "count": 1,
     "id": "scguns:medium_scope"
   }
 }

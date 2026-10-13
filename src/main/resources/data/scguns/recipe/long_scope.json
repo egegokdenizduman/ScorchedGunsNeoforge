@@ -1,25 +1,26 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "key": {
-    "Q": {
-      "item": "scguns:anthralite_ingot"
+    "T": {
+      "item": "minecraft:tinted_glass"
     },
-    "W": {
+    "S": {
+      "item": "minecraft:spyglass"
+    },
+    "N": {
       "item": "scguns:anthralite_nugget"
     },
-    "R": {
-      "item": "minecraft:redstone"
-    },
-    "X": {
-      "tag": "c:glass_blocks"
+    "Q": {
+      "item": "scguns:anthralite_ingot"
     }
   },
   "pattern": [
-    "   ",
-    "XRX",
-    "WQW"
+    "TST",
+    "NQN"
   ],
   "result": {
+    "count": 1,
     "id": "scguns:long_scope"
   }
 }

@@ -1,11 +1,9 @@
-﻿{
-    "replace":  false,
-    "values":  [
-                   "scguns:collateral",
-                   "scguns:accelerator",
-                   "scguns:puncturing",
-                   "scguns:heavy_shot",
-                   "scguns:waterproof",
-                   "scguns:hot_barrel"
-               ]
+{
+  "replace": false,
+  "values": [
+    "scguns:accelerator",
+    "scguns:heavy_shot",
+    "scguns:puncturing",
+    "scguns:hot_barrel"
+  ]
 }
