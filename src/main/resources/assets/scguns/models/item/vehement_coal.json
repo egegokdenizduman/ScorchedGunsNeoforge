@@ -1,7 +1,16 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "scguns:item/vehement_coal"
-	}
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "scguns:item/vehement_coal",
+    "layer1": "scguns:item/vehement_coal_e"
+  },
+  "loader": "neoforge:item_layers",
+  "neoforge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  }
 }

@@ -1,7 +1,16 @@
 {
-	"credit": "Made with Blockbench",
-	"parent": "item/generated",
-	"textures": {
-		"layer0": "scguns:item/unfinished_blaze_fuel"
-	}
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "scguns:item/unfinished_blaze_fuel",
+    "layer1": "scguns:item/unfinished_blaze_fuel_e"
+  },
+  "loader": "neoforge:item_layers",
+  "neoforge_data": {
+    "layers": {
+      "1": {
+        "block_light": 15,
+        "sky_light": 15
+      }
+    }
+  }
 }
