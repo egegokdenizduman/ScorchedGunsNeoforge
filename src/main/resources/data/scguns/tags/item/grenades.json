@@ -3,6 +3,7 @@
   "values": [
     "scguns:grenade",
     "scguns:stun_grenade",
-    "scguns:molotov_cocktail"
+    "scguns:molotov_cocktail",
+    "scguns:soul_molotov_cocktail"
   ]
 }

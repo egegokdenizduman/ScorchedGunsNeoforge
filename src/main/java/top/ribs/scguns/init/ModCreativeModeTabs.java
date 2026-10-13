@@ -384,6 +384,7 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModItems.STUN_GRENADE.get());
                         pOutput.accept(ModItems.SHOTBALL.get());
                         pOutput.accept(ModItems.MOLOTOV_COCKTAIL.get());
+                        pOutput.accept(ModItems.SOUL_MOLOTOV_COCKTAIL.get());
                         pOutput.accept(ModItems.BASIC_POULTICE.get());
                         pOutput.accept(ModItems.HONEY_SULFUR_POULTICE.get());
                         pOutput.accept(ModItems.ENCHANTED_BANDAGE.get());
