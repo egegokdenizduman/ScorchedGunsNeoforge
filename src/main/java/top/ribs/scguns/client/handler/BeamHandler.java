@@ -4,6 +4,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import top.ribs.scguns.Reference;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -113,7 +116,7 @@ public class BeamHandler {
         PoseStack poseStack = event.getPoseStack();
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-        setupRenderContext(poseStack, partialTick, player);
+        setupRenderContext(poseStack, partialTick, player, event.getCamera().getPosition());
 
         renderActiveBeams(mc, partialTick, poseStack, bufferSource);
 
@@ -121,7 +124,7 @@ public class BeamHandler {
         poseStack.popPose();
     }
 
-    private static void setupRenderContext(PoseStack poseStack, float partialTicks, LocalPlayer player) {
+    private static void setupRenderContext(PoseStack poseStack, float partialTicks, LocalPlayer player, Vec3 cameraPos) {
         ItemStack heldItem = player.getMainHandItem();
         if (heldItem.getItem() instanceof GunItem gunItem) {
             Gun modifiedGun = gunItem.getModifiedGun(heldItem);
@@ -133,9 +136,10 @@ public class BeamHandler {
             }
         }
 
-        Vec3 renderPos = calculateBasePosition(player, partialTicks);
+        // beams are drawn in world space relative to the camera (not the local player's eyes), so they line up in
+        // third person and for every other player's beam as well
         poseStack.pushPose();
-        poseStack.translate(-renderPos.x, -renderPos.y, -renderPos.z);
+        poseStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
     }
     private static void renderActiveBeams(Minecraft mc, float partialTicks, PoseStack poseStack, MultiBufferSource.BufferSource bufferSource) {
         activeBeams.forEach((uuid, beamInfo) -> {
@@ -196,18 +200,15 @@ public class BeamHandler {
         List<Vec3> renderPoints = new ArrayList<>(beamInfo.glassPenetrationPoints);
         renderPoints.add(beamInfo.smoothedEndPos);
 
-        for (Vec3 nextPoint : renderPoints) {
-            BeamRenderer.renderBeam(
-                    poseStack,
-                    bufferSource,
-                    partialTicks,
-                    currentStart,
-                    nextPoint,
-                    currentStart,
-                    nextPoint,
-                    interpolatedColor,
-                    beamInfo.fadeProgress
-            );
+        BeamRenderer.Style style = getBeamStyle(heldItem);
+        long gameTime = beamPlayer.level().getGameTime();
+        boolean spawnParticles = gameTime != beamInfo.lastParticleTick;
+        beamInfo.lastParticleTick = gameTime;
+        for (int i = 0; i < renderPoints.size(); i++) {
+            Vec3 nextPoint = renderPoints.get(i);
+            boolean last = i == renderPoints.size() - 1;
+            BeamRenderer.renderBeam(poseStack, bufferSource, partialTicks, currentStart, nextPoint, interpolatedColor,
+                    beamInfo.fadeProgress, style, i == 0, last, spawnParticles && last);
             currentStart = nextPoint;
         }
         beamPlayer.bob = originalBob;
@@ -216,11 +217,27 @@ public class BeamHandler {
         beamPlayer.walkDistO = originalWalkDistO;
     }
 
+    /** Picks the beam look for a gun: each beam gun has its own style, anything unknown gets the generic one. */
+    public static BeamRenderer.Style getBeamStyle(ItemStack stack) {
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        if (!Reference.MOD_ID.equals(id.getNamespace())) {
+            return BeamRenderer.Style.ENERGY;
+        }
+        return switch (id.getPath()) {
+            case "flayed_god" -> BeamRenderer.Style.WITHER;
+            case "cr4k_mining_laser" -> BeamRenderer.Style.MINING;
+            case "laser_musket", "waltz_conversion" -> BeamRenderer.Style.LASER;
+            case "minksy", "shard_culler" -> BeamRenderer.Style.CRYSTAL;
+            default -> BeamRenderer.Style.ENERGY;
+        };
+    }
+
     private static Vec3 calculateBeamOrigin(Player player, Gun modifiedGun, float partialTicks) {
         Minecraft mc = Minecraft.getInstance();
-        boolean isThirdPerson = mc.options.getCameraType().ordinal() > 0;
-
-        if (!isThirdPerson) {
+        // only the local player's own beam seen through their own eyes starts at the first-person gun model;
+        // everyone else (third person, spectating, other players' beams) starts at the gun held in the world
+        boolean ownFirstPerson = player == mc.player && mc.options.getCameraType().isFirstPerson() && mc.getCameraEntity() == player;
+        if (ownFirstPerson) {
             return calculateFirstPersonBeamOrigin(player, modifiedGun, partialTicks);
         } else {
             return calculateThirdPersonBeamOrigin(player, modifiedGun, partialTicks);
@@ -228,7 +245,8 @@ public class BeamHandler {
     }
 
     private static Vec3 calculateFirstPersonBeamOrigin(Player player, Gun modifiedGun, float partialTicks) {
-        Vec3 basePos = calculateBasePosition(player, partialTicks);
+        // the camera position (smoothed eye height) is exactly where the first-person gun is rendered from
+        Vec3 basePos = Minecraft.getInstance().gameRenderer.getMainCamera().getPosition();
         Vec3 lookVec = Vec3.directionFromRotation(
                 Mth.lerp(partialTicks, player.xRotO, player.getXRot()),
                 Mth.lerp(partialTicks, player.yRotO, player.getYRot())
@@ -265,13 +283,11 @@ public class BeamHandler {
         );
         Vec3 rightVec = lookVec.cross(upVec).normalize();
 
-        float aimProgress = AimingHandler.get().getAimProgress(player, partialTicks);
-        calculateBeamOffsets(modifiedGun, aimProgress);
-
+        // muzzle of the gun held in the right hand (third-person gun pose points along the look direction)
         return basePos
-                .add(rightVec.scale(0.1))
-                .add(upVec.scale(-0.1))
-                .add(lookVec.scale(2.15));
+                .add(rightVec.scale(player.getMainArm() == net.minecraft.world.entity.HumanoidArm.LEFT ? -0.3 : 0.3))
+                .add(upVec.scale(-0.12))
+                .add(lookVec.scale(1.3));
     }
     private static Vec3 calculateBasePosition(Player player, float partialTicks) {
         double x = Mth.lerp(partialTicks, player.xo, player.getX());
@@ -380,6 +396,7 @@ public class BeamHandler {
         public long expiryTime;
         public boolean isBeamFireMode;
         public float fadeProgress = 0.0f;
+        public long lastParticleTick = -1;
         private static final float FADE_SPEED = 2.0f;
         public List<Vec3> glassPenetrationPoints;
         public BeamInfo(Vec3 startPos, Vec3 endPos, long startTime, boolean isBeamFireMode) {

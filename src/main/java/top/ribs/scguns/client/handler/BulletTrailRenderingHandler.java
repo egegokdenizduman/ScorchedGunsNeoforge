@@ -192,8 +192,9 @@ public class BulletTrailRenderingHandler
         if(shooter != null)
         {
             double toShooter = shooter.getEyePosition(deltaTicks).distanceTo(new Vec3(bulletX,bulletY, bulletZ));
-            // keep your own tracer from starting inside your face in first person
-            trailLength = (float) Math.min(trailLength, ownFirstPerson ? toShooter - 1.0 : toShooter);
+            // the tracer's tail starts at the gun, not inside the shooter's head: further out in your own first-person
+            // view (the gun model is drawn close to the camera), at roughly arm's length for everyone else
+            trailLength = (float) Math.min(trailLength, ownFirstPerson ? toShooter - 1.0 : toShooter - 0.6);
         }
         if(ownFirstPerson && trailLength <= 0.1F)
         {
@@ -204,7 +205,7 @@ public class BulletTrailRenderingHandler
         Matrix4f matrix4f = poseStack.last().pose();
         MultiBufferSource.BufferSource renderTypeBuffer = mc.renderBuffers().bufferSource();
 
-        if(trail.isTrailVisible())
+        if(trail.isTrailVisible() && trailLength > 0.1F)
         {
             renderVoxelTracer(renderTypeBuffer.getBuffer(RenderType.lightning()), matrix4f, trailLength, trailWidth, red, green, blue);
             renderTypeBuffer.endBatch(RenderType.lightning());
