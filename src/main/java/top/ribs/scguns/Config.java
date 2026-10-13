@@ -231,6 +231,7 @@ public class Config
     public static class Gameplay
     {
         public final Griefing griefing;
+        public final Shotball shotball;
         public final ModConfigSpec.BooleanValue enableFirePlacement;
         public final ModConfigSpec.BooleanValue enableGunDamage;
         public final ModConfigSpec.BooleanValue enableAttachmentDamage;
@@ -261,6 +262,7 @@ public class Config
             builder.comment("Properties relating to gameplay").push("gameplay");
             {
                 this.griefing = new Griefing(builder);
+                this.shotball = new Shotball(builder);
                 this.drawAnimation = builder.comment("If true, enables the draw animation for weapons").define("drawAnimation", true);
                 this.ammoBoxCapacityMultiplier = builder.comment("Multiplier to adjust the capacity of all ammo boxes.").defineInRange("ammoBoxCapacityMultiplier", 1.0, 0.1, 100.0);
                 this.enableGunDamage = builder.comment("If true, guns will be damageable and can break, coward if you toggle this").define("enableGunDamage", true);
@@ -336,6 +338,33 @@ public class Config
                 this.setFireToBlocks = builder.comment("If true, allows guns enchanted with Fire Starter to light and spread fires on blocks").define("setFireToBlocks", true);
                 this.enableBlockBreaking = builder.comment("If true, allows heavy rounds to break blocks").define("enableBlockBreaking", true);
                 this.enableBeamMining = builder.comment("If true, allows beam weapons to mine blocks").define("enableBeamMining", true);
+            }
+            builder.pop();
+        }
+    }
+
+    /**
+     * Hullbreaker shotball related config options
+     */
+    public static class Shotball
+    {
+        public final ModConfigSpec.IntValue woodPenetration;
+        public final ModConfigSpec.DoubleValue explosionRadius;
+        public final ModConfigSpec.DoubleValue explosionDamageFraction;
+        public final ModConfigSpec.DoubleValue subLevelPenetrationMultiplier;
+        public final ModConfigSpec.DoubleValue subLevelExplosionMultiplier;
+        public final ModConfigSpec.DoubleValue subLevelImpulse;
+
+        public Shotball(ModConfigSpec.Builder builder)
+        {
+            builder.comment("Properties of the Hullbreaker shotball").push("shotball");
+            {
+                this.woodPenetration = builder.comment("How many blocks from the scguns:shotball_penetrable tag (wood, wool, envelopes) a shotball smashes through before it detonates. Needs griefing.enableBlockBreaking.").defineInRange("woodPenetration", 3, 0, 32);
+                this.explosionRadius = builder.comment("Radius of the small explosion when a shotball detonates on a block.").defineInRange("explosionRadius", 1.5, 0.0, 8.0);
+                this.explosionDamageFraction = builder.comment("Explosion damage to nearby entities, as a fraction of the shotball's projectile damage.").defineInRange("explosionDamageFraction", 0.35, 0.0, 2.0);
+                this.subLevelPenetrationMultiplier = builder.comment("Sable / Create Aeronautics ships (sub-levels): multiplier on how many penetrable blocks a shotball smashes through.").defineInRange("subLevelPenetrationMultiplier", 2.0, 0.0, 16.0);
+                this.subLevelExplosionMultiplier = builder.comment("Sable / Create Aeronautics ships (sub-levels): multiplier on the detonation radius when a shotball explodes against a ship.").defineInRange("subLevelExplosionMultiplier", 1.5, 0.0, 8.0);
+                this.subLevelImpulse = builder.comment("Sable / Create Aeronautics ships (sub-levels): physics impulse pushed into the ship along the shot direction when a shotball detonates against it (each smashed ship block adds a quarter of this). For scale, Sable's own explosions push 5 per blasted block.").defineInRange("subLevelImpulse", 60.0, 0.0, 10000.0);
             }
             builder.pop();
         }
