@@ -54,6 +54,7 @@ public class ClientHandler {
         bus.addListener(ClientHandler::registerAdditional);
         bus.addListener(ClientHandler::registerMenuScreens);
         bus.addListener(ClientHandler::onClientSetup);
+        bus.addListener(ClientHandler::onRegisterTooltipComponents);
         NeoForge.EVENT_BUS.register(HUDRenderHandler.class);
     }
     @SubscribeEvent
@@ -309,20 +310,21 @@ public class ClientHandler {
     }
 
 
+    private static void onRegisterTooltipComponents(RegisterClientTooltipComponentFactoriesEvent event) {
+        event.register(top.ribs.scguns.item.ammo_boxes.AmmoBoxTooltip.class, top.ribs.scguns.client.screen.ClientAmmoBoxTooltip::new);
+    }
+
+    /**
+     * Fill-level predicate for ammo box models: 0 = empty, 0.5 = partly filled, 1 = completely full.
+     * Uses the same capacity maths as the item bar and tooltip.
+     */
     private static void registerAmmoCountProperty(Item item) {
         ItemProperties.register(item, ResourceLocation.withDefaultNamespace("ammo_count"),
                 (stack, world, entity, seed) -> {
-                    int totalItemCount = AmmoBoxItem.getTotalItemCount(stack);
-                    int maxItemCount = AmmoBoxItem.getMaxItemCount(stack);
-                    if (totalItemCount == 0) {
+                    if (AmmoBoxItem.getUsedUnits(stack) <= 0) {
                         return 0.0f;
-                    } else if (totalItemCount <= maxItemCount / 3) {
-                        return 0.33f;
-                    } else if (totalItemCount <= 2 * maxItemCount / 3) {
-                        return 0.66f;
-                    } else {
-                        return 1.0f;
                     }
+                    return AmmoBoxItem.isFull(stack) ? 1.0f : 0.5f;
                 });
     }
 }

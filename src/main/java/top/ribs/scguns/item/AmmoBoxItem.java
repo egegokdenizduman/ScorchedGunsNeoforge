@@ -1,32 +1,33 @@
 package top.ribs.scguns.item;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.inventory.tooltip.BundleTooltip;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.component.BundleContents;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickAction;
-import net.minecraft.world.level.Level;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import org.jetbrains.annotations.NotNull;
 import top.ribs.scguns.Config;
 import top.ribs.scguns.common.Gun;
+import top.ribs.scguns.item.ammo_boxes.AmmoBoxTooltip;
 import top.ribs.scguns.item.ammo_boxes.CreativeAmmoBoxItem;
 
 import java.util.ArrayList;
@@ -35,120 +36,234 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Bundle-style ammo container.
+ *
+ * Capacity is measured in stacks, like a vanilla bundle: every stored item weighs
+ * {@code 64 / maxStackSize} units and a box holds {@code stacks * 64} units. A box with
+ * 5 stacks therefore holds 320 rounds of a 64-stacking round, or 80 rockets that stack
+ * to 16. The item bar, the fill-level model predicate and the tooltip all read the
+ * same {@link #getFullness(ItemStack)} so they always agree.
+ *
+ * Clicks (same as a vanilla bundle):
+ * - right-click the box onto a slot with matching ammo: pulls as much as fits;
+ * - right-click ammo onto the box: puts as much as fits into it;
+ * - right-click the box onto an empty slot / with an empty cursor: takes out the most
+ *   recently stored stack.
+ */
 public abstract class AmmoBoxItem extends Item {
     public static final String TAG_ITEMS = "Items";
+    /** Weight units of one full stack. */
+    public static final int UNITS_PER_STACK = 64;
     private static final int BAR_COLOR = Mth.color(0.4F, 0.4F, 1.0F);
+    private static final int BAR_COLOR_FULL = Mth.color(1.0F, 0.33F, 0.33F);
 
     public AmmoBoxItem(Item.Properties properties) {
         super(properties);
     }
 
+    protected abstract ResourceLocation getAmmoTag();
+
+    /** How many full stacks the box holds before the capacity multiplier is applied. */
+    protected abstract int getBaseStackCapacity();
+
+    public boolean canHold(ItemStack stack) {
+        return !stack.isEmpty() && !(stack.getItem() instanceof AmmoBoxItem) && stack.is(ItemTags.create(getAmmoTag()));
+    }
+
+    // ------------------------------------------------------------------ capacity
+
+    /** Stacks this box holds, including the config multiplier. */
+    public static int getStackCapacity(ItemStack box) {
+        if (!(box.getItem() instanceof AmmoBoxItem item)) {
+            return 0;
+        }
+        int base = item.getBaseStackCapacity();
+        if (base >= Integer.MAX_VALUE / UNITS_PER_STACK) {
+            return base;
+        }
+        double multiplier = Config.COMMON.gameplay.ammoBoxCapacityMultiplier.get();
+        return Math.max(1, (int) Math.round(base * multiplier));
+    }
+
+    /** Capacity in weight units ({@link #UNITS_PER_STACK} per stack). */
+    public static int getMaxItemCount(ItemStack box) {
+        int stacks = getStackCapacity(box);
+        if (stacks >= Integer.MAX_VALUE / UNITS_PER_STACK) {
+            return Integer.MAX_VALUE;
+        }
+        return stacks * UNITS_PER_STACK;
+    }
+
+    /** Weight of a single item: 1 for things that stack to 64, 4 for things that stack to 16, ... */
+    public static int getWeight(ItemStack stack) {
+        return Math.max(1, UNITS_PER_STACK / Math.max(1, stack.getMaxStackSize()));
+    }
+
+    /** Used capacity in weight units. */
+    public static int getUsedUnits(ItemStack box) {
+        if (box.getItem() instanceof CreativeAmmoBoxItem) {
+            return 0;
+        }
+        return getContents(box).mapToInt(s -> s.getCount() * getWeight(s)).sum();
+    }
+
+    /** 0..1 fill level, shared by the item bar, the model predicate and the tooltip. */
+    public static float getFullness(ItemStack box) {
+        int max = getMaxItemCount(box);
+        if (max <= 0 || box.getItem() instanceof CreativeAmmoBoxItem) {
+            return 0F;
+        }
+        return Mth.clamp((float) getUsedUnits(box) / max, 0F, 1F);
+    }
+
+    public static boolean isFull(ItemStack box) {
+        return getUsedUnits(box) >= getMaxItemCount(box);
+    }
+
+    /** How many of {@code toInsert} would fit into the box right now. */
+    public static int getInsertableCount(ItemStack box, ItemStack toInsert) {
+        if (!(box.getItem() instanceof AmmoBoxItem item) || item instanceof CreativeAmmoBoxItem || !item.canHold(toInsert)) {
+            return 0;
+        }
+        int free = getMaxItemCount(box) - getUsedUnits(box);
+        if (free <= 0) {
+            return 0;
+        }
+        return Math.min(toInsert.getCount(), free / getWeight(toInsert));
+    }
+
+    // ------------------------------------------------------------------ clicks
 
     @Override
-    public boolean overrideStackedOnOther(ItemStack stack, Slot slot, ClickAction action, Player player) {
-        if (stack.getCount() == 1 && action == ClickAction.SECONDARY) {
-            ItemStack itemStackInSlot = slot.getItem();
-            if (itemStackInSlot.isEmpty()) {
+    public boolean overrideStackedOnOther(@NotNull ItemStack stack, @NotNull Slot slot, @NotNull ClickAction action, @NotNull Player player) {
+        if (stack.getCount() != 1 || action != ClickAction.SECONDARY) {
+            return false;
+        }
+        ItemStack inSlot = slot.getItem();
+        if (inSlot.isEmpty()) {
+            removeLast(stack).ifPresent(removed -> {
                 this.playRemoveOneSound(player);
-                removeOne(stack).ifPresent(removedStack -> add(stack, slot.safeInsert(removedStack)));
-            } else if (itemStackInSlot.is(ItemTags.create(getAmmoTag()))) {
-                int maxInsertCount = getMaxItemCount(stack) - getTotalItemCount(stack);
-                int itemsToInsert = Math.min(itemStackInSlot.getCount(), maxInsertCount);
-                int insertedItems = add(stack, slot.safeTake(itemStackInSlot.getCount(), itemsToInsert, player));
-                if (insertedItems > 0) {
+                ItemStack rest = slot.safeInsert(removed);
+                if (!rest.isEmpty()) {
+                    add(stack, rest);
+                }
+            });
+        } else {
+            int insertable = getInsertableCount(stack, inSlot);
+            if (insertable > 0) {
+                ItemStack taken = slot.safeTake(inSlot.getCount(), insertable, player);
+                if (add(stack, taken) > 0) {
                     this.playInsertSound(player);
                 }
             }
-            return true;
-        } else {
-            return false;
         }
+        return true;
     }
 
     @Override
-    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack otherStack, Slot slot, ClickAction action, Player player, SlotAccess slotAccess) {
-        if (stack.getCount() != 1) {
-            return false;
-        } else if (action == ClickAction.SECONDARY && slot.allowModification(player)) {
-            if (otherStack.isEmpty()) {
-                removeOne(stack).ifPresent(removedStack -> {
-                    this.playRemoveOneSound(player);
-                    slotAccess.set(removedStack);
-                });
-            } else if (otherStack.is(ItemTags.create(getAmmoTag()))) {
-                int maxInsertCount = getMaxItemCount(stack) - getTotalItemCount(stack);
-                int itemsToInsert = Math.min(otherStack.getCount(), maxInsertCount);
-                int insertedItems = add(stack, otherStack.copyWithCount(itemsToInsert));
-                if (insertedItems > 0) {
-                    this.playInsertSound(player);
-                    otherStack.shrink(insertedItems);
-                }
-            }
-            return true;
-        } else {
+    public boolean overrideOtherStackedOnMe(@NotNull ItemStack stack, @NotNull ItemStack otherStack, @NotNull Slot slot, @NotNull ClickAction action, @NotNull Player player, @NotNull SlotAccess slotAccess) {
+        if (stack.getCount() != 1 || action != ClickAction.SECONDARY || !slot.allowModification(player)) {
             return false;
         }
+        if (otherStack.isEmpty()) {
+            removeLast(stack).ifPresent(removed -> {
+                this.playRemoveOneSound(player);
+                slotAccess.set(removed);
+            });
+        } else {
+            int inserted = add(stack, otherStack);
+            if (inserted > 0) {
+                this.playInsertSound(player);
+                otherStack.shrink(inserted);
+            }
+        }
+        return true;
     }
+
+    // ------------------------------------------------------------------ bar / tooltip
 
     @Override
     public boolean isBarVisible(@NotNull ItemStack stack) {
-        return getTotalItemCount(stack) > 0;
+        return getUsedUnits(stack) > 0;
     }
 
     @Override
     public int getBarWidth(@NotNull ItemStack stack) {
-        return Math.min(1 + 12 * getTotalItemCount(stack) / getMaxItemCount(stack), 13);
+        return Math.min(1 + Mth.floor(12F * getFullness(stack)), 13);
     }
-
-    protected abstract ResourceLocation getAmmoTag();
 
     @Override
-    public int getBarColor(ItemStack stack) {
-        return BAR_COLOR;
+    public int getBarColor(@NotNull ItemStack stack) {
+        return isFull(stack) ? BAR_COLOR_FULL : BAR_COLOR;
     }
 
+    @Override
+    public @NotNull Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
+        List<ItemStack> contents = getContents(stack).filter(s -> !s.isEmpty()).toList();
+        return Optional.of(new AmmoBoxTooltip(contents, getUsedUnits(stack), getMaxItemCount(stack)));
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @NotNull TooltipContext context, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+        int rounds = getContents(stack).mapToInt(ItemStack::getCount).sum();
+        int used = getUsedUnits(stack);
+        int stacks = getStackCapacity(stack);
+        String usedStacks = String.format(java.util.Locale.ROOT, "%.1f", used / (float) UNITS_PER_STACK);
+        tooltip.add(Component.translatable("item.scguns.ammo_box.rounds", rounds).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable("item.scguns.ammo_box.capacity", usedStacks, stacks)
+                .withStyle(isFull(stack) ? ChatFormatting.RED : ChatFormatting.GRAY));
+        if (rounds == 0) {
+            tooltip.add(Component.translatable("item.scguns.ammo_box.hint").withStyle(ChatFormatting.DARK_GRAY));
+        }
+    }
+
+    @Override
+    public void onDestroyed(@NotNull ItemEntity itemEntity) {
+        ItemUtils.onContainerDestroyed(itemEntity, getContents(itemEntity.getItem()).toList());
+    }
+
+    private void playRemoveOneSound(Entity entity) {
+        entity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
+    }
+
+    protected void playInsertSound(Entity entity) {
+        entity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
+    }
+
+    // ------------------------------------------------------------------ storage
+
+    /**
+     * Inserts as much of {@code insertedStack} as fits. Does not modify {@code insertedStack}.
+     *
+     * @return the number of items actually stored
+     */
     public static int add(ItemStack pouchStack, ItemStack insertedStack) {
-        if (!insertedStack.isEmpty() && insertedStack.is(ItemTags.create(((AmmoBoxItem)pouchStack.getItem()).getAmmoTag()))) {
-            CompoundTag compoundTag = getCustomData(pouchStack);
-            if (!compoundTag.contains(TAG_ITEMS)) {
-                compoundTag.put(TAG_ITEMS, new ListTag());
-            }
-
-            int maxItemCount = getMaxItemCount(pouchStack);
-            int itemsToInsert = Math.min(insertedStack.getCount(), maxItemCount - getTotalItemCount(pouchStack));
-
-            if (itemsToInsert == 0) {
-                return 0;
-            }
-
-            ListTag listTag = compoundTag.getList(TAG_ITEMS, 10);
-            for (int i = 0; i < listTag.size(); i++) {
-                CompoundTag itemTag = listTag.getCompound(i);
-                ItemStack existingStack = ItemStack.parseOptional(Gun.builtInRegistryProvider(), itemTag);
-                if (ItemStack.isSameItemSameComponents(existingStack, insertedStack)) {
-                    int remainingSpace = Math.min(existingStack.getMaxStackSize() - existingStack.getCount(), itemsToInsert);
-                    existingStack.grow(remainingSpace);
-                    itemsToInsert -= remainingSpace;
-                    listTag.set(i, saveStack(existingStack));
-                    if (itemsToInsert <= 0) {
-                        break;
-                    }
-                }
-            }
-
-            while (itemsToInsert > 0) {
-                int countToInsert = Math.min(insertedStack.getMaxStackSize(), itemsToInsert);
-                ItemStack newItemStack = insertedStack.copyWithCount(countToInsert);
-                listTag.add(saveStack(newItemStack));
-                itemsToInsert -= countToInsert;
-            }
-
-            compoundTag.put(TAG_ITEMS, listTag);
-            setCustomData(pouchStack, compoundTag);
-            return insertedStack.getCount() - itemsToInsert;
-        } else {
+        int toInsert = getInsertableCount(pouchStack, insertedStack);
+        if (toInsert <= 0) {
             return 0;
         }
+        List<ItemStack> contents = getContents(pouchStack).filter(s -> !s.isEmpty()).collect(Collectors.toCollection(ArrayList::new));
+        int remaining = toInsert;
+        for (ItemStack existing : contents) {
+            if (remaining <= 0) {
+                break;
+            }
+            if (ItemStack.isSameItemSameComponents(existing, insertedStack)) {
+                int space = Math.min(existing.getMaxStackSize() - existing.getCount(), remaining);
+                if (space > 0) {
+                    existing.grow(space);
+                    remaining -= space;
+                }
+            }
+        }
+        while (remaining > 0) {
+            int count = Math.min(insertedStack.getMaxStackSize(), remaining);
+            contents.add(insertedStack.copyWithCount(count));
+            remaining -= count;
+        }
+        setContents(pouchStack, contents, Gun.builtInRegistryProvider());
+        return toInsert;
     }
 
     public static int getTotalItemCount(ItemStack stack) {
@@ -183,10 +298,9 @@ public abstract class AmmoBoxItem extends Item {
 
         int remaining = amount;
         List<ItemStack> contents = getContents(stack).collect(Collectors.toCollection(ArrayList::new));
-        for (ItemStack contained : contents) {
-            if (remaining <= 0) {
-                break;
-            }
+        // Take from the last (most recently added, usually partial) stacks first so full stacks stay together.
+        for (int i = contents.size() - 1; i >= 0 && remaining > 0; i--) {
+            ItemStack contained = contents.get(i);
             if (!contained.isEmpty() && contained.getItem() == ammoItem) {
                 int consumed = Math.min(remaining, contained.getCount());
                 contained.shrink(consumed);
@@ -222,69 +336,23 @@ public abstract class AmmoBoxItem extends Item {
         setCustomData(stack, compoundTag);
     }
 
-    private static Optional<ItemStack> removeOne(ItemStack stack) {
-        CompoundTag compoundTag = getCustomData(stack);
-        if (!compoundTag.contains(TAG_ITEMS)) {
+    /** Removes the most recently stored stack (vanilla bundle behaviour). */
+    private static Optional<ItemStack> removeLast(ItemStack stack) {
+        if (stack.getItem() instanceof CreativeAmmoBoxItem) {
             return Optional.empty();
-        } else {
-            ListTag listTag = compoundTag.getList(TAG_ITEMS, 10);
-            if (listTag.isEmpty()) {
-                return Optional.empty();
-            } else {
-                CompoundTag itemTag = listTag.getCompound(0);
-                ItemStack itemStack = ItemStack.parseOptional(Gun.builtInRegistryProvider(), itemTag);
-                listTag.remove(0);
-                if (listTag.isEmpty()) {
-                    compoundTag.remove(TAG_ITEMS);
-                } else {
-                    compoundTag.put(TAG_ITEMS, listTag);
-                }
-                setCustomData(stack, compoundTag);
-                return Optional.of(itemStack);
-            }
         }
-    }
-
-    @Override
-    public @NotNull Optional<TooltipComponent> getTooltipImage(@NotNull ItemStack stack) {
-        NonNullList<ItemStack> nonNullList = NonNullList.create();
-        getContents(stack).forEach(nonNullList::add);
-        return Optional.of(new BundleTooltip(new BundleContents(nonNullList)));
-    }
-    @Override
-    public void onDestroyed(@NotNull ItemEntity itemEntity) {
-        ItemUtils.onContainerDestroyed(itemEntity, getContents(itemEntity.getItem()).toList());
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, TooltipContext context, @NotNull List<Component> tooltipComponents, @NotNull TooltipFlag isAdvanced) {
-        // tooltipComponents.add(Component.translatable("item.scguns.ammo_pouch.fullness").withStyle(ChatFormatting.GRAY));
-    }
-
-    private void playRemoveOneSound(Entity entity) {
-        entity.playSound(SoundEvents.BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
-    }
-
-    protected void playInsertSound(Entity entity) {
-        entity.playSound(SoundEvents.BUNDLE_INSERT, 0.8F, 0.8F + entity.level().getRandom().nextFloat() * 0.4F);
-    }
-
-    public static int getMaxItemCount(ItemStack stack) {
-        Item item = stack.getItem();
-        if (item instanceof AmmoBoxItem) {
-            double multiplier = Config.COMMON.gameplay.ammoBoxCapacityMultiplier.get();
-            return (int) (((AmmoBoxItem) item).getBaseMaxItemCount() * multiplier);
+        List<ItemStack> contents = getContents(stack).filter(s -> !s.isEmpty()).collect(Collectors.toCollection(ArrayList::new));
+        if (contents.isEmpty()) {
+            return Optional.empty();
         }
-        return 256;
+        ItemStack removed = contents.remove(contents.size() - 1);
+        setContents(stack, contents, Gun.builtInRegistryProvider());
+        return Optional.of(removed);
     }
-
-    protected abstract int getBaseMaxItemCount();
-
-
 
     public static Stream<ItemStack> getContents(ItemStack stack) {
         if (stack.getItem() instanceof CreativeAmmoBoxItem) {
-            TagKey<Item> ammoTag = ItemTags.create(((CreativeAmmoBoxItem)stack.getItem()).getAmmoTag());
+            TagKey<Item> ammoTag = ItemTags.create(((CreativeAmmoBoxItem) stack.getItem()).getAmmoTag());
             return BuiltInRegistries.ITEM.stream()
                     .filter(item -> item.builtInRegistryHolder().is(ammoTag))
                     .map(item -> new ItemStack(item, Integer.MAX_VALUE));
@@ -294,10 +362,6 @@ public abstract class AmmoBoxItem extends Item {
         return listTag.stream()
                 .map(CompoundTag.class::cast)
                 .map(tag -> ItemStack.parseOptional(Gun.builtInRegistryProvider(), tag));
-    }
-
-    private static CompoundTag saveStack(ItemStack stack) {
-        return saveStack(stack, Gun.builtInRegistryProvider());
     }
 
     private static CompoundTag saveStack(ItemStack stack, HolderLookup.Provider provider) {

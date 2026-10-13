@@ -1,26 +1,20 @@
 {
-	"parent": "scguns:item/rifle_ammo_box_0",
-	"textures": {
-		"layer0": "scguns:item/rifle_ammo_box"
-	},
-	"overrides": [
-		{
-			"predicate": {
-				"ammo_count": 0.33
-			},
-			"model": "scguns:item/rifle_ammo_box_1"
-		},
-		{
-			"predicate": {
-				"ammo_count": 0.66
-			},
-			"model": "scguns:item/rifle_ammo_box_2"
-		},
-		{
-			"predicate": {
-				"ammo_count": 1.0
-			},
-			"model": "scguns:item/rifle_ammo_box_3"
-		}
-	]
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "scguns:item/rifle_ammo_box"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "ammo_count": 0.5
+      },
+      "model": "scguns:item/rifle_ammo_box_partial"
+    },
+    {
+      "predicate": {
+        "ammo_count": 1.0
+      },
+      "model": "scguns:item/rifle_ammo_box_full"
+    }
+  ]
 }

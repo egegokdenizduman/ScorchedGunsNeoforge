@@ -1,22 +1,30 @@
 {
   "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "category": "equipment",
   "key": {
-    "Q": {
-      "item": "scguns:anthralite_nugget"
+    "T": {
+      "item": "create:electron_tube"
     },
-    "R": {
-      "item": "minecraft:iron_ingot"
+    "B": {
+      "item": "create:brass_sheet"
     },
-    "X": {
-      "item": "minecraft:copper_ingot"
+    "D": {
+      "item": "minecraft:light_blue_dye"
     }
   },
   "pattern": [
-    "QRQ",
-    "RXR",
-    "QRQ"
+    " T ",
+    "BDB",
+    "BBB"
   ],
   "result": {
-    "id": "scguns:energy_ammo_box"
+    "id": "scguns:energy_ammo_box",
+    "count": 1
   }
 }
