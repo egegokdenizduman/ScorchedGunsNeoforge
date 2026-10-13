@@ -23,6 +23,7 @@ public class ModTags
         public static final TagKey<Block> SCULK_BLOCKS = tag("sculk_blocks");
         public static final TagKey<Block> TANK_BREAKABLE = tag("tank_breakable");
         public static final TagKey<Block> METAL_DETECTABLE = tag("metal_detectable");
+        public static final TagKey<Block> SHOTBALL_PENETRABLE = tag("shotball_penetrable");
         private static TagKey<Block> tag(String name)
         {
             return BlockTags.create(Reference.id(name));

@@ -3,6 +3,7 @@ package top.ribs.scguns.compat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
@@ -75,6 +76,15 @@ public final class SableBlockInteraction {
     private static Field clipFluidField;
     @Nullable
     private static Field clipCollisionContextField;
+    @Nullable
+    private static Method getContainingVec3iMethod;
+    private static boolean impulseUnavailable;
+    @Nullable
+    private static Class<?> serverSubLevelClass;
+    @Nullable
+    private static Method rigidBodyOfMethod;
+    @Nullable
+    private static Method applyImpulseAtPointMethod;
 
     private SableBlockInteraction() {
     }
@@ -252,6 +262,83 @@ public final class SableBlockInteraction {
             unavailable = true;
             return strength;
         }
+    }
+
+    /**
+     * True when the block hit belongs to a Sable sub-level (a Create Aeronautics ship, a physics contraption...).
+     * Always false without Sable.
+     */
+    public static boolean isSubLevelHit(Level world, BlockHitResult hitResult) {
+        if (hitResult instanceof SableBlockHitResult) {
+            return true;
+        }
+        return getContainingSubLevel(world, blockPosFor(hitResult)) != null;
+    }
+
+    /**
+     * Pushes the Sable sub-level that owns the hit block, like Sable does for arrows and explosions.
+     * {@code globalPoint} and {@code globalImpulse} are in world space; they are converted into the
+     * sub-level's local frame before being handed to its rigid body. Server side only; no-op without Sable.
+     */
+    public static void applyImpulse(Level world, BlockHitResult hitResult, Vec3 globalPoint, Vec3 globalImpulse) {
+        if (!ScorchedGuns.sableLoaded || impulseUnavailable || world.isClientSide() || globalImpulse.lengthSqr() < 1.0E-8) {
+            return;
+        }
+
+        try {
+            Object subLevel = getContainingSubLevel(world, blockPosFor(hitResult));
+            if (subLevel == null) {
+                return;
+            }
+            ensureImpulseReflection();
+            if (!serverSubLevelClass.isInstance(subLevel)) {
+                return;
+            }
+
+            Object pose = subLevelLogicalPoseMethod.invoke(subLevel);
+            Vec3 localPoint = transformPosition(pose, globalPoint, true);
+            Method normalInverse = pose.getClass().getMethod("transformNormalInverse", Vec3.class);
+            Object localImpulseObject = normalInverse.invoke(pose, globalImpulse);
+            if (!(localImpulseObject instanceof Vec3 localImpulse)) {
+                return;
+            }
+
+            Object handle = rigidBodyOfMethod.invoke(null, subLevel);
+            if (handle != null) {
+                applyImpulseAtPointMethod.invoke(handle, localPoint, localImpulse);
+            }
+        } catch (ReflectiveOperationException | LinkageError | RuntimeException ignored) {
+            impulseUnavailable = true;
+        }
+    }
+
+    @Nullable
+    private static Object getContainingSubLevel(Level world, BlockPos pos) {
+        if (!ScorchedGuns.sableLoaded || unavailable) {
+            return null;
+        }
+
+        try {
+            ensureReflection();
+            if (getContainingVec3iMethod == null) {
+                getContainingVec3iMethod = sableHelperField.getType().getMethod("getContaining", Level.class, Vec3i.class);
+            }
+            return getContainingVec3iMethod.invoke(sableHelperField.get(null), world, pos);
+        } catch (ReflectiveOperationException | LinkageError | RuntimeException ignored) {
+            return null;
+        }
+    }
+
+    private static void ensureImpulseReflection() throws ReflectiveOperationException {
+        if (applyImpulseAtPointMethod != null) {
+            return;
+        }
+
+        ensureReflection();
+        serverSubLevelClass = Class.forName("dev.ryanhcode.sable.sublevel.ServerSubLevel");
+        Class<?> rigidBodyHandleClass = Class.forName("dev.ryanhcode.sable.api.physics.handle.RigidBodyHandle");
+        rigidBodyOfMethod = rigidBodyHandleClass.getMethod("of", serverSubLevelClass);
+        applyImpulseAtPointMethod = rigidBodyHandleClass.getMethod("applyImpulseAtPoint", Vec3.class, Vec3.class);
     }
 
     private static void ensureReflection() throws ReflectiveOperationException {
