@@ -1,5 +1,7 @@
 package top.ribs.scguns.client.network;
 
+import top.ribs.scguns.particles.SparkData;
+import top.ribs.scguns.common.MuzzleFlashStyle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleEngine;
@@ -176,7 +178,8 @@ public class ClientPlayHandler {
         if(mc.player == null || mc.level == null)
             return;
 
-        if(message.showMuzzleFlash()) {
+        // the local shooter already started its flash when it fired; don't restart it on the echo
+        if(message.showMuzzleFlash() && message.getShooterId() != mc.player.getId()) {
             GunRenderingHandler.get().showMuzzleFlashForPlayer(message.getShooterId());
         }
 
@@ -347,12 +350,30 @@ public class ClientPlayHandler {
             world.addParticle(new BulletHoleData(message.getFace(), message.getPos()), false, holeX, holeY, holeZ, 0, 0, 0);
             if(distance < Config.CLIENT.particle.impactParticleDistance.get())
             {
-                for(int i = 0; i < 4; i++)
+                Vec3i normal = message.getFace().getNormal();
+                Vec3 out = new Vec3(normal.getX(), normal.getY(), normal.getZ());
+                double px = message.getX() + out.x * 0.05;
+                double py = message.getY() + out.y * 0.05;
+                double pz = message.getZ() + out.z * 0.05;
+                // block chips kicked out of the surface
+                for(int i = 0; i < 6; i++)
                 {
-                    Vec3i normal = message.getFace().getNormal();
-                    Vec3 motion = new Vec3(normal.getX(), normal.getY(), normal.getZ());
-                    motion.add(getRandomDir(world.random), getRandomDir(world.random), getRandomDir(world.random));
-                    world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), false, message.getX(), message.getY(), message.getZ(), motion.x, motion.y, motion.z);
+                    Vec3 motion = out.scale(0.12 + world.random.nextDouble() * 0.15).add(getRandomDir(world.random) * 0.4, getRandomDir(world.random) * 0.4 + 0.08, getRandomDir(world.random) * 0.4);
+                    world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), false, px, py, pz, motion.x, motion.y, motion.z);
+                }
+                // a little puff of the block's dust
+                for(int i = 0; i < 2; i++)
+                {
+                    world.addParticle(new BlockParticleOption(ParticleTypes.DUST_PILLAR, state), false, px, py, pz, out.x * 0.05, out.y * 0.05 + 0.02, out.z * 0.05);
+                }
+                // hot, full-bright impact flash and sparks in the shot's colour
+                world.addParticle(ModParticleTypes.BULLET_IMPACT_FLASH.get(), true, px, py, pz, 0, 0, 0);
+                SparkData spark = new SparkData(MuzzleFlashStyle.byOrdinal(message.getStyle()).getSparkColor());
+                int sparks = 3 + world.random.nextInt(3);
+                for(int i = 0; i < sparks; i++)
+                {
+                    Vec3 motion = out.scale(0.15 + world.random.nextDouble() * 0.2).add(getRandomDir(world.random) * 0.8, getRandomDir(world.random) * 0.8 + 0.1, getRandomDir(world.random) * 0.8);
+                    world.addParticle(spark, true, px, py, pz, motion.x, motion.y, motion.z);
                 }
             }
             if(distance <= Config.CLIENT.sounds.impactSoundDistance.get())

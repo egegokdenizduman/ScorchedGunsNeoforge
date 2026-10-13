@@ -22,11 +22,19 @@ public class S2CMessageProjectileHitBlock
     private double z;
     private BlockPos pos;
     private Direction face;
+    /** Shot effect style (MuzzleFlashStyle ordinal) used to colour the impact sparks. */
+    private int style;
 
     public S2CMessageProjectileHitBlock() {}
 
     public S2CMessageProjectileHitBlock(double x, double y, double z, BlockPos pos, Direction face)
     {
+        this(x, y, z, pos, face, 0);
+    }
+
+    public S2CMessageProjectileHitBlock(double x, double y, double z, BlockPos pos, Direction face, int style)
+    {
+        this.style = style;
         this.x = x;
         this.y = y;
         this.z = z;
@@ -40,6 +48,7 @@ public class S2CMessageProjectileHitBlock
         buffer.writeDouble(message.z);
         buffer.writeBlockPos(message.pos);
         buffer.writeEnum(message.face);
+        buffer.writeVarInt(message.style);
     }
     private static S2CMessageProjectileHitBlock decode(RegistryFriendlyByteBuf buffer)
     {
@@ -48,12 +57,18 @@ public class S2CMessageProjectileHitBlock
         double z = buffer.readDouble();
         BlockPos pos = buffer.readBlockPos();
         Direction face = buffer.readEnum(Direction.class);
-        return new S2CMessageProjectileHitBlock(x, y, z, pos, face);
+        int style = buffer.readVarInt();
+        return new S2CMessageProjectileHitBlock(x, y, z, pos, face, style);
     }
     public static void handle(S2CMessageProjectileHitBlock message, MessageContext context)
     {
         context.execute(() -> ClientPlayHandler.handleProjectileHitBlock(message));
         context.setHandled(true);
+    }
+
+    public int getStyle()
+    {
+        return this.style;
     }
 
     public double getX()

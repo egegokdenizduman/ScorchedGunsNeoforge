@@ -65,7 +65,7 @@ public class MicroJetEntity extends ProjectileEntity {
                         0, 0, 0);
             }
             if (this.level().random.nextInt(4) == 0) {
-                this.level().addParticle(ParticleTypes.SMALL_FLAME, true,
+                this.level().addParticle(ModParticleTypes.GUN_SMALL_FLAME.get(), true,
                         this.getX(), this.getY(), this.getZ(),
                         0, 0, 0);
                 this.level().addParticle(ParticleTypes.SMOKE, true,

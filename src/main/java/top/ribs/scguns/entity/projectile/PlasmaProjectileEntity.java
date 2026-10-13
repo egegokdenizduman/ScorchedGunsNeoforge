@@ -237,7 +237,7 @@ public class PlasmaProjectileEntity extends ProjectileEntity {
                 double speedY = (this.random.nextDouble() - 0.5) * 0.3;
                 double speedZ = (this.random.nextDouble() - 0.5) * 0.3;
 
-                serverLevel.sendParticles(ParticleTypes.SOUL_FIRE_FLAME,
+                serverLevel.sendParticles(ModParticleTypes.GUN_SOUL_FLAME.get(),
                         position.x + offsetX, position.y + offsetY, position.z + offsetZ,
                         1, speedX, speedY, speedZ, 0.1);
             }

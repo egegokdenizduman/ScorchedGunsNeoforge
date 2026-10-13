@@ -933,7 +933,7 @@ public class ProjectileEntity extends Entity implements IEntityWithComplexSpawn 
     protected void onHitBlock(BlockState state, BlockPos pos, Direction face, double x, double y, double z) {
         Level hitLevel = this.blockHitLevel();
         BlockPos hitPos = this.blockHitPos(pos);
-        PacketHandler.getPlayChannel().sendToTrackingChunk(() -> hitLevel.getChunkAt(hitPos), new S2CMessageProjectileHitBlock(x, y, z, hitPos, face));
+        PacketHandler.getPlayChannel().sendToTrackingChunk(() -> hitLevel.getChunkAt(hitPos), new S2CMessageProjectileHitBlock(x, y, z, hitPos, face, top.ribs.scguns.common.MuzzleFlashStyle.of(this.modifiedGun).ordinal()));
         Block block = state.getBlock();
 
         if (primeTNT(hitLevel, state, hitPos)) {
