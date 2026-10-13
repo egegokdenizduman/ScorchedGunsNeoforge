@@ -14,16 +14,28 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseFireBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Short-lived soul fire left behind by soul-fuel fire sprayers. It never spreads, and it always burns out:
+ * like vanilla fire it re-schedules its own tick and ages every tick, removing itself at max age. A random
+ * tick re-arms the scheduled tick if it was ever lost, so a placed block can never sit there forever.
+ */
 public class FakeSoulFireBlock extends BaseFireBlock {
     public static final MapCodec<FakeSoulFireBlock> CODEC = simpleCodec(properties -> new FakeSoulFireBlock(properties, 2.0F));
+    public static final int MAX_AGE = 3;
+    public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
 
     public FakeSoulFireBlock(BlockBehaviour.Properties properties, float fireDamage) {
         super(properties, fireDamage);
+        this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
     }
 
     @Override
@@ -32,16 +44,31 @@ public class FakeSoulFireBlock extends BaseFireBlock {
     }
 
     @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(AGE);
+    }
+
+    @Override
     protected boolean canBurn(BlockState state) {
         return false;
     }
 
+    private static int getTickDelay(RandomSource random) {
+        return 12 + random.nextInt(8);
+    }
+
+    /**
+     * Needs a real floor: something with a collision shape that is not itself fire. Fire has no collision,
+     * so this also forbids sitting on top of any other fire block. It also gives way if fire sits above it.
+     */
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockState belowState = level.getBlockState(pos.below());
-        BlockState aboveState = level.getBlockState(pos.above());
-        return !(aboveState.getBlock() instanceof BaseFireBlock)
-                && (belowState.isFaceSturdy(level, pos.below(), Direction.UP) || !belowState.isAir());
+        BlockPos belowPos = pos.below();
+        BlockState belowState = level.getBlockState(belowPos);
+        if (belowState.getBlock() instanceof BaseFireBlock || level.getBlockState(pos.above()).getBlock() instanceof BaseFireBlock) {
+            return false;
+        }
+        return belowState.isFaceSturdy(level, belowPos, Direction.UP) || !belowState.getCollisionShape(level, belowPos).isEmpty();
     }
 
     @Override
@@ -58,15 +85,42 @@ public class FakeSoulFireBlock extends BaseFireBlock {
 
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-        if (!oldState.is(state.getBlock())) {
-            level.scheduleTick(pos, this, 50 + level.random.nextInt(21));
-        }
         super.onPlace(state, level, pos, oldState, isMoving);
+        if (level.getBlockState(pos).is(this)) {
+            level.scheduleTick(pos, this, getTickDelay(level.random));
+        }
+    }
+
+    /** Resets the burn timer, used when the same fire is sprayed again. */
+    public static void refresh(Level level, BlockPos pos, BlockState state) {
+        if (state.getBlock() instanceof FakeSoulFireBlock block) {
+            if (state.getValue(AGE) != 0) {
+                level.setBlock(pos, state.setValue(AGE, 0), Block.UPDATE_CLIENTS);
+            }
+            level.scheduleTick(pos, block, getTickDelay(level.random));
+        }
     }
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        level.removeBlock(pos, false);
+        if (!state.canSurvive(level, pos) || level.isRainingAt(pos) || level.isRainingAt(pos.above())) {
+            level.removeBlock(pos, false);
+            return;
+        }
+        int age = state.getValue(AGE);
+        if (age >= MAX_AGE) {
+            level.removeBlock(pos, false);
+            return;
+        }
+        level.setBlock(pos, state.setValue(AGE, age + 1), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+        level.scheduleTick(pos, this, getTickDelay(random));
+    }
+
+    @Override
+    protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!level.getBlockTicks().hasScheduledTick(pos, this)) {
+            this.tick(state, level, pos, random);
+        }
     }
 
     @Override
