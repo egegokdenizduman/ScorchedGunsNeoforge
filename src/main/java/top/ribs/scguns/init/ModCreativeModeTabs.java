@@ -413,6 +413,11 @@ public class ModCreativeModeTabs {
                         pOutput.accept(ModBlocks.ANTHRALITE_ORE.get());
                         pOutput.accept(ModBlocks.DEEPSLATE_ANTHRALITE_ORE.get());
                         pOutput.accept(ModBlocks.VEHEMENT_COAL_ORE.get());
+                        pOutput.accept(ModBlocks.ANTHRALITE_BLOCK.get());
+                        pOutput.accept(ModBlocks.TREATED_IRON_BLOCK.get());
+                        pOutput.accept(ModBlocks.TREATED_BRASS_BLOCK.get());
+                        pOutput.accept(ModBlocks.DIAMOND_STEEL_BLOCK.get());
+                        pOutput.accept(ModBlocks.SCORCHED_BLOCK.get());
 
 
 

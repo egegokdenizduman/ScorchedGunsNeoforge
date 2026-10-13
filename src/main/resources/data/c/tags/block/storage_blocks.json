@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#c:storage_blocks/anthralite",
+    "#c:storage_blocks/treated_iron",
+    "#c:storage_blocks/treated_brass",
+    "#c:storage_blocks/diamond_steel",
+    "#c:storage_blocks/scorched"
+  ]
+}

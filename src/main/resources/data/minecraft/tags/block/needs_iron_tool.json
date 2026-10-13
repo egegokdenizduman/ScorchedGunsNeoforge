@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "scguns:anthralite_ore",
-    "scguns:deepslate_anthralite_ore"
+    "scguns:deepslate_anthralite_ore",
+    "scguns:diamond_steel_block",
+    "scguns:scorched_block"
   ]
 }

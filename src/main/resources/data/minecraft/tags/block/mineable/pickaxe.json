@@ -3,6 +3,11 @@
   "values": [
     "scguns:anthralite_ore",
     "scguns:deepslate_anthralite_ore",
-    "scguns:vehement_coal_ore"
+    "scguns:vehement_coal_ore",
+    "scguns:anthralite_block",
+    "scguns:treated_iron_block",
+    "scguns:treated_brass_block",
+    "scguns:diamond_steel_block",
+    "scguns:scorched_block"
   ]
 }

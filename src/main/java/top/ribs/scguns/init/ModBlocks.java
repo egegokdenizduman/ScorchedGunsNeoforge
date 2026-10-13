@@ -49,6 +49,21 @@ public class ModBlocks {
     public static final DeferredBlock<Block> VEHEMENT_COAL_ORE = register("vehement_coal_ore",
             () -> new DropExperienceBlock(UniformInt.of(0, 1), BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(3.0F, 3.0F).sound(SoundType.NETHER_GOLD_ORE)));
 
+    // 9x storage blocks for every ingot (c:storage_blocks/<material>)
+    public static final DeferredBlock<Block> ANTHRALITE_BLOCK = register("anthralite_block",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.COLOR_BROWN)));
+    public static final DeferredBlock<Block> TREATED_IRON_BLOCK = register("treated_iron_block",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.COLOR_GRAY)));
+    public static final DeferredBlock<Block> TREATED_BRASS_BLOCK = register("treated_brass_block",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE)));
+    public static final DeferredBlock<Block> DIAMOND_STEEL_BLOCK = register("diamond_steel_block",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.WARPED_STEM)));
+    /** Glowing cracks: full-bright overlay in the model, light level 3 like magma (shader packs: IrisBlockIdCompat). */
+    public static final DeferredBlock<Block> SCORCHED_BLOCK = register("scorched_block",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.NETHER)
+                    .sound(SoundType.NETHERITE_BLOCK).lightLevel(state -> 3)),
+            block -> new BlockItem(block, new Item.Properties().fireResistant()));
+
 
 
 

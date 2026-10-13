@@ -61,6 +61,10 @@ public class MixinPlugin implements IMixinConfigPlugin {
         if (mixinClassName.startsWith("top.ribs.scguns.mixin.common.compat.create.")) {
             return isModLoaded("create") || isClassPresent("com.simibubi.create.content.processing.basin.BasinRecipe");
         }
+        if (mixinClassName.startsWith("top.ribs.scguns.mixin.client.compat.iris.")) {
+            // mod-list lookup only: loading an Iris class this early could break Iris's own mixins
+            return isModLoaded("iris");
+        }
         if (mixinClassName.startsWith("top.ribs.scguns.mixin.common.compat.sable.")) {
             return isSableInstalled;
         }

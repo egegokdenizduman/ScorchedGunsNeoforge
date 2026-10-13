@@ -1141,5 +1141,10 @@
   "item.scguns.broken_bullet_mold": "Broken Bullet Mold",
   "item.scguns.broken_disc_mold": "Broken Disc Mold",
   "item.scguns.broken_gun_parts_mold": "Broken Gun Parts Mold",
-  "item.scguns.broken_mold.tooltip": "Worn out. Restore any durability (Mending, liquid experience, anvil) to use it again."
+  "item.scguns.broken_mold.tooltip": "Worn out. Restore any durability (Mending, liquid experience, anvil) to use it again.",
+  "block.scguns.anthralite_block": "Block of Anthralite",
+  "block.scguns.treated_iron_block": "Block of Treated Iron",
+  "block.scguns.treated_brass_block": "Block of Treated Brass",
+  "block.scguns.diamond_steel_block": "Block of Diamond Steel",
+  "block.scguns.scorched_block": "Block of Scorched Metal"
 }
