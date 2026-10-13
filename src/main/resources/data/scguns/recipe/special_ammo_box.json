@@ -1,19 +1,30 @@
 {
   "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "category": "equipment",
   "key": {
-    "Q": {
+    "L": {
+      "item": "create:iron_sheet"
+    },
+    "P": {
       "tag": "minecraft:planks"
     },
     "N": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:iron_nugget"
     }
   },
   "pattern": [
-    "QQQ",
-    "Q Q",
-    "QNQ"
+    " L ",
+    "PNP",
+    "PPP"
   ],
   "result": {
-    "id": "scguns:special_ammo_box"
+    "id": "scguns:special_ammo_box",
+    "count": 1
   }
 }

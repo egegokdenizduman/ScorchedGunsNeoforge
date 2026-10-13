@@ -1,22 +1,30 @@
 {
   "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "category": "equipment",
   "key": {
-    "Q": {
-      "item": "minecraft:paper"
+    "L": {
+      "item": "create:iron_sheet"
     },
-    "R": {
+    "A": {
+      "item": "create:andesite_alloy"
+    },
+    "D": {
       "item": "minecraft:green_dye"
-    },
-    "N": {
-      "item": "minecraft:iron_ingot"
     }
   },
   "pattern": [
-    "QQQ",
-    "QRQ",
-    "QNQ"
+    " L ",
+    "ADA",
+    "AAA"
   ],
   "result": {
-    "id": "scguns:shotgun_ammo_box"
+    "id": "scguns:shotgun_ammo_box",
+    "count": 1
   }
 }
