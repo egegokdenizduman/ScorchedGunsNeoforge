@@ -1673,7 +1673,6 @@ public class ModItems {
 
     public static final DeferredItem<Item> STANDARD_BULLET = REGISTER.register("standard_bullet", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> ADVANCED_BULLET = REGISTER.register("hardened_bullet", () -> new Item(new Item.Properties()));
-    public static final DeferredItem<Item> SYRINGE = REGISTER.register("syringe", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> NITRO_POWDER = REGISTER.register("nitro_powder", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> NITRO_POWDER_DUST = REGISTER.register("nitro_powder_dust", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> SHEOL = REGISTER.register("sheol", () -> new Item(new Item.Properties()));

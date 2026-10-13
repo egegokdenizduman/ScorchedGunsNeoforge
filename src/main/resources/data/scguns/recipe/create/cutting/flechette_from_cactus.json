@@ -1,0 +1,24 @@
+{
+  "type": "create:cutting",
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:cactus"
+    }
+  ],
+  "processing_time": 50,
+  "results": [
+    {
+      "id": "scguns:flechette"
+    },
+    {
+      "id": "scguns:flechette",
+      "chance": 0.5
+    }
+  ]
+}

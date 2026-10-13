@@ -93,9 +93,8 @@ public class C2SMessageSwapAmmo {
             int loadedAmmo = tag.getInt("AmmoCount");
             if (loadedAmmo > 0) {
                 if (!player.isCreative()) {
-                    Item loadedItem = Gun.getLoadedProjectileItem(stack, gun);
-                    if (loadedItem != null) {
-                        ItemStack returnedAmmo = new ItemStack(loadedItem, loadedAmmo);
+                    ItemStack returnedAmmo = Gun.getLoadedAmmoStack(stack, gun, loadedAmmo, player.registryAccess());
+                    if (!returnedAmmo.isEmpty()) {
                         if (!player.getInventory().add(returnedAmmo)) {
                             player.drop(returnedAmmo, false);
                         }
