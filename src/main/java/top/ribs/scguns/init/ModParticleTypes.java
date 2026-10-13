@@ -11,6 +11,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import top.ribs.scguns.Reference;
 import top.ribs.scguns.particles.BulletHoleData;
+import top.ribs.scguns.particles.SparkData;
 import top.ribs.scguns.particles.TrailData;
 
 /**
@@ -67,6 +68,23 @@ public class ModParticleTypes {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> TURRET_MUZZLE_FLASH = REGISTER.register("turret_muzzle_flash", () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> LASER = REGISTER.register("laser", () -> new SimpleParticleType(true));
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> SMALL_LASER = REGISTER.register("small_laser", () -> new SimpleParticleType(true));
+
+    // Shot effects: all full-bright so they read as light sources (also under shader packs)
+    public static final DeferredHolder<ParticleType<?>, ParticleType<SparkData>> SPARK = REGISTER.register("spark", () -> new ParticleType<>(true) {
+        @Override
+        public MapCodec<SparkData> codec() {
+            return SparkData.CODEC;
+        }
+
+        @Override
+        public StreamCodec<? super RegistryFriendlyByteBuf, SparkData> streamCodec() {
+            return SparkData.STREAM_CODEC;
+        }
+    });
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> BULLET_IMPACT_FLASH = REGISTER.register("bullet_impact_flash", () -> new SimpleParticleType(true));
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> GUN_FLAME = REGISTER.register("gun_flame", () -> new SimpleParticleType(true));
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> GUN_SMALL_FLAME = REGISTER.register("gun_small_flame", () -> new SimpleParticleType(true));
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> GUN_SOUL_FLAME = REGISTER.register("gun_soul_flame", () -> new SimpleParticleType(true));
 }
 
 

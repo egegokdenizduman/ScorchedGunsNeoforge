@@ -1,5 +1,6 @@
 package top.ribs.scguns.entity.projectile;
 
+import top.ribs.scguns.init.ModParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -56,10 +57,10 @@ public class FireRoundEntity extends ProjectileEntity {
                 double offsetY = (this.random.nextDouble() - 0.5) * 0.5;
                 double offsetZ = (this.random.nextDouble() - 0.5) * 0.5;
                 if (this.isSoulFireProjectile()) {
-                    this.level().addParticle(ParticleTypes.SOUL_FIRE_FLAME, true, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, 0, 0, 0);
+                    this.level().addParticle(ModParticleTypes.GUN_SOUL_FLAME.get(), true, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, 0, 0, 0);
                     this.level().addParticle(ParticleTypes.SOUL, true, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, 0, 0, 0);
                 } else {
-                    this.level().addParticle(ParticleTypes.FLAME, true, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, 0, 0, 0);
+                    this.level().addParticle(ModParticleTypes.GUN_FLAME.get(), true, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, 0, 0, 0);
                     this.level().addParticle(ParticleTypes.LAVA, true, this.getX() + offsetX, this.getY() + offsetY, this.getZ() + offsetZ, 0, 0, 0);
                 }
             }
@@ -196,7 +197,7 @@ public class FireRoundEntity extends ProjectileEntity {
                 serverLevel.sendParticles(ParticleTypes.WHITE_ASH, offsetX, offsetY, offsetZ, 2, 0.2, 0.2, 0.2, 0.1);
                 serverLevel.sendParticles(ParticleTypes.SMOKE, offsetX, offsetY, offsetZ, 1, 0.1, 0.3, 0.1, 0.05);
             }
-            serverLevel.sendParticles(ParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 8, 0.3, 0.3, 0.3, 0.02);
+            serverLevel.sendParticles(ModParticleTypes.GUN_FLAME.get(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 8, 0.3, 0.3, 0.3, 0.02);
         }
     }
 
@@ -211,12 +212,12 @@ public class FireRoundEntity extends ProjectileEntity {
                 double speedY = (this.random.nextDouble() - 0.5) * 0.5;
                 double speedZ = (this.random.nextDouble() - 0.5) * 0.5;
                 if (this.isSoulFireProjectile()) {
-                    serverLevel.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, position.x + offsetX, position.y + offsetY, position.z + offsetZ, 1, speedX, speedY, speedZ, 0.1);
+                    serverLevel.sendParticles(ModParticleTypes.GUN_SOUL_FLAME.get(), position.x + offsetX, position.y + offsetY, position.z + offsetZ, 1, speedX, speedY, speedZ, 0.1);
                     serverLevel.sendParticles(ParticleTypes.SOUL, position.x + offsetX, position.y + offsetY, position.z + offsetZ, 1, speedX, speedY, speedZ, 0.1);
                 } else {
                     serverLevel.sendParticles(ParticleTypes.LAVA, position.x + offsetX, position.y + offsetY, position.z + offsetZ, 1, speedX, speedY, speedZ, 0.1);
                     serverLevel.sendParticles(ParticleTypes.DRIPPING_LAVA, position.x + offsetX, position.y + offsetY, position.z + offsetZ, 1, speedX, speedY, speedZ, 0.1);
-                    serverLevel.sendParticles(ParticleTypes.SMALL_FLAME, position.x + offsetX, position.y + offsetY, position.z + offsetZ, 1, speedX, speedY, speedZ, 0.1);
+                    serverLevel.sendParticles(ModParticleTypes.GUN_SMALL_FLAME.get(), position.x + offsetX, position.y + offsetY, position.z + offsetZ, 1, speedX, speedY, speedZ, 0.1);
                 }
             }
         }

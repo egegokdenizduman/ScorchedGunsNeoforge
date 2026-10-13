@@ -48,6 +48,7 @@ import top.ribs.scguns.ScorchedGuns;
 import top.ribs.scguns.client.GunModel;
 import top.ribs.scguns.client.GunRenderType;
 import top.ribs.scguns.client.render.EmissiveTextures;
+import top.ribs.scguns.client.render.MuzzleFlashRenderer;
 import top.ribs.scguns.client.render.gun.IOverrideModel;
 import top.ribs.scguns.client.render.gun.ModelOverrides;
 import top.ribs.scguns.client.util.PropertyHelper;
@@ -145,6 +146,7 @@ public class GunRenderingHandler {
     }
     @SubscribeEvent
     public void onTick(RenderFrameEvent.Post event) {
+        MuzzleFlashRenderer.nextFrame();
         handleRenderTick();
     }
 
@@ -155,6 +157,7 @@ public class GunRenderingHandler {
     private void updateState() {
         this.updateSprinting();
         this.updateMuzzleFlash();
+        MuzzleFlashRenderer.tick();
         this.updateOffhandTranslate();
         this.updateImmersiveCamera();
     }
@@ -665,6 +668,7 @@ public class GunRenderingHandler {
     public void showMuzzleFlashForPlayer(int entityId) {
         entityIdForMuzzleFlash.add(entityId);
         entityIdToRandomValue.put(entityId, this.random.nextFloat());
+        MuzzleFlashRenderer.onShot(entityId);
     }
 
     @SubscribeEvent
@@ -947,40 +951,15 @@ public class GunRenderingHandler {
                 display != ItemDisplayContext.FIRST_PERSON_LEFT_HAND &&
                 display != ItemDisplayContext.THIRD_PERSON_LEFT_HAND) return;
         if (entity == null) return;
+        if (!PropertyHelper.hasMuzzleFlash(weapon, modifiedGun)) return;
+        // first-person animated guns draw their own flash at the animated barrel
+        if (MuzzleFlashRenderer.wasAnimatedDrawnThisFrame(entity.getId())) return;
 
         boolean isBeamActive = BeamHandler.activeBeams.containsKey(entity.getUUID());
-        if (!isBeamActive && !entityIdForMuzzleFlash.contains(entity.getId())) return;
+        if (!isBeamActive && !MuzzleFlashRenderer.isFlashing(entity.getId())) return;
 
-        float randomValue = entityIdToRandomValue.getOrDefault(entity.getId(), 0f);
-
-        ResourceLocation flashTexture = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/effect/" + flash.getTextureLocation() + ".png");
-        boolean mirror = this.entityShotCount.getOrDefault(entity.getId(), 0) % 2 == 1 && flash.hasAlternateMuzzleFlash();
-        this.drawMuzzleFlash(weapon, modifiedGun, randomValue, mirror, poseStack, buffer, partialTicks, flashTexture, entity);
-
-        if (flash.shouldSpawnParticles() && flash.getParticleType() != null) {
-            spawnParticles(flash, entity);
-        }
-    }
-    private void drawMuzzleFlash(ItemStack weapon, Gun modifiedGun, float random, boolean mirror, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, ResourceLocation flashTexture, LivingEntity entity) {
-        if (!PropertyHelper.hasMuzzleFlash(weapon, modifiedGun)) {
-            return;
-        }
-
-        Gun.Display.Flash flash = modifiedGun.getDisplay().getFlash();
-        if (flash == null) {
-            return;
-        }
         int shotCount = DualWieldShotTracker.get().getShotCount(entity.getId());
-        Vec3 muzzlePosition = (shotCount % 2 == 0) ? Vec3.ZERO : flash.getAlternatePosition();
-
-        drawSingleMuzzleFlash(weapon, modifiedGun, random, mirror, poseStack, buffer, partialTicks, flashTexture, muzzlePosition);
-    }
-
-
-
-    private void drawSingleMuzzleFlash(ItemStack weapon, Gun modifiedGun, float random, boolean mirror, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, ResourceLocation flashTexture, Vec3 offset) {
-        Gun.Display.Flash flash = modifiedGun.getDisplay().getFlash();
-        if (flash == null) return;
+        Vec3 offset = (shotCount % 2 == 0) ? Vec3.ZERO : flash.getAlternatePosition();
 
         poseStack.pushPose();
         Vec3 weaponOrigin = PropertyHelper.getModelOrigin(weapon, PropertyHelper.GUN_DEFAULT_ORIGIN);
@@ -988,121 +967,12 @@ public class GunRenderingHandler {
         poseStack.translate(weaponOrigin.x * 0.0625, weaponOrigin.y * 0.0625, weaponOrigin.z * 0.0625);
         poseStack.translate(flashPosition.x * 0.0625, flashPosition.y * 0.0625, flashPosition.z * 0.0625);
         poseStack.translate(-0.5, -0.5, -0.5);
-        poseStack.mulPose(Axis.ZP.rotationDegrees(360F * random));
-        poseStack.mulPose(Axis.XP.rotationDegrees(0F));
         Vec3 flashScale = PropertyHelper.getMuzzleFlashScale(weapon, modifiedGun);
-        float scaleX = ((float) flashScale.x / 2F) - ((float) flashScale.x / 2F) * (1.0F - partialTicks);
-        float scaleY = ((float) flashScale.y / 2F) - ((float) flashScale.y / 2F) * (1.0F - partialTicks);
-        poseStack.scale(scaleX, scaleY, 1.0F);
-        float scaleModifier = (float) GunModifierHelper.getMuzzleFlashScale(weapon, 1.0);
-        poseStack.scale(scaleModifier, scaleModifier, 1.0F);
-        poseStack.translate(-0.5, -0.5, 0);
-        float minU = weapon.isEnchanted() ? 0.5F : 0.0F;
-        float maxU = weapon.isEnchanted() ? 1.0F : 0.5F;
-        PoseStack.Pose pose = poseStack.last();
-        Matrix4f matrix = pose.pose();
-        VertexConsumer builder = buffer.getBuffer(GunRenderType.getMuzzleFlash(flashTexture));
-        emitMuzzleFlashVertex(builder, pose, matrix, 0, 0, 0, maxU, 1.0F);
-        emitMuzzleFlashVertex(builder, pose, matrix, 1, 0, 0, minU, 1.0F);
-        emitMuzzleFlashVertex(builder, pose, matrix, 1, 1, 0, minU, 0);
-        emitMuzzleFlashVertex(builder, pose, matrix, 0, 1, 0, maxU, 0);
-        EmissiveTextures.emissiveQuad(pose, buffer, flashTexture, minU, maxU, 0.6F);
-        poseStack.popPose();
-        poseStack.pushPose();
-        poseStack.translate(weaponOrigin.x * 0.0625, weaponOrigin.y * 0.0625, weaponOrigin.z * 0.0625);
-        poseStack.translate(flashPosition.x * 0.0625, flashPosition.y * 0.0625, flashPosition.z * 0.0625);
-        poseStack.translate(-0.5, -0.5, -0.5);
-
-
-        poseStack.mulPose(Axis.ZP.rotationDegrees(360F * random));
-        poseStack.mulPose(Axis.XP.rotationDegrees(0F));
-        poseStack.mulPose(Axis.YP.rotationDegrees(90F));
-
-        poseStack.scale(scaleX, scaleY, 1.0F);
-        poseStack.scale(scaleModifier, scaleModifier, 1.0F);
-
-        poseStack.translate(-0.5, -0.5, 0);
-
-        pose = poseStack.last();
-        matrix = pose.pose();
-        builder = buffer.getBuffer(GunRenderType.getMuzzleFlash(flashTexture));
-        emitMuzzleFlashVertex(builder, pose, matrix, 0, 0, 0, maxU, 1.0F);
-        emitMuzzleFlashVertex(builder, pose, matrix, 1, 0, 0, minU, 1.0F);
-        emitMuzzleFlashVertex(builder, pose, matrix, 1, 1, 0, minU, 0);
-        emitMuzzleFlashVertex(builder, pose, matrix, 0, 1, 0, maxU, 0);
-        EmissiveTextures.emissiveQuad(pose, buffer, flashTexture, minU, maxU, 0.6F);
-
+        float size = (float) flashScale.x / 2F * (float) GunModifierHelper.getMuzzleFlashScale(weapon, 1.0);
+        MuzzleFlashRenderer.render(entity, weapon, modifiedGun, poseStack, buffer, size, isBeamActive);
         poseStack.popPose();
     }
 
-    private static void emitMuzzleFlashVertex(VertexConsumer builder, PoseStack.Pose pose, Matrix4f matrix, float x, float y, float z, float u, float v) {
-        builder.addVertex(matrix, x, y, z)
-                .setColor(1.0F, 1.0F, 1.0F, 1.0F)
-                .setUv(u, v)
-                .setOverlay(OverlayTexture.NO_OVERLAY)
-                .setLight(LightTexture.FULL_BRIGHT)
-                .setNormal(pose, 0.0F, 0.0F, 1.0F);
-    }
-
-    private void spawnParticles(Gun.Display.Flash flash, LivingEntity entity) {
-        if (entity == null || !entity.level().isClientSide())
-            return;
-
-        ClientLevel world = (ClientLevel) entity.level();
-        RandomSource random = entity.getRandom();
-        double posX = entity.getX();
-        double posY = entity.getY() + entity.getEyeHeight();
-        double posZ = entity.getZ();
-        SimpleParticleType particleType = flash.getParticleType();
-
-        long currentTime = System.currentTimeMillis();
-        if (currentTime - lastParticleSpawnTime >= PARTICLE_COOLDOWN_MS) {
-            lastParticleSpawnTime = currentTime;
-
-            double radius = flash.getParticleRingRadius();
-            if (radius > 0) {
-                for (int i = 0; i < flash.getParticleCount(); i++) {
-                    double angle = random.nextDouble() * 2 * Math.PI;
-
-                    double randomizedRadius = radius * (0.8 + random.nextDouble() * 0.4);
-
-                    double offsetX = Math.cos(angle) * randomizedRadius;
-                    double offsetZ = Math.sin(angle) * randomizedRadius;
-
-                    double spread = flash.getParticleSpread();
-                    double offsetY = (random.nextDouble() - 0.5) * spread;
-
-                    offsetX += (random.nextDouble() - 0.5) * spread * 0.5;
-                    offsetZ += (random.nextDouble() - 0.5) * spread * 0.5;
-
-                    double motionStrength = 0.03 + random.nextDouble() * 0.02;
-                    double motionX = offsetX * motionStrength;
-                    double motionY = offsetY * motionStrength + 0.01;
-                    double motionZ = offsetZ * motionStrength;
-
-                    world.addParticle(particleType,
-                            posX + offsetX,
-                            posY + offsetY,
-                            posZ + offsetZ,
-                            motionX, motionY, motionZ);
-                }
-            } else {
-                for (int i = 0; i < flash.getParticleCount(); i++) {
-                    double spread = flash.getParticleSpread();
-                    double offsetX = (random.nextDouble() - 0.5) * spread;
-                    double offsetY = (random.nextDouble() - 0.5) * spread;
-                    double offsetZ = (random.nextDouble() - 0.5) * spread;
-                    world.addParticle(particleType,
-                            posX + offsetX,
-                            posY + offsetY,
-                            posZ + offsetZ,
-                            offsetX * 0.1,
-                            offsetY * 0.1,
-                            offsetZ * 0.1);
-                }
-            }
-        }
-    }
     private void renderReloadArm(PoseStack poseStack, MultiBufferSource buffer, int light, Gun modifiedGun, ItemStack stack, HumanoidArm hand, float translateX) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.player.tickCount < ReloadHandler.get().getStartReloadTick() || ReloadHandler.get().getReloadTimer() != 5)

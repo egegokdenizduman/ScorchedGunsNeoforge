@@ -1,5 +1,6 @@
 package top.ribs.scguns.entity.projectile;
 
+import top.ribs.scguns.init.ModParticleTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -79,7 +80,7 @@ public class BlazeRodProjectileEntity extends ProjectileEntity {
                 this.level().addFreshEntity(powderEntity);
             }
             if (!this.level().isClientSide) {
-                ((ServerLevel)this.level()).sendParticles(ParticleTypes.FLAME,
+                ((ServerLevel)this.level()).sendParticles(ModParticleTypes.GUN_FLAME.get(),
                         this.getX(), this.getY(), this.getZ(),
                         8,
                         0.2D, 0.2D, 0.2D,
@@ -103,7 +104,7 @@ public class BlazeRodProjectileEntity extends ProjectileEntity {
         if (!this.level().isClientSide && this.random.nextFloat() < FIRE_CHANCE) {
             entity.igniteForSeconds(FIRE_DURATION);
             ((ServerLevel)this.level()).sendParticles(
-                    ParticleTypes.FLAME,
+                    ModParticleTypes.GUN_FLAME.get(),
                     entity.getX(),
                     entity.getY() + (entity.getBbHeight() * 0.5),
                     entity.getZ(),
@@ -151,7 +152,7 @@ public class BlazeRodProjectileEntity extends ProjectileEntity {
                 this.level().addFreshEntity(powderEntity);
             }
             if (!this.level().isClientSide) {
-                ((ServerLevel)this.level()).sendParticles(ParticleTypes.FLAME,
+                ((ServerLevel)this.level()).sendParticles(ModParticleTypes.GUN_FLAME.get(),
                         this.getX(), this.getY(), this.getZ(),
                         8,
                         0.2D, 0.2D, 0.2D,
@@ -165,7 +166,7 @@ public class BlazeRodProjectileEntity extends ProjectileEntity {
         super.onProjectileTick();
         if (this.level().isClientSide) {
             this.level().addParticle(
-                    ParticleTypes.FLAME,
+                    ModParticleTypes.GUN_FLAME.get(),
                     this.getX(), this.getY(), this.getZ(),
                     0, 0, 0
             );

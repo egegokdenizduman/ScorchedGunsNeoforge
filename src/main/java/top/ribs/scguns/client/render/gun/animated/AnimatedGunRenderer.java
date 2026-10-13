@@ -51,6 +51,7 @@ import top.ribs.scguns.Config;
 import top.ribs.scguns.Reference;
 import top.ribs.scguns.client.GunRenderType;
 import top.ribs.scguns.client.render.EmissiveTextures;
+import top.ribs.scguns.client.render.MuzzleFlashRenderer;
 import top.ribs.scguns.client.compat.OptionalClientCompat;
 import top.ribs.scguns.client.handler.*;
 import top.ribs.scguns.client.render.gun.IOverrideModel;
@@ -255,7 +256,7 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
             this.applyRecoilTransforms(poseStack, stack, modifiedGun);
             this.applyAimingTransforms(poseStack, stack, modifiedGun, translateX, translateY, translateZ, offset);
             this.applySwayTransforms(poseStack, modifiedGun, stack, localPlayer, translateX, translateY, translateZ, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
-            if (ShootingHandler.get().isShooting() && !GunModifierHelper.isSilencedFire(stack)) {
+            if (!GunModifierHelper.isSilencedFire(stack)) {
                 this.renderMuzzleFlash(Minecraft.getInstance().player, poseStack, bufferSource, stack, this.currentDisplayContext, Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false));
             }
         }
@@ -846,7 +847,7 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
         if (entity == null) return;
 
         boolean isBeamActive = BeamHandler.activeBeams.containsKey(entity.getUUID());
-        if (!isBeamActive && !GunRenderingHandler.entityIdForMuzzleFlash.contains(entity.getId())) {
+        if (!isBeamActive && !MuzzleFlashRenderer.isFlashing(entity.getId())) {
             return;
         }
 
@@ -855,10 +856,6 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
 
         ResourceLocation flashTexture = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/effect/" + flash.getTextureLocation() + ".png");
         drawMuzzleFlash(weapon, modifiedGun, randomValue, mirror, poseStack, buffer, partialTicks, flashTexture, entity);
-
-        if (flash.shouldSpawnParticles() && flash.getParticleType() != null) {
-            spawnParticles(flash, entity);
-        }
     }
 
     private void spawnParticles(Gun.Display.Flash flash, LivingEntity entity) {
@@ -956,35 +953,14 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
                 poseStack.translate(0.0, 0.0, -length * 0.0625 * scale.z);
             }
         }
-        poseStack.mulPose(Axis.ZP.rotationDegrees(360F * random));
-        if (mirror) {
-            poseStack.mulPose(Axis.XP.rotationDegrees(180F));
-        }
         Vec3 flashScale = PropertyHelper.getMuzzleFlashScale(weapon, modifiedGun);
-        float scaleX = ((float) flashScale.x / 2F) - ((float) flashScale.x / 2F) * (1.0F - partialTicks);
-        float scaleY = ((float) flashScale.y / 2F) - ((float) flashScale.y / 2F) * (1.0F - partialTicks);
-        poseStack.scale(scaleX * 2.0F, scaleY * 2.0F, 1.0F);
-
-        float scaleModifier = (float) GunModifierHelper.getMuzzleFlashScale(weapon, 1.0);
-        poseStack.scale(scaleModifier, scaleModifier, 1.0F);
-
-        poseStack.translate(-0.5, -0.5, 0);
-        renderFlashQuad(poseStack, buffer, weapon, flashTexture);
+        float size = (float) flashScale.x * (float) GunModifierHelper.getMuzzleFlashScale(weapon, 1.0);
+        boolean beamActive = BeamHandler.activeBeams.containsKey(entity.getUUID());
+        if (MuzzleFlashRenderer.render(entity, weapon, modifiedGun, poseStack, buffer, size, beamActive)) {
+            MuzzleFlashRenderer.markAnimatedDrawn(entity.getId());
+        }
 
         poseStack.popPose();
     }
 
-    private void renderFlashQuad(PoseStack poseStack, MultiBufferSource buffer, ItemStack weapon, ResourceLocation flashTexture) {
-        float minU = weapon.isEnchanted() ? 0.5F : 0.0F;
-        float maxU = weapon.isEnchanted() ? 1.0F : 0.5F;
-
-        Matrix4f matrix = poseStack.last().pose();
-        VertexConsumer builder = buffer.getBuffer(GunRenderType.getMuzzleFlash(flashTexture));
-
-        builder.addVertex(matrix, 0, 0, 0).setColor(1.0F, 1.0F, 1.0F, 1.0F).setUv(maxU, 1.0F).setLight(15728880);
-        builder.addVertex(matrix, 1, 0, 0).setColor(1.0F, 1.0F, 1.0F, 1.0F).setUv(minU, 1.0F).setLight(15728880);
-        builder.addVertex(matrix, 1, 1, 0).setColor(1.0F, 1.0F, 1.0F, 1.0F).setUv(minU, 0).setLight(15728880);
-        builder.addVertex(matrix, 0, 1, 0).setColor(1.0F, 1.0F, 1.0F, 1.0F).setUv(maxU, 0).setLight(15728880);
-        EmissiveTextures.emissiveQuad(poseStack.last(), buffer, flashTexture, minU, maxU, 0.6F);
-    }
 }
