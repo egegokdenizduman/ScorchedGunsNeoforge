@@ -8,9 +8,10 @@ Debloated NeoForge 1.21.1 fork of Scorched Guns 2 for Ege's Create modpack. Java
 - Never edit the Google Doc or `CHANGELOG.md`. The owner writes changelogs and release notes themselves.
 
 ## Working rules
-- Before implementing, restate the doc item's requirements as a short checklist and confirm anything ambiguous. After implementing, tick the checklist off against the doc wording, not against your own summary.
+Follow `docs/WORKFLOW.md` for every task. The two gates in short:
+- **Gate 1:** post a checklist (template in WORKFLOW.md) quoting the doc item and get the owner's approval before building anything. Afterwards, check each line against the doc wording.
+- **Gate 2:** before applying a change to more than one file, show one sample (textures: upscaled old | new | vanilla/Create reference) and get approval.
 - Do only what the item says. If you think something else should change, propose it; do not do it.
-- Textures: show an upscaled preview (old vs new, next to the vanilla/Create reference) and get approval before batch-applying a style to many files.
 - Never call something tested unless it was run in game. Say "compiles" or "untested" otherwise.
 - Push/merge/release only when asked. Work on a branch, never on `main`.
 
