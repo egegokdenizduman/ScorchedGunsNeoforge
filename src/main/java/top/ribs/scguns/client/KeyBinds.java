@@ -1,8 +1,11 @@
 package top.ribs.scguns.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.settings.KeyConflictContext;
+import net.neoforged.neoforge.client.settings.KeyModifier;
 import org.lwjgl.glfw.GLFW;
 import top.ribs.scguns.Config;
 
@@ -17,6 +20,7 @@ import top.ribs.scguns.Config;
         public static final KeyMapping KEY_MELEE = new KeyMapping("key.scguns.melee", GLFW.GLFW_KEY_V, "key.categories.scguns");
         public static final KeyMapping KEY_INSPECT = new KeyMapping("key.scguns.inspect", GLFW.GLFW_KEY_X, "key.categories.scguns");
         public static final KeyMapping KEY_SWAP_AMMO = new KeyMapping("key.scguns.swap_ammo", GLFW.GLFW_KEY_H, "key.categories.scguns");
+        public static final KeyMapping KEY_EQUIP_AMMO_BOXES = new KeyMapping("key.scguns.equip_ammo_boxes", KeyConflictContext.IN_GAME, KeyModifier.ALT, InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, "key.categories.scguns");
         public static void registerKeyMappings(RegisterKeyMappingsEvent event)
         {
             event.register(KEY_RELOAD);
@@ -25,6 +29,7 @@ import top.ribs.scguns.Config;
             event.register(KEY_MELEE);
             event.register(KEY_INSPECT);
             event.register(KEY_SWAP_AMMO);
+            event.register(KEY_EQUIP_AMMO_BOXES);
         }
 
         public static KeyMapping getAimMapping()

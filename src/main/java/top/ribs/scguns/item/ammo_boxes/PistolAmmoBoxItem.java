@@ -5,7 +5,6 @@ import net.minecraft.world.item.ItemStack;
 import top.ribs.scguns.item.AmmoBoxItem;
 
 public class PistolAmmoBoxItem extends AmmoBoxItem {
-    private static final int STACK_CAPACITY = 5;
     private static final int BAR_COLOR = 0xD24A3C;
 
     public PistolAmmoBoxItem(Properties properties) {
@@ -13,13 +12,8 @@ public class PistolAmmoBoxItem extends AmmoBoxItem {
     }
 
     @Override
-    protected ResourceLocation getAmmoTag() {
+    public ResourceLocation getAmmoTag() {
         return ResourceLocation.fromNamespaceAndPath("scguns", "pistol_ammo");
-    }
-
-    @Override
-    protected int getBaseStackCapacity() {
-        return STACK_CAPACITY;
     }
 
     @Override

@@ -3,6 +3,8 @@ package top.ribs.scguns.item.ammo_boxes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -10,12 +12,17 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import top.ribs.scguns.item.AmmoBoxItem;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Infinite ammo source for every gun while worn or carried. Creative tab only: it has no recipe, nothing
+ * can be put in or taken out, and shift-right-click does not open it. Packagers see it as an empty package.
+ */
 public class CreativeAmmoBoxItem extends AmmoBoxItem {
 
     public CreativeAmmoBoxItem(Properties properties) {
@@ -28,20 +35,13 @@ public class CreativeAmmoBoxItem extends AmmoBoxItem {
     }
 
     @Override
-    protected int getBaseStackCapacity() {
-        return Integer.MAX_VALUE;
+    public InteractionResultHolder<ItemStack> open(Level level, Player player, InteractionHand hand) {
+        return InteractionResultHolder.fail(player.getItemInHand(hand));
     }
 
     @Override
     public boolean isBarVisible(@NotNull ItemStack stack) {
         return false;
-    }
-
-    public static int add(ItemStack pouchStack, ItemStack insertedStack) {
-        if (pouchStack.getItem() instanceof CreativeAmmoBoxItem) {
-            return 0;
-        }
-        return AmmoBoxItem.add(pouchStack, insertedStack);
     }
 
     @Override

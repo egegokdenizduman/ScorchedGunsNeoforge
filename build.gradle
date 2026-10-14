@@ -44,6 +44,15 @@ repositories {
         }
     }
     maven {
+        name = "CreateMod"
+        url = "https://maven.createmod.net"
+        content {
+            includeGroup "com.simibubi.create"
+            includeGroup "net.createmod.ponder"
+            includeGroup "dev.engine-room.flywheel"
+        }
+    }
+    maven {
         name = "Sponge"
         url = "https://repo.spongepowered.org/maven"
         content {
@@ -102,7 +111,15 @@ neoForge {
 
 configurations {
     runtimeClasspath.extendsFrom localRuntime
+    devMods
 }
+
+// Copies mods that must load from a real mods folder (see devMods below) into the dev run.
+tasks.register('copyDevMods', Copy) {
+    from configurations.devMods
+    into file('run/mods')
+}
+tasks.matching { it.name == 'prepareClientRun' }.configureEach { dependsOn 'copyDevMods' }
 
 dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
@@ -113,12 +130,31 @@ dependencies {
     compileOnly "maven.modrinth:curios:${curios_version}"
     compileOnly "curse.maven:controllable-317269:${controllable_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    // Create (hard dependency): ammo boxes are Create packages.
+    compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    compileOnly("net.createmod.ponder:ponder-neoforge:${ponder_version}") { transitive = false }
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}") { transitive = false }
 
     // Dev runtime dependencies are required for local smoke testing but are not bundled.
     localRuntime "maven.modrinth:geckolib:${geckolib_version}"
     localRuntime "curse.maven:framework-549225:7530361"
     localRuntime "maven.modrinth:curios:${curios_version}"
     localRuntime "maven.modrinth:sound-physics-remastered:${sound_physics_remastered_version}"
+    localRuntime("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
+    localRuntime("net.createmod.ponder:ponder-neoforge:${ponder_version}") { transitive = false }
+    localRuntime("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}") { transitive = false }
+    // Dev-run only (owner's modpack set): Modrinth version ids for MC 1.21.1 NeoForge.
+    // Sodium ships as a jar-in-jar wrapper that the dev classpath can't unpack, so it and Iris go into run/mods.
+    devMods("maven.modrinth:sodium:uMOpc5uV") { transitive = false }                    // 0.8.13
+    devMods("maven.modrinth:iris:KduFYu4t") { transitive = false }                      // 1.8.14-beta.1, for Complementary
+    localRuntime("maven.modrinth:colorwheel:8rq5KP4U") { transitive = false }           // 1.3.0
+    localRuntime("maven.modrinth:farmers-delight:XTVZDOol") { transitive = false }      // 1.3.4
+    localRuntime("maven.modrinth:create-dragons-plus:b0u9vk8C") { transitive = false }  // 1.11.9, needed by CEE
+    localRuntime("maven.modrinth:create-enchantment-industry:L6VSDdC4") { transitive = false } // 2.5.4b
+    localRuntime("maven.modrinth:platform:v7P0nBi2") { transitive = false }             // 1.3.3, needed by Vanilla Backport
+    localRuntime("maven.modrinth:vanillabackport:rUSWdBok") { transitive = false }      // 1.1.7.10
+    localRuntime("maven.modrinth:sable:fg9dTRz9") { transitive = false }                // 2.0.6, needed by Aeronautics
+    localRuntime("maven.modrinth:create-aeronautics:44pLdPGg") { transitive = false }   // 1.3.2
 
     // Deferred optional mod integrations should stay external unless deliberately enabled.
 }

@@ -1,7 +1,8 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "create:item/package/custom_12x10",
   "textures": {
-    "layer0": "scguns:item/empty_casing_pouch"
+    "2": "scguns:item/package/empty_casing_pouch",
+    "particle": "scguns:item/package/empty_casing_pouch"
   },
   "overrides": [
     {

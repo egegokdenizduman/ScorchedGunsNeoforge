@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "create:item/package/custom_12x10",
   "textures": {
-    "layer0": "scguns:item/energy_ammo_box_partial"
+    "2": "scguns:item/package/energy_ammo_box_partial",
+    "particle": "scguns:item/package/energy_ammo_box_partial"
   }
 }

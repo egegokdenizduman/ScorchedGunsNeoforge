@@ -13,6 +13,7 @@
     "common.LootItemRandomChanceWithEnchantedBonusConditionMixin",
     "common.SittingPhaseMixin",
     "common.compat.create.BasinRecipeMoldMixin",
+    "common.compat.create.PackageItemContainingMixin",
     "common.compat.create.SpoutFillMoldMixin"
   ],
   "client": [
@@ -22,6 +23,10 @@
     "client.MinecraftMixin",
     "client.PlayerModelMixin",
     "client.VehiclePoseMixin",
+    "client.compat.create.ChainConveyorRendererMixin",
+    "client.compat.create.ChainConveyorVisualMixin",
+    "client.compat.create.PackageRendererMixin",
+    "client.compat.create.PackageVisualMixin",
     "client.compat.fa.EMFModelPartRootMixin",
     "client.compat.fa.PlayerRendererMixin",
     "client.compat.iris.BlockMaterialMappingMixin",

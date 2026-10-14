@@ -3143,7 +3143,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
         // Check ammo pouches in the player's inventory
         for (ItemStack itemStack : player.getInventory().items) {
             if (itemStack.getItem() instanceof AmmoBoxItem pouch) {
-                List<ItemStack> contents = AmmoBoxItem.getContents(itemStack).toList();
+                List<ItemStack> contents = AmmoBoxItem.getStoredAmmo(itemStack).toList();
                 for (ItemStack ammoStack : contents) {
                     if (isAmmo(ammoStack, item)) {
                         return new AmmoContext(ammoStack, null);
@@ -3160,7 +3160,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
                 ItemStack stack = curios.getStackInSlot(i);
                 // Check for ammo pouches
                 if (stack.getItem() instanceof AmmoBoxItem pouch) {
-                    List<ItemStack> contents = AmmoBoxItem.getContents(stack).toList();
+                    List<ItemStack> contents = AmmoBoxItem.getStoredAmmo(stack).toList();
                     for (ItemStack ammoStack : contents) {
                         if (isAmmo(ammoStack, item)) {
                             ammoContextRef.set(new AmmoContext(ammoStack, null));
@@ -3201,7 +3201,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
 
         for (ItemStack itemStack : player.getInventory().items) {
             if (itemStack.getItem() instanceof AmmoBoxItem) {
-                List<ItemStack> contents = AmmoBoxItem.getContents(itemStack).toList();
+                List<ItemStack> contents = AmmoBoxItem.getStoredAmmo(itemStack).toList();
                 for (ItemStack ammoStack : contents) {
                     if (!ammoStack.isEmpty() && gun.acceptsProjectileItem(ammoStack.getItem())) {
                         return new AmmoContext(ammoStack, null);
@@ -3216,7 +3216,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
             for (int i = 0; i < curios.getSlots(); i++) {
                 ItemStack stack = curios.getStackInSlot(i);
                 if (stack.getItem() instanceof AmmoBoxItem) {
-                    List<ItemStack> contents = AmmoBoxItem.getContents(stack).toList();
+                    List<ItemStack> contents = AmmoBoxItem.getStoredAmmo(stack).toList();
                     for (ItemStack ammoStack : contents) {
                         if (!ammoStack.isEmpty() && gun.acceptsProjectileItem(ammoStack.getItem())) {
                             ammoContextRef.set(new AmmoContext(ammoStack, null));
@@ -3261,7 +3261,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
         // Check player's main inventory for ammo pouches
         for (ItemStack itemStack : player.getInventory().items) {
             if (itemStack.getItem() instanceof AmmoBoxItem pouch) {
-                List<ItemStack> contents = AmmoBoxItem.getContents(itemStack).toList();
+                List<ItemStack> contents = AmmoBoxItem.getStoredAmmo(itemStack).toList();
                 for (ItemStack ammoStack : contents) {
                     if (ammoStack.getItem() == item) {
                         ammoStacks.add(ammoStack);
@@ -3276,7 +3276,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
             for (int i = 0; i < curios.getSlots(); i++) {
                 ItemStack stack = curios.getStackInSlot(i);
                 if (stack.getItem() instanceof AmmoBoxItem) {
-                    List<ItemStack> contents = AmmoBoxItem.getContents(stack).toList();
+                    List<ItemStack> contents = AmmoBoxItem.getStoredAmmo(stack).toList();
                     for (ItemStack ammoStack : contents) {
                         if (ammoStack.getItem() == item) {
                             ammoStacks.add(ammoStack);
@@ -3315,7 +3315,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
         // Check ammo pouches in the player's inventory
         for (ItemStack itemStack : player.getInventory().items) {
             if (itemStack.getItem() instanceof AmmoBoxItem pouch) {
-                List<ItemStack> contents = AmmoBoxItem.getContents(itemStack).toList();
+                List<ItemStack> contents = AmmoBoxItem.getStoredAmmo(itemStack).toList();
                 for (ItemStack ammoStack : contents) {
                     if (isAmmo(ammoStack, item)) {
                         ammoCount.addAndGet(ammoStack.getCount());
@@ -3330,7 +3330,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
             for (int i = 0; i < curios.getSlots(); i++) {
                 ItemStack stack = curios.getStackInSlot(i);
                 if (stack.getItem() instanceof AmmoBoxItem pouch) {
-                    List<ItemStack> contents = AmmoBoxItem.getContents(stack).toList();
+                    List<ItemStack> contents = AmmoBoxItem.getStoredAmmo(stack).toList();
                     for (ItemStack ammoStack : contents) {
                         if (isAmmo(ammoStack, item)) {
                             ammoCount.addAndGet(ammoStack.getCount());

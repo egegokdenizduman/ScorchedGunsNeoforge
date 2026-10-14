@@ -245,7 +245,7 @@ public class Config
         public final ModConfigSpec.DoubleValue knockbackStrength;
         public final ModConfigSpec.BooleanValue improvedHitboxes;
         public final ModConfigSpec.DoubleValue enemyBulletDamage;
-        public final ModConfigSpec.DoubleValue ammoBoxCapacityMultiplier;
+        public final ModConfigSpec.IntValue ammoBoxStackCapacity;
         public final ModConfigSpec.IntValue energyProductionRate;
         public final ModConfigSpec.BooleanValue drawAnimation;
         public final ModConfigSpec.BooleanValue forceEnergyGuns;
@@ -264,7 +264,7 @@ public class Config
                 this.griefing = new Griefing(builder);
                 this.shotball = new Shotball(builder);
                 this.drawAnimation = builder.comment("If true, enables the draw animation for weapons").define("drawAnimation", true);
-                this.ammoBoxCapacityMultiplier = builder.comment("Multiplier to adjust the capacity of all ammo boxes.").defineInRange("ammoBoxCapacityMultiplier", 1.0, 0.1, 100.0);
+                this.ammoBoxStackCapacity = builder.comment("How many stacks every ammo box and the empty casing box hold. Boxes are Create packages, which have 9 slots, so 9 is the maximum.").defineInRange("ammoBoxStackCapacity", 9, 1, 9);
                 this.enableGunDamage = builder.comment("If true, guns will be damageable and can break, coward if you toggle this").define("enableGunDamage", true);
                 this.enableAttachmentDamage = builder.comment("If true, gun attachments will be damageable and can break, also a coward").define("enableAttachmentDamage", true);
                 this.spawnCasings = builder.comment("Set to false to disable the spawning of casing items when firing guns.").define("gameplay.spawnCasings", true);
