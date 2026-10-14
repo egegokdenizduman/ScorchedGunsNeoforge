@@ -51,6 +51,7 @@ The owner was away, so they chose "sample, then batch": Opus reviewed every samp
 - 11 Flechette: straw bundle (old silhouette) in the frog dart tip's olive/cream palette.
 - 12 Lime powder: top/left border lighter than bottom/right.
 - 14 Gun parts only (owner's choice): gun_parts, heavy_gun_parts and both unfinished ones were redrawn with dither. Firing units, barrels and magazine got only a light touch on the old art (small hue shift, a little dither, specular pixels), so they may need a stronger pass.
+- **Owner review (2026-10-14): "This was horrible."** Reverted to SC2 originals (commit 1.4.0 `e531a1e`) for: anthralite ingot + nugget, diamond steel + depleted ingots, treated iron nugget, treated brass blend, scorched blend (its `_e`/`_s` rebuilt from SC2's lava pixels), flechette. Sulfur dust is back to the `test` version. Diamond steel and treated iron blends keep the new crushed-ore shape, recoloured with the SC2 colours. Everything else from this pass stays: needle, empty tank, lime powder, gun parts, and the other ingots (already SC2).
 - Not done: 9 (treated brass palette) and 13 (grenades), as the owner excluded them.
 
 ### Textures (ask for approval on one sample before batching)
