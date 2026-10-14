@@ -37,6 +37,8 @@ import net.minecraft.world.phys.*;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import top.ribs.scguns.Config;
 import top.ribs.scguns.client.handler.BeamHandler;
 import top.ribs.scguns.common.*;
@@ -115,11 +117,19 @@ public class ServerPlayHandler {
         else if (activeProjectile.firesArrows()) {
             int count = modifiedGun.getGeneral().getProjectileAmount();
             ItemStack arrowStack = Gun.getLoadedAmmoStack(heldItem, modifiedGun, 1, world.registryAccess());
+            Gun.setLastFiredAmmoStack(heldItem, arrowStack, world.registryAccess());
+            // Multishot works like on a crossbow: extra arrows fan out and can't be picked up
+            int multishot = EnchantmentHelper.processProjectileCount(player.serverLevel(), heldItem, player, 1);
+            float fan = EnchantmentHelper.processProjectileSpread(player.serverLevel(), heldItem, player, 0.0F);
+            float step = multishot == 1 ? 0.0F : 2.0F * fan / (multishot - 1);
             for (int i = 0; i < count; i++) {
-                AbstractArrow arrow = getArrow(player, world, activeProjectile, arrowStack);
-                arrow.pickup = player.isCreative() ? AbstractArrow.Pickup.CREATIVE_ONLY : AbstractArrow.Pickup.ALLOWED;
+                for (int j = 0; j < multishot; j++) {
+                    float angle = (j + 1) / 2 * step * (j % 2 == 1 ? 1.0F : -1.0F);
+                    AbstractArrow arrow = getArrow(player, world, activeProjectile, arrowStack, heldItem, angle);
+                    arrow.pickup = player.isCreative() || j > 0 ? AbstractArrow.Pickup.CREATIVE_ONLY : AbstractArrow.Pickup.ALLOWED;
 
-                world.addFreshEntity(arrow);
+                    world.addFreshEntity(arrow);
+                }
             }
         }else {
             fireProjectiles(world, player, heldItem, item, modifiedGun, activeProjectile);
@@ -181,10 +191,11 @@ public class ServerPlayHandler {
         }
     }
     @NotNull
-    private static AbstractArrow getArrow(ServerPlayer player, Level world, Gun.Projectile projectile, ItemStack ammo) {
+    private static AbstractArrow getArrow(ServerPlayer player, Level world, Gun.Projectile projectile, ItemStack ammo, ItemStack weapon, float angle) {
         // Let the arrow item build its own entity: tipped arrows keep their potion, spectral arrows glow, etc.
+        // Passing the gun as the weapon lets vanilla apply its bow/crossbow enchantments (Power, Punch, Flame, Piercing).
         ItemStack arrowStack = ammo.getItem() instanceof ArrowItem ? ammo.copyWithCount(1) : Items.ARROW.getDefaultInstance();
-        AbstractArrow arrow = ((ArrowItem) arrowStack.getItem()).createArrow(world, arrowStack, player, null);
+        AbstractArrow arrow = ((ArrowItem) arrowStack.getItem()).createArrow(world, arrowStack, player, weapon);
 
         float speed = (float) projectile.getSpeed() * 0.35f;
         float pitch = player.getXRot();
@@ -193,6 +204,11 @@ public class ServerPlayHandler {
         float f1 = -Mth.sin(pitch * ((float)Math.PI / 180F));
         float f2 = Mth.cos(yaw * ((float)Math.PI / 180F)) * Mth.cos(pitch * ((float)Math.PI / 180F));
         Vec3 motion = new Vec3(f, f1, f2);
+        if (angle != 0.0F) {
+            Vec3 up = player.getUpVector(1.0F);
+            Vector3f rotated = motion.toVector3f().rotate(new Quaternionf().setAngleAxis(angle * ((float)Math.PI / 180F), up.x, up.y, up.z));
+            motion = new Vec3(rotated);
+        }
         Vec3 spawnPos = player.getEyePosition().add(
                 motion.x * 0.5,
                 -0.1,

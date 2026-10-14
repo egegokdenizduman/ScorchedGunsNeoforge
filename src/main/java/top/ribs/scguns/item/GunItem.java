@@ -264,6 +264,10 @@ public class GunItem extends Item implements IColored, IMeta {
                 return true;
             }
         }
+        // Guns in the bow/crossbow tags (the Crusader) get their enchantments, minus these two
+        if (enchantment.is(Enchantments.INFINITY) || enchantment.is(Enchantments.QUICK_CHARGE)) {
+            return false;
+        }
         return stack.is(Items.ENCHANTED_BOOK) || enchantment.value().isSupportedItem(stack);
     }
 

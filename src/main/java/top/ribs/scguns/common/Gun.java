@@ -62,6 +62,7 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
     private static final String LOADED_PROJECTILE_KEY = "scguns:LoadedProjectile";
     private static final String SELECTED_PROJECTILE_KEY = "scguns:SelectedProjectile";
     private static final String LOADED_AMMO_STACK_KEY = "scguns:LoadedAmmoStack";
+    private static final String LAST_FIRED_AMMO_KEY = "scguns:LastFiredAmmo";
 
     protected General general = new General();
     protected Reloads reloads = new Reloads();
@@ -402,6 +403,27 @@ public class Gun implements INBTSerializable<CompoundTag>, IEditorMenu {
             tag.put(LOADED_AMMO_STACK_KEY, ammo.copyWithCount(1).save(registries));
         }
         setStackTag(gunStack, tag);
+    }
+
+    /**
+     * Remembers the last round fired (with its components) so the HUD can keep showing it while the gun is empty.
+     */
+    public static void setLastFiredAmmoStack(ItemStack gunStack, ItemStack ammo, HolderLookup.Provider registries) {
+        CompoundTag tag = getOrCreateStackTag(gunStack);
+        if (ammo.isEmpty()) {
+            tag.remove(LAST_FIRED_AMMO_KEY);
+        } else {
+            tag.put(LAST_FIRED_AMMO_KEY, ammo.copyWithCount(1).save(registries));
+        }
+        setStackTag(gunStack, tag);
+    }
+
+    public static ItemStack getLastFiredAmmoStack(ItemStack gunStack, HolderLookup.Provider registries) {
+        CompoundTag tag = getStackTag(gunStack);
+        if (tag != null && tag.contains(LAST_FIRED_AMMO_KEY, Tag.TAG_COMPOUND)) {
+            return ItemStack.parse(registries, tag.getCompound(LAST_FIRED_AMMO_KEY)).orElse(ItemStack.EMPTY);
+        }
+        return ItemStack.EMPTY;
     }
 
     /**

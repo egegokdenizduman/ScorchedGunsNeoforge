@@ -305,10 +305,42 @@ public class HUDRenderHandler {
         int reserveAmmoPosY = ammoPosY + 10;
         guiGraphics.drawString(mc.font, reserveAmmoValue, ammoPosX, reserveAmmoPosY, (reserveAmmo <= 0 && !Gun.hasUnlimitedReloads(heldItem) ? 0x555555 : 0xAAAAAA));
 
-        ItemStack ammoItemStack = new ItemStack(Objects.requireNonNull(Gun.getDisplayProjectile(heldItem, cachedGun).getItem()));
-        renderAmmoTypeTexture(ammoItemStack, ammoPosX - 20, ammoPosY, guiGraphics, mc);
+        Gun.Projectile displayProjectile = Gun.getDisplayProjectile(heldItem, cachedGun);
+        if (displayProjectile.firesArrows()) {
+            // Drawn as a real item so tipped arrows get their potion colour (they have no single "item/tipped_arrow" sprite)
+            guiGraphics.renderItem(getArrowHudStack(player, heldItem, cachedGun, currentAmmo), ammoPosX - 20, ammoPosY);
+        } else {
+            ItemStack ammoItemStack = new ItemStack(Objects.requireNonNull(displayProjectile.getItem()));
+            renderAmmoTypeTexture(ammoItemStack, ammoPosX - 20, ammoPosY, guiGraphics, mc);
+        }
 
         RenderSystem.disableBlend();
+    }
+
+    /**
+     * Loaded arrow while there is ammo; while reloading an empty gun, the arrow about to be loaded;
+     * otherwise the last arrow fired, so the icon never falls back to a missing texture.
+     */
+    private static ItemStack getArrowHudStack(Player player, ItemStack heldItem, Gun gun, int currentAmmo) {
+        HolderLookup.Provider registries = player.registryAccess();
+        if (currentAmmo > 0) {
+            return Gun.getLoadedAmmoStack(heldItem, gun, 1, registries);
+        }
+        if (ModSyncedDataKeys.RELOADING.getValue(player)) {
+            ItemStack reloadAmmo = Gun.findReloadAmmo(player, heldItem, gun).stack();
+            if (!reloadAmmo.isEmpty()) {
+                // Same pick as the reload itself: the first matching stack in the offhand, then the inventory
+                for (ItemStack invStack : player.getInventory().offhand) {
+                    if (invStack.getItem() == reloadAmmo.getItem()) return invStack.copyWithCount(1);
+                }
+                for (ItemStack invStack : player.getInventory().items) {
+                    if (invStack.getItem() == reloadAmmo.getItem()) return invStack.copyWithCount(1);
+                }
+                return reloadAmmo.copyWithCount(1);
+            }
+        }
+        ItemStack lastFired = Gun.getLastFiredAmmoStack(heldItem, registries);
+        return lastFired.isEmpty() ? new ItemStack(Gun.getSelectedProjectileItem(heldItem, gun)) : lastFired;
     }
 
     private static void renderAmmoTypeTexture(ItemStack ammoItemStack, int x, int y, GuiGraphics guiGraphics, Minecraft mc) {
