@@ -27,7 +27,6 @@
 - Make CEE (Create Enchantment Industry), Vanilla Backport and Create hard dependencies; Aeronautics soft (optional).
 
 ### Rendering / effects
-- Flayed God: impact diamond effects sometimes end up inside the block; keep them above the hit surface.
 - Continuous beams (Flayed God style) start from the wrong position; may need a rework of how beams are positioned.
 - Muzzle flashes: more emissive, especially sculk and the bullet-type flashes; some are not emissive at all. Plasma is the reference for "good".
 - Microjet particles: more "meat/force". Laser Musket's molten particles are the owner's favourite reference.
@@ -36,6 +35,11 @@
 ### Done and on `test` (2026-10-14)
 - Niami removed (item, renderer, models, textures, gun data, recipes, tags, lang).
 - Ammo boxes as Create packages: owner approved textures, fill states and mechanics. Boxes are `AmmoBoxItem extends PackageItem` (ammo in Create's `PACKAGE_CONTENTS`, capacity config `ammoBoxStackCapacity`), conversion from plain packages, packager output, placed/chain boxes show fill state. Worn on the curios belt as a leather belt with a tinted pouch per hip; the belt shows while any box's render toggle is on. Alt + right-click (keybind `key.scguns.equip_ammo_boxes`) with a box in the main hand equips it: empty belt slot first, otherwise the two slots take turns and the worn box swaps back into the hand. The casing pouch is shown as "Empty Casing Box" (item id still `empty_casing_pouch`).
+
+### Beam impact fix: on branch `alpha2/beam-impact` (2026-10-14, owner tested in game: "it worked"; not yet on `working`/`test`)
+- All beam guns: the tip lands on the crosshair point (eye ray at the server's hit distance), drawn from the gun, and snaps to the block surface (`BeamHandler.renderBeam`).
+- Flayed God: impact rings and nether star lie flat on the hit block face, lifted off it (`BeamRenderer.renderWitherImpact`); on entities/air they sit across the beam as before. Impact particles start just off the face.
+- Beam start position is unchanged (still its own to-do item above).
 
 ### Crusader: on `test` (2026-10-14, branch `alpha2/crusader`, owner tested in game: "PERFECT")
 - Speed 13 (Niami's), damage 16: ~11 per hit vs a full bow's 6 (crit max 10).
