@@ -52,6 +52,7 @@ import top.ribs.scguns.Reference;
 import top.ribs.scguns.client.GunRenderType;
 import top.ribs.scguns.client.render.EmissiveTextures;
 import top.ribs.scguns.client.render.MuzzleFlashRenderer;
+import top.ribs.scguns.client.render.MuzzleTracker;
 import top.ribs.scguns.client.compat.OptionalClientCompat;
 import top.ribs.scguns.client.handler.*;
 import top.ribs.scguns.client.render.gun.IOverrideModel;
@@ -855,7 +856,7 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
         boolean mirror = DualWieldShotTracker.get().shouldUseAlternateAnimation(entity.getId()) && flash.hasAlternateMuzzleFlash();
 
         ResourceLocation flashTexture = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/effect/" + flash.getTextureLocation() + ".png");
-        drawMuzzleFlash(weapon, modifiedGun, randomValue, mirror, poseStack, buffer, partialTicks, flashTexture, entity);
+        drawMuzzleFlash(weapon, modifiedGun, randomValue, mirror, poseStack, buffer, partialTicks, flashTexture, entity, display);
     }
 
     private void spawnParticles(Gun.Display.Flash flash, LivingEntity entity) {
@@ -917,7 +918,7 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
             }
         }
     }
-    private void drawMuzzleFlash(ItemStack weapon, Gun modifiedGun, float random, boolean mirror, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, ResourceLocation flashTexture, LivingEntity entity) {
+    private void drawMuzzleFlash(ItemStack weapon, Gun modifiedGun, float random, boolean mirror, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, ResourceLocation flashTexture, LivingEntity entity, ItemDisplayContext display) {
         if (!PropertyHelper.hasMuzzleFlash(weapon, modifiedGun)) {
             return;
         }
@@ -956,6 +957,7 @@ public class AnimatedGunRenderer extends GeoItemRenderer<AnimatedGunItem> implem
         Vec3 flashScale = PropertyHelper.getMuzzleFlashScale(weapon, modifiedGun);
         float size = (float) flashScale.x * (float) GunModifierHelper.getMuzzleFlashScale(weapon, 1.0);
         boolean beamActive = BeamHandler.activeBeams.containsKey(entity.getUUID());
+        MuzzleTracker.record(entity, poseStack.last().pose(), display == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || display == ItemDisplayContext.FIRST_PERSON_LEFT_HAND);
         if (MuzzleFlashRenderer.render(entity, weapon, modifiedGun, poseStack, buffer, size, beamActive)) {
             MuzzleFlashRenderer.markAnimatedDrawn(entity.getId());
         }

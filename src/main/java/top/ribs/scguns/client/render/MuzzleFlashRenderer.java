@@ -90,6 +90,10 @@ public final class MuzzleFlashRenderer {
         frameId++;
     }
 
+    public static long currentFrame() {
+        return frameId;
+    }
+
     /** The animated (GeckoLib) renderer drew this entity's first-person flash this frame. */
     public static void markAnimatedDrawn(int entityId) {
         ANIMATED_DRAW_FRAME.put(entityId, frameId);

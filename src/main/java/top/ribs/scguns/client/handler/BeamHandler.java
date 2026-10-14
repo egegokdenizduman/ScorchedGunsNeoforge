@@ -24,6 +24,8 @@ import java.util.*;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import org.joml.Matrix4f;
+import top.ribs.scguns.client.render.MuzzleTracker;
 import top.ribs.scguns.common.FireMode;
 import top.ribs.scguns.common.Gun;
 import top.ribs.scguns.init.ModParticleTypes;
@@ -37,6 +39,8 @@ public class BeamHandler {
     private static final long CONTINUOUS_BEAM_DURATION_MS = 200;
     private static final long SEMI_BEAM_DURATION_MS = 50;
     private static final long CLEANUP_DELAY_MS = 50;
+    // the level's projection for the frame being drawn, used to match the first-person gun's field of view
+    private static Matrix4f worldProjection = new Matrix4f();
     public static float[] getBeamColorForWeapon(ItemStack heldItem, Gun modifiedGun) {
         boolean isEnchanted = heldItem.isEnchanted();
         String primaryColorHex = isEnchanted && modifiedGun.getGeneral().getEnchantedBeamColor() != null ?
@@ -117,6 +121,7 @@ public class BeamHandler {
         LocalPlayer player = mc.player;
         if (player == null) return;
 
+        worldProjection = new Matrix4f(event.getProjectionMatrix());
         PoseStack poseStack = event.getPoseStack();
         float partialTick = event.getPartialTick().getGameTimeDeltaPartialTick(false);
         MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
@@ -255,6 +260,11 @@ public class BeamHandler {
         // only the local player's own beam seen through their own eyes starts at the first-person gun model;
         // everyone else (third person, spectating, other players' beams) starts at the gun held in the world
         boolean ownFirstPerson = player == mc.player && mc.options.getCameraType().isFirstPerson() && mc.getCameraEntity() == player;
+        // start at the muzzle of the gun model that was actually drawn; the offsets below are only a fallback
+        Vec3 rendered = MuzzleTracker.get(player, ownFirstPerson, worldProjection);
+        if (rendered != null) {
+            return rendered;
+        }
         if (ownFirstPerson) {
             return calculateFirstPersonBeamOrigin(player, modifiedGun, partialTicks);
         } else {

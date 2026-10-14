@@ -49,6 +49,7 @@ import top.ribs.scguns.client.GunModel;
 import top.ribs.scguns.client.GunRenderType;
 import top.ribs.scguns.client.render.EmissiveTextures;
 import top.ribs.scguns.client.render.MuzzleFlashRenderer;
+import top.ribs.scguns.client.render.MuzzleTracker;
 import top.ribs.scguns.client.render.gun.IOverrideModel;
 import top.ribs.scguns.client.render.gun.ModelOverrides;
 import top.ribs.scguns.client.util.PropertyHelper;
@@ -969,6 +970,7 @@ public class GunRenderingHandler {
         poseStack.translate(-0.5, -0.5, -0.5);
         Vec3 flashScale = PropertyHelper.getMuzzleFlashScale(weapon, modifiedGun);
         float size = (float) flashScale.x / 2F * (float) GunModifierHelper.getMuzzleFlashScale(weapon, 1.0);
+        MuzzleTracker.record(entity, poseStack.last().pose(), display == ItemDisplayContext.FIRST_PERSON_RIGHT_HAND || display == ItemDisplayContext.FIRST_PERSON_LEFT_HAND);
         MuzzleFlashRenderer.render(entity, weapon, modifiedGun, poseStack, buffer, size, isBeamActive);
         poseStack.popPose();
     }
