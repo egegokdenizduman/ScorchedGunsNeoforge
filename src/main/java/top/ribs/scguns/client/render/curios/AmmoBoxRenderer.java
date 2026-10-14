@@ -39,12 +39,15 @@ public class AmmoBoxRenderer implements ICurioRenderer {
             humanoidModel.body.translateAndRotate(matrixStack);
         }
 
-        // Ammo boxes are 3D 12x10x12 packages: hang one on each side of the hip, just outside the body
-        // (half body width 4px + half the scaled box width), with the box face pointing outwards.
+        // Ammo boxes are 3D 12x10x12 packages: one on each side at belt height, set behind the arm
+        // (the body is 2px deep each way, +z is the back) so the arm swings in front of it rather than
+        // through it, with the box face pointing outwards.
         boolean left = slotContext.index() == 0;
-        float scale = 0.35F;
-        double side = 0.25D + 0.75D * scale / 2.0D;
-        matrixStack.translate(left ? -side : side, 0.66D, 0.0D);
+        float scale = 0.28F;
+        double halfBox = 0.75D * scale / 2.0D;
+        double side = 0.30D;
+        double back = 0.125D + halfBox;
+        matrixStack.translate(left ? -side : side, 0.68D, back);
         matrixStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
         matrixStack.mulPose(Axis.YP.rotationDegrees(left ? -90.0F : 90.0F));
         matrixStack.scale(scale, scale, scale);
