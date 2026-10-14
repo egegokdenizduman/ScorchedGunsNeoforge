@@ -13,6 +13,7 @@
     "common.LootItemRandomChanceWithEnchantedBonusConditionMixin",
     "common.SittingPhaseMixin",
     "common.compat.create.BasinRecipeMoldMixin",
+    "common.compat.create.PackageItemContainingMixin",
     "common.compat.create.SpoutFillMoldMixin"
   ],
   "client": [

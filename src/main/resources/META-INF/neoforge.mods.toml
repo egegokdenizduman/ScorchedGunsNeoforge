@@ -48,6 +48,14 @@ ordering="AFTER"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
+modId="create"
+type="required"
+reason="Ammo boxes are Create packages."
+versionRange="[6.0.10,)"
+ordering="AFTER"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
 modId="geckolib"
 type="required"
 reason="Animated guns, armor and entities hard-load GeckoLib classes during startup."

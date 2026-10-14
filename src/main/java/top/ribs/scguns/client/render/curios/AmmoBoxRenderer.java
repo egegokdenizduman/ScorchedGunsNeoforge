@@ -39,12 +39,15 @@ public class AmmoBoxRenderer implements ICurioRenderer {
             humanoidModel.body.translateAndRotate(matrixStack);
         }
 
-        // Ammo boxes are flat 16x16 sprites: hang them upright on the side of the hip, facing outwards.
+        // Ammo boxes are 3D 12x10x12 packages: hang one on each side of the hip, just outside the body
+        // (half body width 4px + half the scaled box width), with the box face pointing outwards.
         boolean left = slotContext.index() == 0;
-        matrixStack.translate(left ? -0.30D : 0.30D, 0.66D, 0.0D);
+        float scale = 0.35F;
+        double side = 0.25D + 0.75D * scale / 2.0D;
+        matrixStack.translate(left ? -side : side, 0.66D, 0.0D);
         matrixStack.mulPose(Axis.ZP.rotationDegrees(180.0F));
         matrixStack.mulPose(Axis.YP.rotationDegrees(left ? -90.0F : 90.0F));
-        matrixStack.scale(0.42F, 0.42F, 0.42F);
+        matrixStack.scale(scale, scale, scale);
 
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         BakedModel bakedModel = itemRenderer.getModel(stack, entity.level(), entity, 0);

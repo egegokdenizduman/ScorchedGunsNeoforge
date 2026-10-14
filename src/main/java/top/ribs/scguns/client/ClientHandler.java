@@ -26,6 +26,7 @@ import top.ribs.scguns.Reference;
 import top.ribs.scguns.client.compat.OptionalClientCompat;
 import top.ribs.scguns.client.handler.*;
 import top.ribs.scguns.client.render.block.*;
+import top.ribs.scguns.client.render.AmmoBoxPackageModels;
 import top.ribs.scguns.client.render.curios.AmmoBoxRenderer;
 import top.ribs.scguns.client.render.gun.ModelOverrides;
 import top.ribs.scguns.client.render.gun.model.*;
@@ -47,6 +48,7 @@ import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 public class ClientHandler {
     public static void registerClientHandlers(IEventBus bus) {
         FrameworkClientAPI.registerDataLoader(MetaLoader.getInstance());
+        AmmoBoxPackageModels.init();
        // onRegisterCreativeTab(bus);
         bus.addListener(KeyBinds::registerKeyMappings);
         bus.addListener(CrosshairHandler::onConfigReload);

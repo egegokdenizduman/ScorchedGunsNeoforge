@@ -44,6 +44,15 @@ repositories {
         }
     }
     maven {
+        name = "CreateMod"
+        url = "https://maven.createmod.net"
+        content {
+            includeGroup "com.simibubi.create"
+            includeGroup "net.createmod.ponder"
+            includeGroup "dev.engine-room.flywheel"
+        }
+    }
+    maven {
         name = "Sponge"
         url = "https://repo.spongepowered.org/maven"
         content {
@@ -113,12 +122,19 @@ dependencies {
     compileOnly "maven.modrinth:curios:${curios_version}"
     compileOnly "curse.maven:controllable-317269:${controllable_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
+    // Create (hard dependency): ammo boxes are Create packages.
+    compileOnly("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+    compileOnly("net.createmod.ponder:ponder-neoforge:${ponder_version}") { transitive = false }
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}") { transitive = false }
 
     // Dev runtime dependencies are required for local smoke testing but are not bundled.
     localRuntime "maven.modrinth:geckolib:${geckolib_version}"
     localRuntime "curse.maven:framework-549225:7530361"
     localRuntime "maven.modrinth:curios:${curios_version}"
     localRuntime "maven.modrinth:sound-physics-remastered:${sound_physics_remastered_version}"
+    localRuntime("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
+    localRuntime("net.createmod.ponder:ponder-neoforge:${ponder_version}") { transitive = false }
+    localRuntime("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}") { transitive = false }
 
     // Deferred optional mod integrations should stay external unless deliberately enabled.
 }

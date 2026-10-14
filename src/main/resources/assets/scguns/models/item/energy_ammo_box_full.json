@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "scguns:item/energy_ammo_box_full"
-  }
+  "parent": "create:item/cardboard_package_12x10"
 }

@@ -1,8 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "scguns:item/empty_casing_pouch"
-  },
+  "parent": "create:item/cardboard_package_12x10",
   "overrides": [
     {
       "predicate": {
