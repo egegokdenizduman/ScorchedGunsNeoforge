@@ -1,4 +1,4 @@
-﻿# Handoff: Alpha 0.0.2 (written 2026-10-14)
+# Handoff: Alpha 0.0.2 (written 2026-10-14)
 
 ## State
 - All Alpha 0.0.2 work so far is on GitHub branch `test` (fast-forward of the previous `test`). Built from local branch `claude/minecraft-texture-style-bc5dc1`, which merged nine `alpha2/*` feature branches.
