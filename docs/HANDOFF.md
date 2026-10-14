@@ -39,6 +39,20 @@
 - Niami removed (item, renderer, models, textures, gun data, recipes, tags, lang).
 - Ammo boxes as Create packages: owner approved textures, fill states and mechanics. Boxes are `AmmoBoxItem extends PackageItem` (ammo in Create's `PACKAGE_CONTENTS`, capacity config `ammoBoxStackCapacity`), conversion from plain packages, packager output, placed/chain boxes show fill state. Worn on the curios belt as a leather belt with a tinted pouch per hip; the belt shows while any box's render toggle is on. Alt + right-click (keybind `key.scguns.equip_ammo_boxes`) with a box in the main hand equips it: empty belt slot first, otherwise the two slots take turns and the worn box swaps back into the hand. The casing pouch is shown as "Empty Casing Box" (item id still `empty_casing_pouch`).
 
+### Doc "Textures" items 1–14 except 9 and 13: done on branch `alpha2/item-textures` (2026-10-14), awaiting owner review
+The owner was away, so they chose "sample, then batch": Opus reviewed every sample before its batch, one commit per item, nothing merged into `working`. Review sheets (old | new | reference at 10x + 1x) are in `docs/texture-review/<item>/`. Revert any item with `git revert <commit>`. Not yet seen in game.
+- 1 Blends: treated iron, treated brass (colours kept) and scorched now use Create's crushed-ore mask.
+- 2 Sulfur dust: clear hue-tinted outline with a lighter top-left rim.
+- 3 + 7 Ingots: the original SC2 ingots already had vanilla's exact silhouette, so they were restored byte for byte (anthralite, treated iron, treated brass, scorched + `_e`/`_s`).
+- 4 Nuggets: anthralite is a tilted diagonal, treated iron a flat-bottomed chip. Plasma was already distinct, so it is unchanged.
+- 5 Needle: 2D icon on the vanilla stick/rod silhouette with a green ramp. Open question: the old needle was near-black, so "same greenish palette" was read as green. `needle_3d.png` is untouched.
+- 6 Empty tank: iron palette. Recipe is now Create compacting, 1 bucket + 1 iron sheet (`c:plates/iron`) → 1 tank. The old crafting recipe gave 2 tanks and was removed.
+- 8 + 10 Diamond steel: the ingot is grey-teal steel with glassy cyan streaks; depleted is an anthralite/teal mix; the blend uses Create's crushed-ore shape with subtle blue. Casings and the gun frame are not touched.
+- 11 Flechette: straw bundle (old silhouette) in the frog dart tip's olive/cream palette.
+- 12 Lime powder: top/left border lighter than bottom/right.
+- 14 Gun parts only (owner's choice): gun_parts, heavy_gun_parts and both unfinished ones were redrawn with dither. Firing units, barrels and magazine got only a light touch on the old art (small hue shift, a little dither, specular pixels), so they may need a stronger pass.
+- Not done: 9 (treated brass palette) and 13 (grenades), as the owner excluded them.
+
 ### Textures (ask for approval on one sample before batching)
 - Storage blocks: dithering, shading, anti-aliasing. Treated brass = Create brass block recoloured; treated iron referencing Create's industrial iron block; anthralite keeps the metal/polished-stone idea; diamond steel = diamond glassiness + steel, no centre bar, look at vanilla "Block of X".
 - Ores: ore must not touch the block edge (deepslate anthralite does); darker "indent" stone around the ore like vanilla; dithering; emissivity only on the ore (currently one edge glows). Vehement coal needs its own fiery/sparkly shape (quartz and nether gold ore as inspiration, not centred, not a nether gold copy) and must be emissive. Stone anthralite shape is good. Complementary uses its own normals/material qualities: ores glossy, stone matte.
