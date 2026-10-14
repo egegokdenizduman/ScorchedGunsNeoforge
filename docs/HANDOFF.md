@@ -27,7 +27,7 @@
 - Make CEE (Create Enchantment Industry), Vanilla Backport and Create hard dependencies; Aeronautics soft (optional).
 
 ### Rendering / effects
-- Continuous beams (Flayed God style) start from the wrong position; may need a rework of how beams are positioned.
+- Continuous beams start position: fixed on branch `alpha2/beam-origin` (compiles, **not tested in game**). `client/render/MuzzleTracker` records the rendered muzzle each frame (world pos for third person / other players; view space for first person, rescaled from the 70° hand FOV to the world FOV, same trick as TACZ); `BeamHandler.calculateBeamOrigin` uses it, old `beamOrigin` offsets are only a fallback. Skips the Iris shadow pass. All 6 beam guns have a `flash` entry, so none need the fallback. Owner wants a bigger rendering revamp later (research summary given 2026-10-14: locator bones, server-driven effect events with backup positions, data-driven effect definitions).
 - Muzzle flashes: more emissive, especially sculk and the bullet-type flashes; some are not emissive at all. Plasma is the reference for "good".
 - Microjet particles: more "meat/force". Laser Musket's molten particles are the owner's favourite reference.
 - Multiplayer flash visibility is untested; the owner wants a way to test without a second player (e.g. a debug command that makes a mob or dummy fire a held gun).
@@ -39,7 +39,7 @@
 ### Beam impact fix: on branch `alpha2/beam-impact` (2026-10-14, owner tested in game: "it worked"; on `test`)
 - All beam guns: the tip lands on the crosshair point (eye ray at the server's hit distance), drawn from the gun, and snaps to the block surface (`BeamHandler.renderBeam`).
 - Flayed God: impact rings and nether star lie flat on the hit block face, lifted off it (`BeamRenderer.renderWitherImpact`); on entities/air they sit across the beam as before. Impact particles start just off the face.
-- Beam start position is unchanged (still its own to-do item above).
+- Beam start position: see the Rendering / effects item above (`alpha2/beam-origin`).
 
 ### Crusader: on `test` (2026-10-14, branch `alpha2/crusader`, owner tested in game: "PERFECT")
 - Speed 13 (Niami's), damage 16: ~11 per hit vs a full bow's 6 (crit max 10).
