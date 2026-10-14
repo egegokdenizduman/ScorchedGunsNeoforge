@@ -25,6 +25,7 @@ public class PacketHandler
                 .registerPlayMessage("c2s_charge_sync", C2SMessageChargeSync.class, C2SMessageChargeSync.STREAM_CODEC, C2SMessageChargeSync::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("c2s_pre_fire_sound", C2SMessagePreFireSound.class, C2SMessagePreFireSound.STREAM_CODEC, C2SMessagePreFireSound::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("c2s_unload", C2SMessageUnload.class, C2SMessageUnload.STREAM_CODEC, C2SMessageUnload::handle, PacketFlow.SERVERBOUND)
+                .registerPlayMessage("c2s_equip_ammo_boxes", C2SMessageEquipAmmoBoxes.class, C2SMessageEquipAmmoBoxes.STREAM_CODEC, C2SMessageEquipAmmoBoxes::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("c2s_swap_ammo", C2SMessageSwapAmmo.class, C2SMessageSwapAmmo.STREAM_CODEC, C2SMessageSwapAmmo::handle, PacketFlow.SERVERBOUND)
                 .registerPlayMessage("s2c_stun_grenade", S2CMessageStunGrenade.class, S2CMessageStunGrenade.STREAM_CODEC, S2CMessageStunGrenade::handle, PacketFlow.CLIENTBOUND)
                 .registerPlayMessage("s2c_bullet_trail", S2CMessageBulletTrail.class, S2CMessageBulletTrail.STREAM_CODEC, S2CMessageBulletTrail::handle, PacketFlow.CLIENTBOUND)

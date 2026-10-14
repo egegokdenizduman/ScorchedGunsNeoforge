@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * Ammo boxes worn in the curios belt slots show as a leather belt with a pouch on each hip: belt slot 0 is the
  * right hip, slot 1 the left. Each pouch takes its box's tape colour, darker while the box is empty. The strap is
- * drawn by the first filled slot only, so it appears once.
+ * drawn by the first filled slot that is set to render, so it appears once and stays while any box is shown.
  */
 public class AmmoBoxRenderer implements ICurioRenderer {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(Reference.MOD_ID, "textures/entity/ammo_belt.png");
@@ -51,10 +51,11 @@ public class AmmoBoxRenderer implements ICurioRenderer {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
         // Body space: 8x12x4, origin at the top centre, +y down, -z front, -x the player's right.
-        // Inflated past leggings (0.5) so it sits on top of armour.
+        // Inflated past leggings (0.5) so it sits on top of armour. The buckle is inflated past the strap's top and
+        // bottom faces so they don't z-fight.
         root.addOrReplaceChild("strap", CubeListBuilder.create()
                 .texOffs(0, 0).addBox(-4.0F, 9.5F, -2.0F, 8, 2, 4, new CubeDeformation(0.6F))
-                .texOffs(0, 8).addBox(-1.5F, 9.0F, -3.0F, 3, 3, 1, new CubeDeformation(0.1F)), PartPose.ZERO);
+                .texOffs(0, 8).addBox(-1.5F, 9.0F, -3.0F, 3, 3, 1, new CubeDeformation(0.2F)), PartPose.ZERO);
         root.addOrReplaceChild("right_pouch", CubeListBuilder.create()
                 .texOffs(0, 16).addBox(-4.6F, 10.5F, -3.6F, 3, 4, 2), PartPose.ZERO);
         root.addOrReplaceChild("left_pouch", CubeListBuilder.create()
@@ -101,7 +102,7 @@ public class AmmoBoxRenderer implements ICurioRenderer {
         humanoidModel.body.translateAndRotate(matrixStack);
         VertexConsumer buffer = bufferSource.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
 
-        if (isFirstFilledSlot(entity, slotContext.identifier(), index)) {
+        if (isFirstShownSlot(entity, slotContext.identifier(), index)) {
             strap.render(matrixStack, buffer, light, OverlayTexture.NO_OVERLAY);
         }
         ModelPart pouch = index == 0 ? rightPouch : leftPouch;
@@ -110,12 +111,14 @@ public class AmmoBoxRenderer implements ICurioRenderer {
         matrixStack.popPose();
     }
 
-    private static boolean isFirstFilledSlot(LivingEntity entity, String slot, int index) {
+    // Curios only calls render for slots whose render toggle is on, so a hidden slot can't draw the strap.
+    private static boolean isFirstShownSlot(LivingEntity entity, String slot, int index) {
         return CuriosApi.getCuriosInventory(entity)
                 .flatMap(inventory -> inventory.getStacksHandler(slot))
                 .map(handler -> {
                     for (int i = 0; i < index && i < handler.getSlots(); i++) {
-                        if (handler.getStacks().getStackInSlot(i).getItem() instanceof AmmoBoxItem) {
+                        boolean shown = i >= handler.getRenders().size() || handler.getRenders().get(i);
+                        if (shown && handler.getStacks().getStackInSlot(i).getItem() instanceof AmmoBoxItem) {
                             return false;
                         }
                     }

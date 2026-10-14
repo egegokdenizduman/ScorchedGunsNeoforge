@@ -48,12 +48,14 @@ import top.ribs.scguns.init.*;
 import top.ribs.scguns.interfaces.IProjectileFactory;
 import top.ribs.scguns.item.GunItem;
 import top.ribs.scguns.item.ammo_boxes.CreativeAmmoBoxItem;
+import top.ribs.scguns.item.AmmoBoxItem;
 import top.ribs.scguns.network.PacketHandler;
 import top.ribs.scguns.network.message.*;
 import top.ribs.scguns.util.GunEnchantmentHelper;
 import top.ribs.scguns.util.GunModifierHelper;
 import top.ribs.scguns.util.math.ExtendedEntityRayTraceResult;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotContext;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -539,6 +541,57 @@ public class ServerPlayHandler {
                 }
             }
         }
+    }
+
+    /**
+     * Puts one ammo box from the main hand on the belt, like equipping armour: an empty belt slot first, otherwise
+     * the two slots take turns and the worn box goes back into the hand.
+     */
+    public static void handleEquipAmmoBoxes(ServerPlayer player) {
+        ItemStack held = player.getMainHandItem();
+        if (!(held.getItem() instanceof AmmoBoxItem)) {
+            return;
+        }
+        CuriosApi.getCuriosInventory(player).flatMap(inventory -> inventory.getStacksHandler("belt")).ifPresent(handler -> {
+            int slots = handler.getSlots();
+            int target = -1;
+            for (int slot = 0; slot < slots && target < 0; slot++) {
+                if (handler.getStacks().getStackInSlot(slot).isEmpty() && canWearOnBelt(player, slot, held)) {
+                    target = slot;
+                }
+            }
+            CompoundTag data = player.getPersistentData();
+            if (target < 0) {
+                int next = data.getInt(NEXT_BELT_SLOT);
+                for (int i = 0; i < slots && target < 0; i++) {
+                    int slot = (next + i) % slots;
+                    if (canWearOnBelt(player, slot, held)) {
+                        target = slot;
+                    }
+                }
+            }
+            if (target < 0) {
+                return;
+            }
+            data.putInt(NEXT_BELT_SLOT, (target + 1) % slots);
+
+            ItemStack worn = handler.getStacks().getStackInSlot(target);
+            handler.getStacks().setStackInSlot(target, held.split(1));
+            if (!worn.isEmpty()) {
+                if (held.isEmpty()) {
+                    player.setItemInHand(InteractionHand.MAIN_HAND, worn);
+                } else if (!player.getInventory().add(worn)) {
+                    player.drop(worn, false);
+                }
+            }
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ARMOR_EQUIP_LEATHER.value(), SoundSource.PLAYERS, 1.0F, 1.0F);
+        });
+    }
+
+    private static final String NEXT_BELT_SLOT = "scguns:next_ammo_belt_slot";
+
+    private static boolean canWearOnBelt(ServerPlayer player, int slot, ItemStack stack) {
+        return CuriosApi.isStackValid(new SlotContext("belt", player, slot, false, true), stack);
     }
 
     public static boolean hasCreativeAmmoBoxInCurios(ServerPlayer player) {

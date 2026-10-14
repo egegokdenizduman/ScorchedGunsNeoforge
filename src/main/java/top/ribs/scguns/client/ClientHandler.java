@@ -116,6 +116,7 @@ public class ClientHandler {
         NeoForge.EVENT_BUS.register(GunRenderingHandler.get());
         NeoForge.EVENT_BUS.register(RecoilHandler.get());
         NeoForge.EVENT_BUS.register(ReloadHandler.get());
+        NeoForge.EVENT_BUS.register(AmmoBoxEquipHandler.class);
         NeoForge.EVENT_BUS.register(ShootingHandler.get());
         NeoForge.EVENT_BUS.register(SoundHandler.get());
         NeoForge.EVENT_BUS.register(DistantGunSoundHandler.get());

@@ -264,7 +264,7 @@ public class Config
                 this.griefing = new Griefing(builder);
                 this.shotball = new Shotball(builder);
                 this.drawAnimation = builder.comment("If true, enables the draw animation for weapons").define("drawAnimation", true);
-                this.ammoBoxStackCapacity = builder.comment("How many stacks every ammo box and the casing pouch hold. Boxes are Create packages, which have 9 slots, so 9 is the maximum.").defineInRange("ammoBoxStackCapacity", 9, 1, 9);
+                this.ammoBoxStackCapacity = builder.comment("How many stacks every ammo box and the empty casing box hold. Boxes are Create packages, which have 9 slots, so 9 is the maximum.").defineInRange("ammoBoxStackCapacity", 9, 1, 9);
                 this.enableGunDamage = builder.comment("If true, guns will be damageable and can break, coward if you toggle this").define("enableGunDamage", true);
                 this.enableAttachmentDamage = builder.comment("If true, gun attachments will be damageable and can break, also a coward").define("enableAttachmentDamage", true);
                 this.spawnCasings = builder.comment("Set to false to disable the spawning of casing items when firing guns.").define("gameplay.spawnCasings", true);
