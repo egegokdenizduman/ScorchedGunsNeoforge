@@ -1,0 +1,7 @@
+{
+  "parent": "create:item/package/custom_12x10",
+  "textures": {
+    "2": "scguns:item/package/special_ammo_box_partial",
+    "particle": "scguns:item/package/special_ammo_box_partial"
+  }
+}

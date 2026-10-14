@@ -1,5 +1,9 @@
 {
-  "parent": "create:item/cardboard_package_12x10",
+  "parent": "create:item/package/custom_12x10",
+  "textures": {
+    "2": "scguns:item/package/empty_casing_pouch",
+    "particle": "scguns:item/package/empty_casing_pouch"
+  },
   "overrides": [
     {
       "predicate": {

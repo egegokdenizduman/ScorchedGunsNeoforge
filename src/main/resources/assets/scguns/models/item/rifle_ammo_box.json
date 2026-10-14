@@ -1,5 +1,9 @@
 {
-  "parent": "create:item/cardboard_package_12x10",
+  "parent": "create:item/package/custom_12x10",
+  "textures": {
+    "2": "scguns:item/package/rifle_ammo_box",
+    "particle": "scguns:item/package/rifle_ammo_box"
+  },
   "overrides": [
     {
       "predicate": {
