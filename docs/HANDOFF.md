@@ -21,7 +21,6 @@
 - Flash protection: also reduce (not remove) stun-grenade deafening; add Create's Netherite Diving Helmet to `#scguns:flash_protection`.
 - Reflex sight: check it really uses the Aeronautics laser pointer with the non-Aeronautics fallback, like the laser sight.
 - Empty tank: iron palette; recipe = iron sheets + bucket pressed together.
-- Crusader: much higher arrow velocity than a bow (like Niami's power); healing arrows deal no damage from the Crusader only; enchantable with all vanilla bow/crossbow enchantments except Infinity.
 
 ### Dev environment
 - Add Colorwheel, Create Aeronautics, Farmer's Delight, Vanilla Backport to the dev run.
@@ -37,6 +36,13 @@
 ### Done and on `test` (2026-10-14)
 - Niami removed (item, renderer, models, textures, gun data, recipes, tags, lang).
 - Ammo boxes as Create packages: owner approved textures, fill states and mechanics. Boxes are `AmmoBoxItem extends PackageItem` (ammo in Create's `PACKAGE_CONTENTS`, capacity config `ammoBoxStackCapacity`), conversion from plain packages, packager output, placed/chain boxes show fill state. Worn on the curios belt as a leather belt with a tinted pouch per hip; the belt shows while any box's render toggle is on. Alt + right-click (keybind `key.scguns.equip_ammo_boxes`) with a box in the main hand equips it: empty belt slot first, otherwise the two slots take turns and the worn box swaps back into the hand. The casing pouch is shown as "Empty Casing Box" (item id still `empty_casing_pouch`).
+
+### Crusader: on `test` (2026-10-14, branch `alpha2/crusader`, owner tested in game: "PERFECT")
+- Speed 13 (Niami's), damage 16: ~11 per hit vs a full bow's 6 (crit max 10).
+- Arrows are created with the gun as their weapon, so Power, Punch, Flame, Piercing work; Multishot = 3 arrows for 1 ammo, extras not pickable. Infinity and Quick Charge are refused on all guns (`GunItem.supportsEnchantment`).
+- Healing arrows from the Crusader cancel the impact (`CrusaderArrowEvents`), apply the potion directly with tiny knockback: no damage, no anger. Undead still harmed by the potion.
+- Backtank boost (owner's addition): with backtank air, 2.5x fire rate and 6 air per shot (`energyUse` 25 like the Nailer); without air it fires normally. Item bar shows air. Logic in `compat/CreateBacktank`, item class `CrusaderItem`.
+- HUD ammo icon for arrow guns is drawn as a real item and keeps the last fired arrow when empty (was purple/black for tipped arrows).
 
 ### Doc "Textures" items 1–14 except 9 and 13: on `test` (2026-10-14, from branch `alpha2/item-textures`)
 The owner was away, so they chose "sample, then batch": Opus reviewed every sample before its batch, one commit per item. Review sheets (old | new | reference at 10x + 1x) are in `docs/texture-review/<item>/`. Revert any item with `git revert <commit>`. Not yet seen in game.
