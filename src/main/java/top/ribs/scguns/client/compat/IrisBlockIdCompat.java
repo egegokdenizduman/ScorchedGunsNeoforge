@@ -46,10 +46,6 @@ public final class IrisBlockIdCompat {
                 put(ids, ModBlocks.DEEPSLATE_ANTHRALITE_ORE.get(), COMPLEMENTARY_MODDED_ORE_STONE);
                 put(ids, ModBlocks.VEHEMENT_COAL_ORE.get(), netherrackOres);
             }
-            BlockState magma = Blocks.MAGMA_BLOCK.defaultBlockState();
-            if (ids.containsKey(magma)) {
-                put(ids, ModBlocks.SCORCHED_BLOCK.get(), ids.getInt(magma));
-            }
         } catch (RuntimeException | LinkageError e) {
             ScorchedGuns.LOGGER.debug("Could not add scguns blocks to the shader pack block id map", e);
         }

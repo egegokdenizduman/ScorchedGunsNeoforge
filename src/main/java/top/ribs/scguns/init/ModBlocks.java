@@ -58,11 +58,6 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE)));
     public static final DeferredBlock<Block> DIAMOND_STEEL_BLOCK = register("diamond_steel_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.WARPED_STEM)));
-    /** Glowing cracks: full-bright overlay in the model, light level 3 like magma (shader packs: IrisBlockIdCompat). */
-    public static final DeferredBlock<Block> SCORCHED_BLOCK = register("scorched_block",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.NETHER)
-                    .sound(SoundType.NETHERITE_BLOCK).lightLevel(state -> 3)),
-            block -> new BlockItem(block, new Item.Properties().fireResistant()));
 
 
 

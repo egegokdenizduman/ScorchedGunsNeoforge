@@ -16,7 +16,6 @@
 ## To-do from the owner's review (grouped, easiest first)
 
 ### Quick data/code changes
-- Remove the Scorched storage block (block, item, recipes, tags, lang, textures, loot).
 - Flechette: no longer craftable with anthralite (keep the Create saw recipe from cactus).
 - Broken mold blasting: 8 nuggets + 1 at 50% (currently 9).
 - Flash protection: also reduce (not remove) stun-grenade deafening; add Create's Netherite Diving Helmet to `#scguns:flash_protection`.
@@ -39,9 +38,13 @@
 - Niami removed (item, renderer, models, textures, gun data, recipes, tags, lang).
 - Ammo boxes as Create packages: owner approved textures, fill states and mechanics. Boxes are `AmmoBoxItem extends PackageItem` (ammo in Create's `PACKAGE_CONTENTS`, capacity config `ammoBoxStackCapacity`), conversion from plain packages, packager output, placed/chain boxes show fill state. Worn on the curios belt as a leather belt with a tinted pouch per hip; the belt shows while any box's render toggle is on. Alt + right-click (keybind `key.scguns.equip_ammo_boxes`) with a box in the main hand equips it: empty belt slot first, otherwise the two slots take turns and the worn box swaps back into the hand. The casing pouch is shown as "Empty Casing Box" (item id still `empty_casing_pouch`).
 
+### Done on branch `alpha2/storage-blocks-ores` (2026-10-14, compiles, not tested in game, not merged into `working` yet)
+- Scorched block removed (block, item, recipes, tags, lang, textures, loot, Iris mapping).
+- JEI added to the dev runtime (`localRuntime`).
+- Approved textures: treated brass block (Create brass recoloured to the gun palette), treated iron block (Create industrial iron), diamond steel block (vanilla diamond block layout in the steel teal), vehement coal ore (new forked ember fissure) with `vehement_coal_ore_e.png` full-bright overlay (block model like the old scorched block). Anthralite block: owner kept the OLD texture.
+
 ### Textures (ask for approval on one sample before batching)
-- Storage blocks: dithering, shading, anti-aliasing. Treated brass = Create brass block recoloured; treated iron referencing Create's industrial iron block; anthralite keeps the metal/polished-stone idea; diamond steel = diamond glassiness + steel, no centre bar, look at vanilla "Block of X".
-- Ores: ore must not touch the block edge (deepslate anthralite does); darker "indent" stone around the ore like vanilla; dithering; emissivity only on the ore (currently one edge glows). Vehement coal needs its own fiery/sparkly shape (quartz and nether gold ore as inspiration, not centred, not a nether gold copy) and must be emissive. Stone anthralite shape is good. Complementary uses its own normals/material qualities: ores glossy, stone matte.
+- Anthralite ores (stone + deepslate): NOT approved yet, still the old textures. Notes so far: keep the stone ore shape and use it for deepslate too; ore never touches the edge; darkening goes on TOP of each cluster like vanilla iron ore (not a ring all around); ore dark on top, light below; no lone dark pixels (too much contrast from afar); rest of the stone stays exact vanilla. Owner on the last try ("dark on top" version): "ore is still not it". Glossiness is a shader-only thing; owner will explain later, don't do it yet.
 - Ingots: vanilla shape and angled look. Nuggets: vanilla angled look, each a distinct silhouette (anthralite and treated iron are currently identical). The old ore/ingot textures were mostly fine; don't redesign drastically, except diamond steel.
 - Diamond steel: palette mismatch; must not look like plain diamond; depleted = closer to an anthralite/treated-diamond mix; the blend keeps subtle blue hues (see Aeronautics crushed end stone).
 - Treated brass: use the gun palette.
