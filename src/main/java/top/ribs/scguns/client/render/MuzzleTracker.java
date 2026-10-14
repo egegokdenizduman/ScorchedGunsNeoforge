@@ -1,8 +1,6 @@
 package top.ribs.scguns.client.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
@@ -26,7 +24,11 @@ import java.util.Map;
 public final class MuzzleTracker {
     private static final Map<Integer, Muzzle> MUZZLES = new HashMap<>();
 
-    private record Muzzle(Vector3f pos, boolean firstPerson, float handProjY, long frame) {
+    /** First person keeps {@code eye} (plus the hand projection's y scale); everything else keeps {@code world}. */
+    private record Muzzle(@Nullable Vector3f eye, @Nullable Vec3 world, float handProjY, long frame) {
+        boolean firstPerson() {
+            return eye != null;
+        }
     }
 
     private MuzzleTracker() {
@@ -42,21 +44,15 @@ public final class MuzzleTracker {
         if (isIrisShadowPass()) {
             return;
         }
-        // model-view times pose always lands in camera space (see MuzzleFlashRenderer.muzzleInWorld)
-        Vector3f view = new Matrix4f(RenderSystem.getModelViewMatrix()).mul(pose).transformPosition(new Vector3f());
-        if (!Float.isFinite(view.x) || !Float.isFinite(view.y) || !Float.isFinite(view.z)) {
+        Vector3f eye = RenderSpace.eyeFrameOrigin(pose);
+        if (eye == null) {
             return;
         }
         long frame = MuzzleFlashRenderer.currentFrame();
-        if (firstPerson) {
-            MUZZLES.put(entity.getId(), new Muzzle(view, true, RenderSystem.getProjectionMatrix().m11(), frame));
-        } else {
-            Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-            Vector3f offset = camera.rotation().transform(view);
-            Vec3 cam = camera.getPosition();
-            Vector3f world = new Vector3f((float) (cam.x + offset.x), (float) (cam.y + offset.y), (float) (cam.z + offset.z));
-            MUZZLES.put(entity.getId(), new Muzzle(world, false, 0F, frame));
-        }
+        Muzzle muzzle = firstPerson
+                ? new Muzzle(eye, null, RenderSystem.getProjectionMatrix().m11(), frame)
+                : new Muzzle(null, RenderSpace.eyeToWorld(eye), 0F, frame);
+        MUZZLES.put(entity.getId(), muzzle);
         if (MUZZLES.size() > 64) {
             MUZZLES.entrySet().removeIf(e -> e.getValue().frame() < frame - 1);
         }
@@ -103,16 +99,14 @@ public final class MuzzleTracker {
             return null;
         }
         if (!firstPerson) {
-            return new Vec3(muzzle.pos().x, muzzle.pos().y, muzzle.pos().z);
+            return muzzle.world();
         }
         // same screen position under the world's field of view: x and y scale by the ratio of the projections, depth stays
         float k = muzzle.handProjY() / worldProjection.m11();
         if (!Float.isFinite(k) || k <= 0F) {
             return null;
         }
-        Vector3f view = new Vector3f(muzzle.pos().x * k, muzzle.pos().y * k, muzzle.pos().z);
-        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-        Vector3f offset = camera.rotation().transform(view);
-        return camera.getPosition().add(offset.x, offset.y, offset.z);
+        Vector3f eye = muzzle.eye();
+        return RenderSpace.eyeToWorld(new Vector3f(eye.x * k, eye.y * k, eye.z));
     }
 }

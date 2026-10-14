@@ -1,10 +1,8 @@
 package top.ribs.scguns.client.render;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.LightTexture;
@@ -30,7 +28,6 @@ import top.ribs.scguns.init.ModParticleTypes;
 import top.ribs.scguns.item.GunItem;
 import top.ribs.scguns.particles.SparkData;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -219,10 +216,15 @@ public final class MuzzleFlashRenderer {
         }
 
         if (shot != null && !shot.particlesSpawned && frame == 0) {
-            Vec3[] muzzle = muzzleInWorld(pose.pose());
-            if (muzzle != null && muzzle[0].distanceToSqr(entity.getEyePosition(partialTick)) < 16.0) {
-                shot.particlesSpawned = true;
-                spawnParticles(level, entity, muzzle[0], muzzle[1], gun, Mth.clamp(size, 0.4F, 2.0F));
+            Vector3f eyePos = RenderSpace.eyeFrameOrigin(pose.pose());
+            Vector3f eyeDir = RenderSpace.eyeFrameForward(pose.pose());
+            if (eyePos != null && eyeDir != null) {
+                Vec3 muzzlePos = RenderSpace.eyeToWorld(eyePos);
+                Vector3f dir = RenderSpace.eyeToWorldDirection(eyeDir);
+                if (muzzlePos.distanceToSqr(entity.getEyePosition(partialTick)) < 16.0) {
+                    shot.particlesSpawned = true;
+                    spawnParticles(level, entity, muzzlePos, new Vec3(dir.x, dir.y, dir.z), gun, Mth.clamp(size, 0.4F, 2.0F));
+                }
             }
         }
         poseStack.popPose();
@@ -248,26 +250,6 @@ public final class MuzzleFlashRenderer {
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setLight(LightTexture.FULL_BRIGHT)
                 .setNormal(pose, 0.0F, 0.0F, 1.0F);
-    }
-
-    /**
-     * World position and barrel direction of the current pose origin. Model-view times pose always lands in
-     * camera space; undoing the camera rotation gives the world offset from the camera.
-     */
-    @Nullable
-    private static Vec3[] muzzleInWorld(Matrix4f pose) {
-        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
-        Matrix4f toWorld = new Matrix4f().rotation(camera.rotation())
-                .mul(RenderSystem.getModelViewMatrix())
-                .mul(pose);
-        Vector3f origin = toWorld.transformPosition(new Vector3f());
-        Vector3f forward = toWorld.transformDirection(new Vector3f(0F, 0F, -1F));
-        if (!Float.isFinite(origin.x) || forward.lengthSquared() < 1.0E-6F) {
-            return null;
-        }
-        forward.normalize();
-        Vec3 cam = camera.getPosition();
-        return new Vec3[]{cam.add(origin.x, origin.y, origin.z), new Vec3(forward.x, forward.y, forward.z)};
     }
 
     private static void spawnParticles(ClientLevel level, LivingEntity shooter, Vec3 pos, Vec3 forward, Gun gun, float size) {
