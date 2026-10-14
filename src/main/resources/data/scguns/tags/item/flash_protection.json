@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "minecraft:carved_pumpkin"
+    "minecraft:carved_pumpkin",
+    {
+      "id": "create:netherite_diving_helmet",
+      "required": false
+    }
   ]
 }

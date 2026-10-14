@@ -472,6 +472,7 @@ public class Config
     {
         public final Blind blind;
         public final Deafen deafen;
+        public final ModConfigSpec.ConfigValue<List<? extends String>> flashProtectionItems;
 
         public StunGrenades(ModConfigSpec.Builder builder)
         {
@@ -479,6 +480,7 @@ public class Config
             {
                 this.blind = new Blind(builder);
                 this.deafen = new Deafen(builder);
+                this.flashProtectionItems = builder.comment("Extra helmet item ids (e.g. \"minecraft:iron_helmet\") that count as flash protection, on top of the 'scguns:flash_protection' item tag. Flash protection blocks stun grenade blinding and halves deafening.").defineList("flashProtectionItems", Collections.emptyList(), o -> o instanceof String);
             }
             builder.pop();
         }

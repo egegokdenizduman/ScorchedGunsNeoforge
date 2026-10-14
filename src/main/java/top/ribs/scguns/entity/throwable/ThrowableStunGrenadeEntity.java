@@ -4,6 +4,7 @@ import com.mrcrayfish.framework.api.network.LevelLocation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -124,8 +125,9 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
         double angleMax = criteria.angleEffect.get() * 0.5;
         if(distance <= criteria.radius.get() && angleMax > 0 && angle <= angleMax)
         {
-            // A carved pumpkin (or anything tagged flash_protection) over the eyes blocks the flash
-            if(effect == ModEffects.BLINDED && entity.getItemBySlot(EquipmentSlot.HEAD).is(ModTags.Items.FLASH_PROTECTION))
+            // A carved pumpkin (or anything tagged flash_protection / listed in the config) blocks the flash and muffles the bang
+            boolean flashProtected = hasFlashProtection(entity);
+            if(effect == ModEffects.BLINDED && flashProtected)
                 return false;
 
             // Verify that light can pass through all blocks obstructing the entity's line of sight to the grenade
@@ -137,12 +139,26 @@ public class ThrowableStunGrenadeEntity extends ThrowableGrenadeEntity
                 // Duration further attenuated by angle
                 durationBlinded *= 1 - (angle * (1 - criteria.angleAttenuationMax.get())) / angleMax;
 
+                if(effect == ModEffects.DEAFENED && flashProtected)
+                    durationBlinded /= 2;
+
                 entity.addEffect(new MobEffectInstance(effect, durationBlinded, 0, false, false));
 
                 return !(entity instanceof Player);
             }
         }
         return false;
+    }
+
+    private static boolean hasFlashProtection(LivingEntity entity)
+    {
+        ItemStack helmet = entity.getItemBySlot(EquipmentSlot.HEAD);
+        if(helmet.isEmpty())
+            return false;
+        if(helmet.is(ModTags.Items.FLASH_PROTECTION))
+            return true;
+        String id = BuiltInRegistries.ITEM.getKey(helmet.getItem()).toString();
+        return Config.COMMON.stunGrenades.flashProtectionItems.get().contains(id);
     }
 
     @Nullable
