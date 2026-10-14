@@ -4,12 +4,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import top.ribs.scguns.Reference;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -189,8 +193,22 @@ public class BeamHandler {
                 Mth.lerp(partialTicks, beamPlayer.yRotO, beamPlayer.getYRot())
         );
 
-        Vec3 targetEndPos = beamOrigin.add(lookVec.scale(beamInfo.endPos.subtract(beamInfo.startPos).length()));
+        // the server traces from the eyes, so the hit point lies on the eyes' line of sight (the crosshair);
+        // the beam is then drawn from the gun to that point
+        Vec3 eyePos = beamPlayer.getEyePosition(partialTicks);
+        Vec3 targetEndPos = eyePos.add(lookVec.scale(beamInfo.endPos.subtract(beamInfo.startPos).length()));
         beamInfo.smoothedEndPos = smoothPosition(beamInfo.smoothedEndPos, targetEndPos, smoothingFactor);
+
+        // snap the tip onto the surface of the block it hits, and remember which face that is
+        Vec3 beamDir = beamInfo.smoothedEndPos.subtract(beamOrigin).normalize();
+        BlockHitResult surface = beamPlayer.level().clip(new ClipContext(
+                beamInfo.smoothedEndPos.subtract(beamDir.scale(0.25)), beamInfo.smoothedEndPos.add(beamDir.scale(0.25)),
+                ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, beamPlayer));
+        Direction impactFace = null;
+        if (surface.getType() == HitResult.Type.BLOCK) {
+            beamInfo.smoothedEndPos = surface.getLocation();
+            impactFace = surface.getDirection();
+        }
 
         beamInfo.lastStartPos = beamInfo.smoothedStartPos;
         beamInfo.lastEndPos = beamInfo.smoothedEndPos;
@@ -208,7 +226,7 @@ public class BeamHandler {
             Vec3 nextPoint = renderPoints.get(i);
             boolean last = i == renderPoints.size() - 1;
             BeamRenderer.renderBeam(poseStack, bufferSource, partialTicks, currentStart, nextPoint, interpolatedColor,
-                    beamInfo.fadeProgress, style, i == 0, last, spawnParticles && last);
+                    beamInfo.fadeProgress, style, i == 0, last, spawnParticles && last, last ? impactFace : null);
             currentStart = nextPoint;
         }
         beamPlayer.bob = originalBob;

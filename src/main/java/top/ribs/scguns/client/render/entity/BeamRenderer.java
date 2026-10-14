@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import top.ribs.scguns.Reference;
@@ -74,9 +76,11 @@ public class BeamRenderer {
      * @param muzzle         draw the muzzle charge at {@code from}
      * @param impact         draw the impact burst at {@code to}
      * @param spawnParticles spawn this tick's particles (call with true at most once per tick per beam)
+     * @param impactFace     the block face the beam ends on, or null when it ends on an entity or in the air
      */
     public static void renderBeam(PoseStack poseStack, MultiBufferSource buffer, float partialTicks, Vec3 from, Vec3 to,
-                                  float[] color, float fadeProgress, Style style, boolean muzzle, boolean impact, boolean spawnParticles) {
+                                  float[] color, float fadeProgress, Style style, boolean muzzle, boolean impact, boolean spawnParticles,
+                                  @Nullable Direction impactFace) {
         Vec3 beam = to.subtract(from);
         float length = (float) beam.length();
         if (length < 0.01F) {
@@ -89,7 +93,7 @@ public class BeamRenderer {
         float[] bright = brighten(color);
 
         switch (style) {
-            case WITHER -> renderWither(poseStack, buffer, from, dir, length, time, fade, muzzle, impact);
+            case WITHER -> renderWither(poseStack, buffer, from, to, dir, length, time, fade, muzzle, impact, impactFace);
             case MINING -> renderMining(poseStack, buffer, from, dir, length, time, fade, bright, muzzle, impact);
             case LASER -> renderLaser(poseStack, buffer, from, dir, length, time, fade, bright, muzzle, impact);
             case CRYSTAL -> renderCrystal(poseStack, buffer, from, dir, length, time, fade, bright, muzzle, impact);
@@ -97,14 +101,14 @@ public class BeamRenderer {
         }
 
         if (spawnParticles && level != null && fade > 0.5F) {
-            spawnParticles(level, style, from, to, dir, length, bright, impact);
+            spawnParticles(level, style, from, to, dir, length, bright, impact, impactFace);
         }
     }
 
     // ------------------------------------------------------------------ Flayed God
 
-    private static void renderWither(PoseStack ps, MultiBufferSource buffer, Vec3 from, Vec3 dir, float length, float time,
-                                     float fade, boolean muzzle, boolean impact) {
+    private static void renderWither(PoseStack ps, MultiBufferSource buffer, Vec3 from, Vec3 to, Vec3 dir, float length, float time,
+                                     float fade, boolean muzzle, boolean impact, @Nullable Direction impactFace) {
         float pulse = 1.0F + 0.12F * Mth.sin(time * 0.7F);
 
         // 1) dark wither shroud: two counter-rotating square sleeves with the smoke texture flowing toward the target
@@ -121,20 +125,13 @@ public class BeamRenderer {
         texturedPrism(shroud, ps.last(), 0.34F * pulse, length, -time * 0.12F, 1.0F, 1.0F, 1.0F, 0.35F * fade);
         ps.popPose();
 
-        // dark half of the double helix, plus the black ring that orbits the impact
+        // dark half of the double helix
         VertexConsumer dark = buffer.getBuffer(RenderType.entityTranslucentEmissive(WHITE));
         for (float y = 0.3F; y < length; y += 0.4F) {
             float angle = y * 1.4F - time * 0.3F + Mth.PI;
             float size = 0.055F * edgeTaper(y, length);
             texturedCube(dark, ps, Mth.cos(angle) * 0.42F, y, Mth.sin(angle) * 0.42F, size, angle,
                     WITHER_DARK[0], WITHER_DARK[1], WITHER_DARK[2], 0.95F * fade);
-        }
-        if (impact) {
-            for (int i = 0; i < 8; i++) {
-                float angle = time * 0.15F + i * Mth.TWO_PI / 8.0F;
-                texturedCube(dark, ps, Mth.cos(angle) * 0.62F * pulse, length - 0.05F, Mth.sin(angle) * 0.62F * pulse, 0.09F, angle,
-                        WITHER_DARK[0], WITHER_DARK[1], WITHER_DARK[2], 0.9F * fade);
-            }
         }
         ps.popPose();
 
@@ -160,13 +157,39 @@ public class BeamRenderer {
             float charge = 0.11F + 0.025F * Mth.sin(time * 1.3F);
             netherStar(glow, ps, 0, 0, 0, charge, time * 0.25F, fade);
         }
+        ps.popPose();
+
         if (impact) {
-            netherStar(glow, ps, 0, length, 0, 0.28F * pulse, -time * 0.18F, fade);
-            for (int i = 0; i < 6; i++) {
-                float angle = -time * 0.22F + i * Mth.TWO_PI / 6.0F;
-                cube(glow, ps, Mth.cos(angle) * 0.4F, length - 0.05F, Mth.sin(angle) * 0.4F, 0.04F, angle,
-                        STAR_YELLOW[0], STAR_YELLOW[1], STAR_YELLOW[2], 0.9F * fade);
-            }
+            renderWitherImpact(ps, buffer, to, dir, impactFace, time, fade, pulse);
+        }
+    }
+
+    /**
+     * The black ring, yellow ring and nether star where the Flayed God's beam lands. On a block they lie flat on the face
+     * that was hit, lifted just off it, so they never sink into the block; on an entity or in the air they sit across the
+     * beam.
+     */
+    private static void renderWitherImpact(PoseStack ps, MultiBufferSource buffer, Vec3 to, Vec3 dir, @Nullable Direction face,
+                                           float time, float fade, float pulse) {
+        Vec3 axis = face != null ? Vec3.atLowerCornerOf(face.getNormal()) : dir;
+        float ringY = face != null ? 0.1F : -0.05F;
+        float starY = face != null ? 0.3F * pulse : 0.0F;
+
+        ps.pushPose();
+        ps.translate(to.x, to.y, to.z);
+        alignYAxis(ps, axis);
+        VertexConsumer dark = buffer.getBuffer(RenderType.entityTranslucentEmissive(WHITE));
+        for (int i = 0; i < 8; i++) {
+            float angle = time * 0.15F + i * Mth.TWO_PI / 8.0F;
+            texturedCube(dark, ps, Mth.cos(angle) * 0.62F * pulse, ringY, Mth.sin(angle) * 0.62F * pulse, 0.09F, angle,
+                    WITHER_DARK[0], WITHER_DARK[1], WITHER_DARK[2], 0.9F * fade);
+        }
+        VertexConsumer glow = buffer.getBuffer(RenderType.lightning());
+        netherStar(glow, ps, 0, starY, 0, 0.28F * pulse, -time * 0.18F, fade);
+        for (int i = 0; i < 6; i++) {
+            float angle = -time * 0.22F + i * Mth.TWO_PI / 6.0F;
+            cube(glow, ps, Mth.cos(angle) * 0.4F, ringY, Mth.sin(angle) * 0.4F, 0.04F, angle,
+                    STAR_YELLOW[0], STAR_YELLOW[1], STAR_YELLOW[2], 0.9F * fade);
         }
         ps.popPose();
     }
@@ -355,7 +378,8 @@ public class BeamRenderer {
 
     // ------------------------------------------------------------------ particles (vanilla only)
 
-    private static void spawnParticles(ClientLevel level, Style style, Vec3 from, Vec3 to, Vec3 dir, float length, float[] col, boolean impact) {
+    private static void spawnParticles(ClientLevel level, Style style, Vec3 from, Vec3 to, Vec3 dir, float length, float[] col, boolean impact,
+                                       @Nullable Direction impactFace) {
         RandomSource r = RANDOM;
         Vec3 along = from.add(dir.scale(r.nextFloat() * length));
         switch (style) {
@@ -364,12 +388,14 @@ public class BeamRenderer {
                     level.addParticle(ParticleTypes.SMOKE, along.x, along.y, along.z, 0, 0.01, 0);
                 }
                 if (impact) {
-                    level.addParticle(ParticleTypes.LARGE_SMOKE, to.x, to.y, to.z, rnd(r, 0.05), 0.02, rnd(r, 0.05));
+                    // start just off the block face that was hit, not inside the block
+                    Vec3 at = impactFace != null ? to.add(Vec3.atLowerCornerOf(impactFace.getNormal()).scale(0.1)) : to;
+                    level.addParticle(ParticleTypes.LARGE_SMOKE, at.x, at.y, at.z, rnd(r, 0.05), 0.02, rnd(r, 0.05));
                     for (int i = 0; i < 2; i++) {
-                        level.addParticle(ParticleTypes.END_ROD, to.x, to.y, to.z, rnd(r, 0.15), r.nextDouble() * 0.1, rnd(r, 0.15));
+                        level.addParticle(ParticleTypes.END_ROD, at.x, at.y, at.z, rnd(r, 0.15), r.nextDouble() * 0.1, rnd(r, 0.15));
                     }
                     if (r.nextFloat() < 0.35F) {
-                        level.addParticle(ParticleTypes.SOUL, to.x + rnd(r, 0.3), to.y + 0.1, to.z + rnd(r, 0.3), 0, 0.04, 0);
+                        level.addParticle(ParticleTypes.SOUL, at.x + rnd(r, 0.3), at.y + 0.1, at.z + rnd(r, 0.3), 0, 0.04, 0);
                     }
                 }
             }
