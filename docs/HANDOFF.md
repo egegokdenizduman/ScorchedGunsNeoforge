@@ -16,7 +16,6 @@
 ## To-do from the owner's review (grouped, easiest first)
 
 ### Quick data/code changes
-- Remove the Scorched storage block (block, item, recipes, tags, lang, textures, loot).
 - Flechette: no longer craftable with anthralite (keep the Create saw recipe from cactus).
 - Broken mold blasting: 8 nuggets + 1 at 50% (currently 9).
 - Flash protection: also reduce (not remove) stun-grenade deafening; add Create's Netherite Diving Helmet to `#scguns:flash_protection`.
@@ -39,8 +38,8 @@
 - Niami removed (item, renderer, models, textures, gun data, recipes, tags, lang).
 - Ammo boxes as Create packages: owner approved textures, fill states and mechanics. Boxes are `AmmoBoxItem extends PackageItem` (ammo in Create's `PACKAGE_CONTENTS`, capacity config `ammoBoxStackCapacity`), conversion from plain packages, packager output, placed/chain boxes show fill state. Worn on the curios belt as a leather belt with a tinted pouch per hip; the belt shows while any box's render toggle is on. Alt + right-click (keybind `key.scguns.equip_ammo_boxes`) with a box in the main hand equips it: empty belt slot first, otherwise the two slots take turns and the worn box swaps back into the hand. The casing pouch is shown as "Empty Casing Box" (item id still `empty_casing_pouch`).
 
-### Doc "Textures" items 1–14 except 9 and 13: done on branch `alpha2/item-textures` (2026-10-14), awaiting owner review
-The owner was away, so they chose "sample, then batch": Opus reviewed every sample before its batch, one commit per item, nothing merged into `working`. Review sheets (old | new | reference at 10x + 1x) are in `docs/texture-review/<item>/`. Revert any item with `git revert <commit>`. Not yet seen in game.
+### Doc "Textures" items 1–14 except 9 and 13: on `test` (2026-10-14, from branch `alpha2/item-textures`)
+The owner was away, so they chose "sample, then batch": Opus reviewed every sample before its batch, one commit per item. Review sheets (old | new | reference at 10x + 1x) are in `docs/texture-review/<item>/`. Revert any item with `git revert <commit>`. Not yet seen in game.
 - 1 Blends: treated iron, treated brass (colours kept) and scorched now use Create's crushed-ore mask.
 - 2 Sulfur dust: clear hue-tinted outline with a lighter top-left rim.
 - 3 + 7 Ingots: the original SC2 ingots already had vanilla's exact silhouette, so they were restored byte for byte (anthralite, treated iron, treated brass, scorched + `_e`/`_s`).
@@ -54,9 +53,15 @@ The owner was away, so they chose "sample, then batch": Opus reviewed every samp
 - **Owner review (2026-10-14): "This was horrible."** Reverted to SC2 originals (commit 1.4.0 `e531a1e`) for: anthralite ingot + nugget, diamond steel + depleted ingots, treated iron nugget, treated brass blend, scorched blend (its `_e`/`_s` rebuilt from SC2's lava pixels), flechette. Sulfur dust is back to the `test` version. Diamond steel and treated iron blends keep the new crushed-ore shape, recoloured with the SC2 colours. Everything else from this pass stays: needle, empty tank, lime powder, gun parts, and the other ingots (already SC2).
 - Not done: 9 (treated brass palette) and 13 (grenades), as the owner excluded them.
 
+### Done on branch `alpha2/storage-blocks-ores` (2026-10-14, merged into `working` and `test` with the item textures)
+- Scorched block removed (block, item, recipes, tags, lang, textures, loot, Iris mapping).
+- JEI added to the dev runtime (`localRuntime`).
+- Approved textures: treated brass block (Create brass recoloured to the gun palette), treated iron block (Create industrial iron), vehement coal ore (new forked ember fissure) with `vehement_coal_ore_e.png` full-bright overlay (block model like the old scorched block). Second pass (2026-10-14, approved): stone anthralite ore (old cluster shapes, solid, dark top / light bottom, stone darkened above each cluster like vanilla iron ore); deepslate anthralite ore (same clusters, brighter ore, lighter deepslate lip like vanilla deepslate iron, almost no darkening); diamond steel block (old texture with its streaks sheared from 45° to horizontal; frame and inner ring untouched). Anthralite block: committed as "v1" (old texture + one-sided checker dither on the streak edges, a few speckles); the owner is still working on it themselves.
+- **Owner review (2026-10-14): only the treated brass block and the diamond steel block are final.** The owner is not happy with treated iron block, vehement coal ore, both anthralite ores or the anthralite block, and will come back to them later. Leave them as committed until then; don't rework them unprompted.
+- **Owner, later on 2026-10-14:** loves the new vehement coal ore and treated brass textures. Whole branch pushed to `test`; the owner will tackle the remaining blocks/ores later together with the item textures.
+
 ### Textures (ask for approval on one sample before batching)
-- Storage blocks: dithering, shading, anti-aliasing. Treated brass = Create brass block recoloured; treated iron referencing Create's industrial iron block; anthralite keeps the metal/polished-stone idea; diamond steel = diamond glassiness + steel, no centre bar, look at vanilla "Block of X".
-- Ores: ore must not touch the block edge (deepslate anthralite does); darker "indent" stone around the ore like vanilla; dithering; emissivity only on the ore (currently one edge glows). Vehement coal needs its own fiery/sparkly shape (quartz and nether gold ore as inspiration, not centred, not a nether gold copy) and must be emissive. Stone anthralite shape is good. Complementary uses its own normals/material qualities: ores glossy, stone matte.
+- Anthralite ores: owner will revisit (see above). Glossiness is a shader-only thing; owner will explain later, don't do it yet.
 - Ingots: vanilla shape and angled look. Nuggets: vanilla angled look, each a distinct silhouette (anthralite and treated iron are currently identical). The old ore/ingot textures were mostly fine; don't redesign drastically, except diamond steel.
 - Diamond steel: palette mismatch; must not look like plain diamond; depleted = closer to an anthralite/treated-diamond mix; the blend keeps subtle blue hues (see Aeronautics crushed end stone).
 - Treated brass: use the gun palette.

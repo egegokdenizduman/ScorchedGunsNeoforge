@@ -7,7 +7,6 @@
     "scguns:anthralite_block",
     "scguns:treated_iron_block",
     "scguns:treated_brass_block",
-    "scguns:diamond_steel_block",
-    "scguns:scorched_block"
+    "scguns:diamond_steel_block"
   ]
 }
