@@ -103,7 +103,7 @@ public class ServerPlayHandler {
         if (tracker.hasCooldown(item) && tracker.getRemaining(item) > Config.SERVER.cooldownThreshold.get()) {
             return;
         }
-        tracker.putCooldown(heldItem, item, modifiedGun);
+        tracker.putCooldown(player, heldItem, item, modifiedGun);
         if(ModSyncedDataKeys.RELOADING.getValue(player)) {
             ModSyncedDataKeys.RELOADING.setValue(player, false);
         }

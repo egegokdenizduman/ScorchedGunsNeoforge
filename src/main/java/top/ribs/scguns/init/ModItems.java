@@ -1275,8 +1275,8 @@ public class ModItems {
                     ModSounds.COPPER_GUN_JAM.get()
             )
     );
-    public static final DeferredItem<AnimatedGunItem> CRUSADER = REGISTER.register("crusader",
-            () -> new AnimatedGunItem(
+    public static final DeferredItem<CrusaderItem> CRUSADER = REGISTER.register("crusader",
+            () -> new CrusaderItem(
                     new Item.Properties().stacksTo(1).durability(256),
                     "crusader",
                     ModSounds.MAG_OUT.get(),

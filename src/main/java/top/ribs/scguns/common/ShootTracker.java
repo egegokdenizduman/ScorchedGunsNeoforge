@@ -2,6 +2,7 @@ package top.ribs.scguns.common;
 
 import com.google.common.collect.Maps;
 import top.ribs.scguns.attributes.SCAttributes;
+import top.ribs.scguns.compat.CreateBacktank;
 import top.ribs.scguns.item.GunItem;
 import top.ribs.scguns.util.GunEnchantmentHelper;
 import top.ribs.scguns.util.GunModifierHelper;
@@ -52,10 +53,11 @@ public class ShootTracker
      * @param item        a gun item
      * @param modifiedGun the modified gun get of the specified gun
      */
-    public void putCooldown(ItemStack weapon, GunItem item, Gun modifiedGun)
+    public void putCooldown(Player player, ItemStack weapon, GunItem item, Gun modifiedGun)
     {
         int rate = GunEnchantmentHelper.getRate(weapon, modifiedGun);
         rate = GunModifierHelper.getModifiedRate(weapon, rate);
+        rate = CreateBacktank.getCrusaderRate(player, weapon, rate);
 
         //Modifies the firing rate by the player's attribute
         //Disabled, check the explanation in SCAttributes.

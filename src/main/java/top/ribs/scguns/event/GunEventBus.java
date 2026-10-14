@@ -55,6 +55,7 @@ import top.ribs.scguns.common.network.ServerPlayHandler;
 import top.ribs.scguns.init.*;
 import top.ribs.scguns.interfaces.IAirGun;
 import top.ribs.scguns.interfaces.IEnergyGun;
+import top.ribs.scguns.compat.CreateBacktank;
 import top.ribs.scguns.item.*;
 import top.ribs.scguns.item.ammo_boxes.EmptyCasingPouchItem;
 import top.ribs.scguns.item.animated.*;
@@ -187,6 +188,9 @@ public class GunEventBus {
                         event.setCanceled(true);
                         return;
                     }
+                } else if (CreateBacktank.isCrusaderBoosted(player, heldItem)) {
+                    // Optional boost: the faster shot draws air, an empty or missing backtank just fires normally
+                    CreateBacktank.consumeAir(player, CreateBacktank.getAllWithAir(player).get(0), getAirCostPerShot(gun));
                 }
             }
 

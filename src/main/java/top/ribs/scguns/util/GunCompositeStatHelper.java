@@ -4,6 +4,7 @@ package top.ribs.scguns.util;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import top.ribs.scguns.common.Gun;
+import top.ribs.scguns.compat.CreateBacktank;
 import top.ribs.scguns.item.GunItem;
 
 /**
@@ -45,6 +46,6 @@ public class GunCompositeStatHelper {
     public static int getCompositeRate(ItemStack weapon, Gun modifiedGun, Player player) {
         int a = GunEnchantmentHelper.getRate(weapon, modifiedGun);
         int b = GunModifierHelper.getModifiedRate(weapon, a);
-        return a;
+        return CreateBacktank.getCrusaderRate(player, weapon, a);
     }
 }
