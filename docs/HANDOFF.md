@@ -1,4 +1,4 @@
-# Handoff: Alpha 0.0.2 (written 2026-10-14)
+﻿# Handoff: Alpha 0.0.2 (written 2026-10-14)
 
 ## State
 - All Alpha 0.0.2 work so far is on GitHub branch `test` (fast-forward of the previous `test`). Built from local branch `claude/minecraft-texture-style-bc5dc1`, which merged nine `alpha2/*` feature branches.
@@ -36,7 +36,7 @@
 - Niami removed (item, renderer, models, textures, gun data, recipes, tags, lang).
 - Ammo boxes as Create packages: owner approved textures, fill states and mechanics. Boxes are `AmmoBoxItem extends PackageItem` (ammo in Create's `PACKAGE_CONTENTS`, capacity config `ammoBoxStackCapacity`), conversion from plain packages, packager output, placed/chain boxes show fill state. Worn on the curios belt as a leather belt with a tinted pouch per hip; the belt shows while any box's render toggle is on. Alt + right-click (keybind `key.scguns.equip_ammo_boxes`) with a box in the main hand equips it: empty belt slot first, otherwise the two slots take turns and the worn box swaps back into the hand. The casing pouch is shown as "Empty Casing Box" (item id still `empty_casing_pouch`).
 
-### Beam impact fix: on branch `alpha2/beam-impact` (2026-10-14, owner tested in game: "it worked"; not yet on `working`/`test`)
+### Beam impact fix: on branch `alpha2/beam-impact` (2026-10-14, owner tested in game: "it worked"; on `test`)
 - All beam guns: the tip lands on the crosshair point (eye ray at the server's hit distance), drawn from the gun, and snaps to the block surface (`BeamHandler.renderBeam`).
 - Flayed God: impact rings and nether star lie flat on the hit block face, lifted off it (`BeamRenderer.renderWitherImpact`); on entities/air they sit across the beam as before. Impact particles start just off the face.
 - Beam start position is unchanged (still its own to-do item above).
