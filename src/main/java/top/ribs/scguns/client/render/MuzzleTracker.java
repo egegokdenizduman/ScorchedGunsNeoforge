@@ -9,6 +9,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,10 @@ public final class MuzzleTracker {
      * @param firstPerson true when drawn as the first-person held item (hand pass)
      */
     public static void record(Entity entity, Matrix4f pose, boolean firstPerson) {
+        // Iris draws a shadow pass from the sun's point of view; those poses do not map back to the world
+        if (isIrisShadowPass()) {
+            return;
+        }
         // model-view times pose always lands in camera space (see MuzzleFlashRenderer.muzzleInWorld)
         Vector3f view = new Matrix4f(RenderSystem.getModelViewMatrix()).mul(pose).transformPosition(new Vector3f());
         if (!Float.isFinite(view.x) || !Float.isFinite(view.y) || !Float.isFinite(view.z)) {
@@ -54,6 +59,33 @@ public final class MuzzleTracker {
         }
         if (MUZZLES.size() > 64) {
             MUZZLES.entrySet().removeIf(e -> e.getValue().frame() < frame - 1);
+        }
+    }
+
+    private static boolean irisChecked;
+    @Nullable
+    private static Object irisApi;
+    @Nullable
+    private static Method irisShadowPass;
+
+    private static boolean isIrisShadowPass() {
+        if (!irisChecked) {
+            irisChecked = true;
+            try {
+                Class<?> api = Class.forName("net.irisshaders.iris.api.v0.IrisApi");
+                irisApi = api.getMethod("getInstance").invoke(null);
+                irisShadowPass = api.getMethod("isRenderingShadowPass");
+            } catch (ReflectiveOperationException | LinkageError ignored) {
+                // Iris is not installed
+            }
+        }
+        if (irisApi == null || irisShadowPass == null) {
+            return false;
+        }
+        try {
+            return (boolean) irisShadowPass.invoke(irisApi);
+        } catch (ReflectiveOperationException e) {
+            return false;
         }
     }
 
