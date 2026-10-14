@@ -61,6 +61,9 @@
 - Raw anthralite block: not decided.
 
 ## Useful facts
+- Rendering: fetching a second `VertexConsumer` from a `MultiBufferSource` ends the previous one. Finish one render type before calling `getBuffer` for the next, or the game crashes with `IllegalStateException: Not building!`.
+- Hooks (`.claude/settings.json`): SessionStart injects this file; Stop runs compileJava when `src/main/java` changed and blocks once on failure. The cache file is `.claude/.compile-ok` (git-ignored).
+- Crash reports: `run/crash-reports/`; log: `run/logs/latest.log`. The dev run has Create, Iris + Complementary/Euphoria, JEI, Sodium.
 - Scratch Python texture helpers from last session were in a temp dir and are gone; the extracted reference textures are not in the repo. Re-extract from jars in `run/mods` and the Gradle cache when needed.
 - Emissive items use `<name>_e.png` (`neoforge:item_layers`); animated guns use `textures/animated/gun/<gun>_glowmask.png` (GunGlowLayer).
 - Optional Iris mixin gives our ores block ids 10024 (stone ores) / 10026 (netherrack ores) for Complementary's glowing modded ores.

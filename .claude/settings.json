@@ -1,0 +1,29 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe",
+            "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "& (Join-Path $env:CLAUDE_PROJECT_DIR '.claude/hooks/session-start.ps1')"],
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe",
+            "args": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", "& (Join-Path $env:CLAUDE_PROJECT_DIR '.claude/hooks/compile-check.ps1')"],
+            "timeout": 600,
+            "statusMessage": "Checking that Java still compiles..."
+          }
+        ]
+      }
+    ]
+  }
+}

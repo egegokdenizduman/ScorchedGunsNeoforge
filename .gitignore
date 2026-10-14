@@ -26,3 +26,6 @@ libs
 classes
 src/generated/resources/.cache/*
 /run2
+
+# Claude Code hook cache
+.claude/.compile-ok

@@ -51,6 +51,20 @@ Applies whenever the same kind of change is going to hit more than one file: tex
 - A sample counts as approved for its own batch only, not for other batches that happen to look similar.
 - If a batch turns out to need something the sample didn't show (a different shape, a new palette), stop and get a new sample approved.
 
+## Texture rules (checked at Gate 2)
+Summary of the doc's "Bible of Texture Design" tab:
+- 16×16, no mixels, binary alpha, light from the top-left.
+- Darker, hue-tinted outline, lighter top-left and darker bottom-right.
+- Hue-shifted ramps of 3–5 shades.
+- No pillow or pancake shading, no banding.
+- Deliberate dithering where the material needs it.
+
+Further rules:
+- Compare against the real vanilla/Create textures, never programmer art.
+- Things made from a material use that material's palette.
+- Ingots and nuggets follow vanilla's angled 3/4 shape, and every nugget has a distinct silhouette (for colour-blind readability).
+- Ores never touch the block edge, sit in darkened "indent" stone, and are dithered.
+
 ## What counts as done
 - Compiles: `./gradlew compileJava --offline` passes. Say "compiles", not "works".
 - Tested: only after the owner, or a run of the dev client, has shown it working in game.
