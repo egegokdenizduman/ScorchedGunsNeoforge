@@ -9,6 +9,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Method;
 
 /**
  * Converts points from whatever pose a renderer is currently drawing with into the world.
@@ -49,5 +50,33 @@ public final class RenderSpace {
         Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
         Vector3f offset = eyeToWorldDirection(eyePoint);
         return camera.getPosition().add(offset.x, offset.y, offset.z);
+    }
+
+    private static boolean irisChecked;
+    @Nullable
+    private static Object irisApi;
+    @Nullable
+    private static Method irisShadowPass;
+
+    /** True while Iris renders its shadow map from the sun's point of view; poses there do not map back to the world. */
+    public static boolean isIrisShadowPass() {
+        if (!irisChecked) {
+            irisChecked = true;
+            try {
+                Class<?> api = Class.forName("net.irisshaders.iris.api.v0.IrisApi");
+                irisApi = api.getMethod("getInstance").invoke(null);
+                irisShadowPass = api.getMethod("isRenderingShadowPass");
+            } catch (ReflectiveOperationException | LinkageError ignored) {
+                // Iris is not installed
+            }
+        }
+        if (irisApi == null || irisShadowPass == null) {
+            return false;
+        }
+        try {
+            return (boolean) irisShadowPass.invoke(irisApi);
+        } catch (ReflectiveOperationException e) {
+            return false;
+        }
     }
 }

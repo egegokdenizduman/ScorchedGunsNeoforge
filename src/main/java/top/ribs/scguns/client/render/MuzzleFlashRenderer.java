@@ -143,6 +143,10 @@ public final class MuzzleFlashRenderer {
      * @return true if anything was drawn
      */
     public static boolean render(LivingEntity entity, ItemStack weapon, Gun gun, PoseStack poseStack, MultiBufferSource buffer, float size, boolean beamActive) {
+        // no flash (and no particles from a wrong position) in the Iris shadow pass, which is drawn from the sun
+        if (RenderSpace.isIrisShadowPass()) {
+            return false;
+        }
         Minecraft mc = Minecraft.getInstance();
         ClientLevel level = mc.level;
         if (level == null) {

@@ -7,7 +7,6 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +40,7 @@ public final class MuzzleTracker {
      */
     public static void record(Entity entity, Matrix4f pose, boolean firstPerson) {
         // Iris draws a shadow pass from the sun's point of view; those poses do not map back to the world
-        if (isIrisShadowPass()) {
+        if (RenderSpace.isIrisShadowPass()) {
             return;
         }
         Vector3f eye = RenderSpace.eyeFrameOrigin(pose);
@@ -55,33 +54,6 @@ public final class MuzzleTracker {
         MUZZLES.put(entity.getId(), muzzle);
         if (MUZZLES.size() > 64) {
             MUZZLES.entrySet().removeIf(e -> e.getValue().frame() < frame - 1);
-        }
-    }
-
-    private static boolean irisChecked;
-    @Nullable
-    private static Object irisApi;
-    @Nullable
-    private static Method irisShadowPass;
-
-    private static boolean isIrisShadowPass() {
-        if (!irisChecked) {
-            irisChecked = true;
-            try {
-                Class<?> api = Class.forName("net.irisshaders.iris.api.v0.IrisApi");
-                irisApi = api.getMethod("getInstance").invoke(null);
-                irisShadowPass = api.getMethod("isRenderingShadowPass");
-            } catch (ReflectiveOperationException | LinkageError ignored) {
-                // Iris is not installed
-            }
-        }
-        if (irisApi == null || irisShadowPass == null) {
-            return false;
-        }
-        try {
-            return (boolean) irisShadowPass.invoke(irisApi);
-        } catch (ReflectiveOperationException e) {
-            return false;
         }
     }
 
