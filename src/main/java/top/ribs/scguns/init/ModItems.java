@@ -834,17 +834,6 @@ public class ModItems {
                     ModSounds.COPPER_GUN_JAM.get()
             )
     );
-    public static final DeferredItem<AnimatedGunItem> NIAMI = REGISTER.register("niami",
-            () -> new AnimatedGunItem(
-                    new Item.Properties().stacksTo(1).durability(1400),
-                    "niami",
-                    ModSounds.MAG_OUT.get(),
-                    ModSounds.MAG_IN.get(),
-                    ModSounds.RELOAD_END.get(),
-                    ModSounds.COPPER_GUN_JAM.get(),
-                    ModSounds.COPPER_GUN_JAM.get()
-            )
-    );
     public static final DeferredItem<AnimatedGunItem> IRON_SPEAR = REGISTER.register("iron_spear",
             () -> new AnimatedGunItem(
                     new Item.Properties().stacksTo(1).durability(800),

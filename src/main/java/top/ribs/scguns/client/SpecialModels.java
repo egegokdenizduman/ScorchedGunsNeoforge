@@ -57,17 +57,6 @@ public enum SpecialModels {
     ULTRA_KNIGHT_HAWK_MAIN("ultra_knight_hawk/main"),
     ULTRA_KNIGHT_HAWK_HAMMER("ultra_knight_hawk/hammer"),
     ULTRA_KNIGHT_HAWK_DRUM("ultra_knight_hawk/drum"),
-/// NIAMI
-    NIAMI_MAIN("niami/main"),
-    NIAMI_SIGHTS("niami/sights"),
-    NIAMI_NO_SIGHTS("niami/no_sights"),
-    NIAMI_STAN_MAG("niami/stan_mag"),
-    NIAMI_EXT_MAG("niami/ext_mag"),
-    NIAMI_SPEED_MAG("niami/speed_mag"),
-    NIAMI_STOCK_WEIGHTED("niami/heavy_stock"),
-    NIAMI_STOCK_LIGHT("niami/light_stock"),
-    NIAMI_STOCK_WOODEN("niami/wooden_stock"),
-    NIAMI_STAN_GRIP("niami/stan_grip"),
 
     /// SEQUOIA
     SEQUOIA_MAIN("sequoia/main"),

@@ -265,7 +265,6 @@ public class ClientHandler {
         ModelOverrides.register(ModItems.TRENCHUR.get(), new TrenchurModel());
         ModelOverrides.register(ModItems.MICINA.get(), new MicinaModel());
         ModelOverrides.register(ModItems.MANGALITSA.get(), new MangalitsaModel());
-        ModelOverrides.register(ModItems.NIAMI.get(), new NiamiModel());
         ModelOverrides.register(ModItems.CRUSADER.get(), new CrusaderModel());
         ModelOverrides.register(ModItems.CALLWELL_CONVERSION.get(), new CallwellConversionModel());
         ModelOverrides.register(ModItems.CALLWELL_TERMINAL.get(), new CallwellTerminalModel());
