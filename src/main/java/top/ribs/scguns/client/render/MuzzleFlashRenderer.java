@@ -176,8 +176,6 @@ public final class MuzzleFlashRenderer {
 
         float s = size * FRAME_SCALE[frame];
         ResourceLocation texture = style.getTexture();
-        VertexConsumer base = buffer.getBuffer(baseType(texture));
-        VertexConsumer glow = buffer.getBuffer(RenderType.eyes(texture));
 
         poseStack.pushPose();
         poseStack.mulPose(Axis.ZP.rotation(roll * Mth.HALF_PI));
@@ -191,7 +189,6 @@ public final class MuzzleFlashRenderer {
         float h = s / 2F;
         float[][] front = {{-h, -h, 0}, {h, -h, 0}, {h, h, 0}, {-h, h, 0}};
         float[][] frontUv = {{fu0, fv1}, {fu1, fv1}, {fu1, fv0}, {fu0, fv0}};
-        quad(base, glow, pose, front, frontUv);
 
         // two crossed side plumes along the barrel (third row of the sheet, base of the plume at u0)
         float L = s * 1.4F;
@@ -202,8 +199,20 @@ public final class MuzzleFlashRenderer {
         float[][] plumeUv = {{pu0, pv1}, {pu1, pv1}, {pu1, pv0}, {pu0, pv0}};
         float[][] vertical = {{0, -ph, 0}, {0, -ph, -L}, {0, ph, -L}, {0, ph, 0}};
         float[][] horizontal = {{-ph, 0, 0}, {-ph, 0, -L}, {ph, 0, -L}, {ph, 0, 0}};
-        quad(base, glow, pose, vertical, plumeUv);
-        quad(base, glow, pose, horizontal, plumeUv);
+        float[][][] quads = {front, vertical, horizontal};
+        float[][][] uvs = {frontUv, plumeUv, plumeUv};
+
+        // Fetching a second buffer from the source ends the first one, so finish each pass before starting the next
+        VertexConsumer base = buffer.getBuffer(baseType(texture));
+        for (int q = 0; q < quads.length; q++) {
+            quad(base, pose, quads[q], uvs[q], 1.0F, false);
+        }
+        VertexConsumer glow = buffer.getBuffer(RenderType.eyes(texture));
+        for (int q = 0; q < quads.length; q++) {
+            // the eyes type culls back faces: emit both windings
+            quad(glow, pose, quads[q], uvs[q], EMISSIVE_ALPHA, false);
+            quad(glow, pose, quads[q], uvs[q], EMISSIVE_ALPHA, true);
+        }
 
         if (shot != null && !shot.particlesSpawned && frame == 0) {
             Vec3[] muzzle = muzzleInWorld(pose.pose());
@@ -220,17 +229,11 @@ public final class MuzzleFlashRenderer {
         return BASE_TYPES.computeIfAbsent(texture, GunRenderType::getMuzzleFlash);
     }
 
-    private static void quad(VertexConsumer base, VertexConsumer glow, PoseStack.Pose pose, float[][] v, float[][] uv) {
+    private static void quad(VertexConsumer c, PoseStack.Pose pose, float[][] v, float[][] uv, float tint, boolean reversed) {
         Matrix4f m = pose.pose();
-        for (int i = 0; i < 4; i++) {
-            vertex(base, pose, m, v[i], uv[i], 1.0F);
-        }
-        // the eyes type culls back faces: emit both windings
-        for (int i = 0; i < 4; i++) {
-            vertex(glow, pose, m, v[i], uv[i], EMISSIVE_ALPHA);
-        }
-        for (int i = 3; i >= 0; i--) {
-            vertex(glow, pose, m, v[i], uv[i], EMISSIVE_ALPHA);
+        for (int k = 0; k < 4; k++) {
+            int i = reversed ? 3 - k : k;
+            vertex(c, pose, m, v[i], uv[i], tint);
         }
     }
 
