@@ -42,9 +42,10 @@
 - Scorched block removed (block, item, recipes, tags, lang, textures, loot, Iris mapping).
 - JEI added to the dev runtime (`localRuntime`).
 - Approved textures: treated brass block (Create brass recoloured to the gun palette), treated iron block (Create industrial iron), vehement coal ore (new forked ember fissure) with `vehement_coal_ore_e.png` full-bright overlay (block model like the old scorched block). Second pass (2026-10-14, approved): stone anthralite ore (old cluster shapes, solid, dark top / light bottom, stone darkened above each cluster like vanilla iron ore); deepslate anthralite ore (same clusters, brighter ore, lighter deepslate lip like vanilla deepslate iron, almost no darkening); diamond steel block (old texture with its streaks sheared from 45° to horizontal; frame and inner ring untouched). Anthralite block: committed as "v1" (old texture + one-sided checker dither on the streak edges, a few speckles); the owner is still working on it themselves.
+- **Owner review (2026-10-14): only the treated brass block and the diamond steel block are final.** The owner is not happy with treated iron block, vehement coal ore, both anthralite ores or the anthralite block, and will come back to them later. Leave them as committed until then; don't rework them unprompted.
 
 ### Textures (ask for approval on one sample before batching)
-- Anthralite ores: done (see above). Glossiness is a shader-only thing; owner will explain later, don't do it yet.
+- Anthralite ores: owner will revisit (see above). Glossiness is a shader-only thing; owner will explain later, don't do it yet.
 - Ingots: vanilla shape and angled look. Nuggets: vanilla angled look, each a distinct silhouette (anthralite and treated iron are currently identical). The old ore/ingot textures were mostly fine; don't redesign drastically, except diamond steel.
 - Diamond steel: palette mismatch; must not look like plain diamond; depleted = closer to an anthralite/treated-diamond mix; the blend keeps subtle blue hues (see Aeronautics crushed end stone).
 - Treated brass: use the gun palette.
